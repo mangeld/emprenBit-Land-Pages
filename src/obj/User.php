@@ -4,7 +4,7 @@ namespace mangeld\obj;
 
 class User
 {
-	private $name;
+	private $name = "";
 
 	public function __construct()
 	{
