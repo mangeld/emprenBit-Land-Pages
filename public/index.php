@@ -7,8 +7,18 @@ $test->setName("Hello World");
 
 $slimApp = new \Slim\Slim();
 
-$slimApp->get('/test', function(){
-	echo 'TEST';
+$slimApp->get('/login', function(){
+	
+});
+
+$slimApp->get('/logout', function(){
+
+});
+
+$slimApp->group('/v1', function() use ($slimApp) {
+
+	//TODO: ADD HERE API ROUTES FOR ANGULAR JS
+
 });
 
 $slimApp->run();
