@@ -4,7 +4,7 @@ namespace mangeld\obj;
 
 class User
 {
-	private $name = "";
+	private $name;
 
 	public function __construct()
 	{
@@ -13,6 +13,8 @@ class User
 
 	public function getName()
 	{
+		if( !$this->name )
+			throw new \mangeld\exceptions\NameNotSetException("You must set the name first", 1);
 		return $this->name;
 	}
 
