@@ -4,22 +4,22 @@ namespace mangeld\obj;
 
 class User
 {
-	private $name = "";
+  private $name = "";
 
-	public function __construct()
-	{
+  public function __construct()
+  {
 
-	}
+  }
 
-	public function getName()
-	{
-		if( !$this->name )
-			throw new \mangeld\exceptions\NameNotSetException("You must set the name first", 1);
-		return $this->name;
-	}
+  public function getName()
+  {
+    if( !$this->name )
+      throw new \mangeld\exceptions\NameNotSetException("You must set the name first", 1);
+    return $this->name;
+  }
 
-	public function setName($name)
-	{
-		$this->name = $name;
-	}
+  public function setName($name)
+  {
+    $this->name = $name;
+  }
 }
