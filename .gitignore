@@ -2,3 +2,4 @@
 vendor
 proj.*
 node_modules
+*.css
