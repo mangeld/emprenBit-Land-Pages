@@ -1,4 +1,7 @@
-[![Travis Master Tag](https://travis-ci.org/mangeld/emprenBit-Land-Pages.svg?branch=master)](https://travis-ci.org/mangeld/emprenBit-Land-Pages)
+[TravisLogo]: https://travis-ci.org/mangeld/emprenBit-Land-Pages.svg?branch=master
+[TravisLink]: https://travis-ci.org/mangeld/emprenBit-Land-Pages
+
+[![Travis Build Tag][TravisLogo]][TravisLink]
 
 Emprenbit Land Pages
 ========
