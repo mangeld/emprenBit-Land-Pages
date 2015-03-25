@@ -5,20 +5,52 @@ namespace mangeld\obj;
 class User
 {
   private $name = '';
-  private $uid;
+  private $uid = '';
   private $isAdmin = false;
   private $email = '';
+  private $passWordHash = '';
+  private $registrationTimestamp;
 
   public function __construct()
   {
 
   }
 
+  private function checkIfAttributeIsSet($attr, $msg = '', $cod = 1)
+  {
+    if(!$attr)
+      throw new \mangeld\exceptions\AttributeNotSetException($msg, $cod);
+  }
+
+  private function checkValidType($value, $expected, $msg = '', $cod = 1)
+  {
+    if( gettype($value) != $expected )
+      throw new \mangeld\exceptions\InvalidArgumentTypeException($msg, $cod);
+  }
+
+  public function setRegistrationDateTimestamp($timestamp)
+  {
+    $this->checkValidType($timestamp, 'double');
+    $this->registrationTimestamp = $timestamp;
+  }
+
+  public function getResitrationDateTimestamp()
+  {
+    $this->checkIfAttributeIsSet($this->registrationTimestamp);
+    return $this->registrationTimestamp;
+  }
+
+  public function setPasswordHash($hash) { $this->passWordHash = $hash; }
+
+  public function getPasswordHash()
+  {
+    $this->checkIfAttributeIsSet($this->passWordHash, 'You have to provide a password hash first', 1);
+    return $this->passWordHash;
+  }
+
   public function getEmail()
   {
-    if( !$this->email )
-      throw new \mangeld\exceptions\AttributeNotSetException("You have to provide an email first", 1);
-      
+    $this->checkIfAttributeIsSet($this->email, 'You have to provide an email first');
     return $this->email;
   }
 
@@ -26,9 +58,7 @@ class User
 
   public function setAdmin($admin)
   {
-    if( gettype($admin) != 'boolean' )
-      throw new \mangeld\exceptions\InvalidArgumentTypeException();
-      
+    $this->checkValidType($admin, 'boolean');
     $this->isAdmin = $admin;
   }
 
@@ -46,8 +76,7 @@ class User
 
   public function getName()
   {
-    if( !$this->name )
-      throw new \mangeld\exceptions\AttributeNotSetException("You must set the name first", 1);
+    $this->checkIfAttributeIsSet($this->name, 'You must set the name first');
     return $this->name;
   }
 

@@ -9,6 +9,48 @@ class UserTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @expectedException \mangeld\exceptions\InvalidArgumentTypeException
+	 */
+	public function testSetRegistrationDateInvalidTypeException()
+	{
+		$this->user->setRegistrationDateTimestamp('asdasdasd');
+	}
+
+	/**
+	 * @expectedException \mangeld\exceptions\AttributeNotSetException
+	 */
+	public function testRegistrationDateNotSetException()
+	{
+		$this->user->getResitrationDateTimestamp();
+	}
+
+	public function testGetterSetterUnixTimestampRegistrationDate()
+	{
+		$time = microtime(true);
+		$this->user->setRegistrationDateTimestamp($time);
+		$result = $this->user->getResitrationDateTimestamp();
+
+		$this->assertEquals($time, $result);
+	}
+
+	public function testGetterSetterPasswordHash()
+	{
+		$passwordH = '$2y$11$vbwl3WlCAy3WwixoSPwYuOLGZ9GmssMosRuQQXZ.B8y.c4TyDV4U.';
+		$this->user->setPasswordHash($passwordH);
+		$result = $this->user->getPasswordHash();
+
+		$this->assertEquals($passwordH, $result);
+	}
+
+	/**
+	 * @expectedException \mangeld\exceptions\AttributeNotSetException
+	 */
+	public function testPasswordHashAttributeNotSetException()
+	{
+		$this->user->getPasswordHash();
+	}
+
+	/**
 	 * @expectedException \mangeld\exceptions\AttributeNotSetException
 	 */
 	public function testEmailAttributeNotSetException()
