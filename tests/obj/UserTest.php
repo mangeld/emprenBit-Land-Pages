@@ -8,6 +8,43 @@ class UserTest extends PHPUnit_Framework_TestCase
 		$this->user = new \mangeld\obj\User();
 	}
 
+	public function testUserFactoryIsCreated()
+	{
+		$usr = \mangeld\obj\User::factoryUser();
+
+		$this->assertInstanceOf('\mangeld\obj\User', $usr);
+		$this->assertInstanceOf('\mangeld\lib\StringValidator', $usr->getValidator());
+	}
+
+	public function testGetterSetterValidator()
+	{
+		$validator = new \mangeld\lib\StringValidator();
+		$this->user->setValidator($validator);
+		$result = $this->user->getValidator();
+
+		$this->assertEquals($validator, $result);
+	}
+
+	/**
+	 * @expectedException \mangeld\exceptions\DependencyNotGivenException
+	 */
+	public function testDependencyNotGivenExceptionIfNoStringValidator()
+	{
+		$this->user->setUuid('3e85276f-8777-4d5b-9589-7d1ff14dbf75');
+	}
+
+	/**
+	 * @expectedException \mangeld\exceptions\MalformatedStringException
+	 */
+	public function testMalformatedUuidException()
+	{
+		$falseUuid4 = 'asdasdasd';
+		$validator = new \mangeld\lib\StringValidator();
+		$this->user = new \mangeld\obj\User($validator);
+
+		$this->user->setUuid($falseUuid4);
+	}
+
 	/**
 	 * @expectedException \mangeld\exceptions\InvalidArgumentTypeException
 	 */
@@ -93,6 +130,8 @@ class UserTest extends PHPUnit_Framework_TestCase
 	public function testUuid()
 	{
 		$uuid = '3e85276f-8777-4d5b-9589-7d1ff14dbf75';
+		$validator = new \mangeld\lib\StringValidator();
+		$this->user = new \mangeld\obj\User($validator);
 		$this->user->setUuid($uuid);
 		$result = $this->user->getUuid();
 

@@ -2,6 +2,11 @@
 
 namespace mangeld\obj;
 
+use mangeld\exceptions\AttributeNotSetException;
+use mangeld\exceptions\InvalidArgumentTypeException;
+use mangeld\exceptions\MalformatedStringException;
+use mangeld\exceptions\DependencyNotGivenException;
+
 class User
 {
   private $name = '';
@@ -11,21 +16,40 @@ class User
   private $passWordHash = '';
   private $registrationTimestamp;
 
-  public function __construct()
-  {
+  private $strValidator;
 
+  public function __construct(\mangeld\lib\StringValidator $validator = null)
+  {
+    $this->strValidator = $validator;
+  }
+
+  public static function factoryUser()
+  {
+    $user = new User(new \mangeld\lib\StringValidator);
+    return $user;
+  }
+
+  private function checkValidUuid($uuid)
+  {
+    if( !$this->strValidator )
+      throw new DependencyNotGivenException();
+
+    $result = $this->strValidator->validateUuid4($uuid);
+
+    if( !$result )
+      throw new MalformatedStringException('String has to be uuid version 4 compilant', 1);
   }
 
   private function checkIfAttributeIsSet($attr, $msg = '', $cod = 1)
   {
     if(!$attr)
-      throw new \mangeld\exceptions\AttributeNotSetException($msg, $cod);
+      throw new AttributeNotSetException($msg, $cod);
   }
 
   private function checkValidType($value, $expected, $msg = '', $cod = 1)
   {
     if( gettype($value) != $expected )
-      throw new \mangeld\exceptions\InvalidArgumentTypeException($msg, $cod);
+      throw new InvalidArgumentTypeException($msg, $cod);
   }
 
   public function setRegistrationDateTimestamp($timestamp)
@@ -40,7 +64,8 @@ class User
     return $this->registrationTimestamp;
   }
 
-  public function setPasswordHash($hash) { $this->passWordHash = $hash; }
+  public function setPasswordHash($hash)
+    { $this->passWordHash = $hash; }
 
   public function getPasswordHash()
   {
@@ -66,6 +91,7 @@ class User
 
   public function setUuid($uid)
   {
+    $this->checkValidUuid($uid);
     $this->uid = $uid;
   }
 
@@ -83,5 +109,16 @@ class User
   public function setName($name)
   {
     $this->name = $name;
+  }
+
+  public function setValidator(\mangeld\lib\StringValidator $validator)
+  {
+    $this->strValidator = $validator;
+  }
+
+  public function getValidator()
+  {
+    $this->checkIfAttributeIsSet($this->strValidator);
+    return $this->strValidator;
   }
 }
