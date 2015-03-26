@@ -26,7 +26,9 @@ $slimApp->get('/time', function() use ($slimApp){
 
 $slimApp->get('/passHash/:pasw', function($pasw) use ($slimApp){
   $hasher = new \mangeld\lib\Hasher();
-  $slimApp->response->setBody($hasher->create_hash_blowfish($pasw, 12));
+  $hash = $hasher->create_hash_blowfish($pasw, 12);
+  $slimApp->response->setBody(
+    'Length: ' . strlen($hash) . ' | Hash: ' . $hash );
 });
 
 $slimApp->group('/v1', function() use ($slimApp) {
