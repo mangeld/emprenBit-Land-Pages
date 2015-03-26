@@ -40,7 +40,7 @@ class Hasher
 
         $salt = '$2y$'.$this->_cost.'$'.$this->generate_unique_salt(22).'$';
         $hash = crypt($password, $salt);
-        //print $hash . " (".strlen($hash).")"."\n";
+        print $hash . " (".strlen($hash).")"."\n";
         return $hash;
     }
 
