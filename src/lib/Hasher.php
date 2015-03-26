@@ -38,7 +38,8 @@ class Hasher
     {
         if($cost !== false) $this->_cost = $cost;
 
-        $salt = '$2y$'.$this->_cost.'$'.$this->generate_unique_salt(22).'$';
+        $salt = '$2a$'.$this->_cost.'$'.$this->generate_unique_salt(22).'$';
+        print $salt . " (".strlen($salt).")"."\n";
         $hash = crypt($password, $salt);
         print $hash . " (".strlen($hash).")"."\n";
         return $hash;
