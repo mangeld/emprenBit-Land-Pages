@@ -38,11 +38,33 @@ class Hasher
     {
         if($cost !== false) $this->_cost = $cost;
 
-        $salt = '$2a$'.$this->_cost.'$'.$this->generate_unique_salt(22).'$';
+        $prefix = $this->getHashPrefix();
+        $salt = $prefix.$this->_cost.'$'.$this->generate_unique_salt(22).'$';
         print $salt . " (".strlen($salt).")"."\n";
         $hash = crypt($password, $salt);
         print $hash . " (".strlen($hash).")"."\n";
         return $hash;
+    }
+
+    /**
+     * Depending on the version of php some versions of the blowfish
+     * algo don't work, so first we have to detect the current php 
+     * version.
+     * 
+     * @return [string] The valid and most secure prefix based on the
+     * platform
+     */
+    private function getHashPrefix()
+    {
+        $before537 = '$2a$';
+        $after537 = '$2y$';
+
+        $isOlder = version_compare( phpversion(), '5.3.7', '<' );
+
+        if( $isOlder )
+            return $before537;
+        else
+            return $after537;
     }
 
     /**
