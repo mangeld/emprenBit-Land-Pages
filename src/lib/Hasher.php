@@ -94,15 +94,20 @@ class Hasher
         $words = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $wordCount = strlen($words);
 
+        //We have to provide a salt anyway
+        //If openssl is not present, then use a less
+        //entropy source.
         if( !function_exists('openssl_random_pseudo_bytes') )
+        {
             for( $c = 0; $c < $length; $c++ )
-                $salt .= mt_rand(0, $wordCount);
+                $salt .= $words[ mt_rand(0, $wordCount - 1) ];
+        
+            return $salt;
+        }
 
         for($i = 0; $i < $length; $i++)
-        {
           $salt .= $words[$this->cryptoRandSecure(0, strlen($words))];
-        }
-        //print $salt . " (" . strlen($salt) . ")" . "\n";
+        
         return $salt;
     }
 
