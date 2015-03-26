@@ -47,6 +47,8 @@ class Hasher
     /**
      * 
      * TODO: Make constant time comparision. (Timming attack protection)
+     * aka known as 'compare all the chars anyway' (do not return
+     * immediately if there is a char in x pos that doesn't match)
      * @param string $hash Hash to check.
      * @param string $test Given password to check against the hash.
      * @return boolean True if the passwords matches the hash.
