@@ -19,7 +19,7 @@ class Hasher
 
     public function __construct()
     {
-        if( CRYPT_BLOWFISH != 1 ) print 'BLOWFISH NOT FOUND';
+
     }
 
     /**
@@ -40,9 +40,7 @@ class Hasher
 
         $prefix = $this->getHashPrefix();
         $salt = $prefix.$this->_cost.'$'.$this->generate_unique_salt(22).'$';
-        print $salt . " (".strlen($salt).")"."\n";
         $hash = crypt($password, $salt);
-        print $hash . " (".strlen($hash).")"."\n";
         return $hash;
     }
 
@@ -51,7 +49,7 @@ class Hasher
      * algo don't work, so first we have to detect the current php 
      * version.
      * 
-     * @return [string] The valid and most secure prefix based on the
+     * @return string The valid and most secure prefix based on the
      * platform
      */
     private function getHashPrefix()
@@ -116,13 +114,13 @@ class Hasher
     private function generate_unique_salt($length)
     {
         $salt = '';
-        $words = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $words = './0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $wordCount = strlen($words);
 
         //We have to provide a salt anyway
         //If openssl is not present, then use a less
         //entropy source.
-        if( /*!function_exists('openssl_random_pseudo_bytes')*/ true )
+        if( !function_exists('openssl_random_pseudo_bytes') )
         {
             for( $c = 0; $c < $length; $c++ )
                 $salt .= $words[ mt_rand(0, $wordCount - 1) ];
