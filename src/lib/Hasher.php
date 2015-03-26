@@ -19,7 +19,7 @@ class Hasher
 
     public function __construct()
     {
-        
+        if( CRYPT_BLOWFISH != 1 ) print 'BLOWFISH NOT FOUND';
     }
 
     /**
@@ -40,7 +40,7 @@ class Hasher
 
         $salt = '$2y$'.$this->_cost.'$'.$this->generate_unique_salt(22).'$';
         $hash = crypt($password, $salt);
-        
+        //print $hash . " (".strlen($hash).")"."\n";
         return $hash;
     }
 
@@ -99,16 +99,16 @@ class Hasher
         //We have to provide a salt anyway
         //If openssl is not present, then use a less
         //entropy source.
-        if( !function_exists('openssl_random_pseudo_bytes') )
+        if( /*!function_exists('openssl_random_pseudo_bytes')*/ true )
         {
             for( $c = 0; $c < $length; $c++ )
                 $salt .= $words[ mt_rand(0, $wordCount - 1) ];
-        
+
             return $salt;
         }
 
         for($i = 0; $i < $length; $i++)
-          $salt .= $words[$this->cryptoRandSecure(0, strlen($words))];
+          $salt .= $words[ $this->cryptoRandSecure(0, $wordCount) ];
         
         return $salt;
     }
@@ -120,7 +120,7 @@ class Hasher
         $log = log($range, 2);
         $bytes = (int) ($log / 8) + 1; // length in bytes
         $bits = (int) $log + 1; // length in bits
-        $filter = (int) (1 << $bits) - 1; // set all lower bits to 1
+        $filter = (int) (1 << $bits) - 1; // set all lower bits to 11
 
         do
         {
