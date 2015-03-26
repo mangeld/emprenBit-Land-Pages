@@ -41,6 +41,7 @@ class Hasher
         $prefix = $this->getHashPrefix();
         $salt = $prefix.$this->_cost.'$'.$this->generate_unique_salt(22).'$';
         $hash = crypt($password, $salt);
+        print "\n" . $hash . "\n";
         return $hash;
     }
 
