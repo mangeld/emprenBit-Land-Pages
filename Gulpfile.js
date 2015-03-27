@@ -4,6 +4,19 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     livereload = require('gulp-livereload');
 
+gulp.task('phpunit', function(){
+  var sys = require('sys'),
+  exec = require('child_process').exec;
+
+  exec('php vendor/phpunit/phpunit/phpunit', function(error, stdout){
+    sys.puts(stdout);
+  });
+});
+
+gulp.task('watchPhpunit', function(){
+  gulp.watch('src/*/*.php', { debounceDelay: 2000 }, ['phpunit']);
+});
+
 gulp.task('livereload', function(){
   gulp.src('templates/*.html')
   .pipe(livereload());
