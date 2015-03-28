@@ -1,3 +1,97 @@
-h1
-  color: #222
-  background: #EEE
+@import url('http://fonts.googleapis.com/css?family=Montserrat')
+@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
+
+$baseColor: #559
+$red: #D33
+$white: #FFF
+$time: .3s
+
+*
+  box-sizing: border-box
+  outline: none
+
+button::-moz-focus-inner
+  border: 0
+
+button:active
+  padding: default
+
+.red
+  color: $red
+
+body
+  font-family: 'Montserrat', sans-serif
+  font-size: 18px
+  background-color: #F9F9F9
+  color: #333
+
+button
+  background: none
+  color: $baseColor
+  font-size: 1rem
+  margin: 0 .2rem
+  border: 1px solid $baseColor
+  border-radius: .2rem
+  cursor: pointer
+  transition: background-color $time, color $time
+
+button:hover
+  background: $baseColor
+  color: #fff
+
+button.red
+  border: 1px solid $red
+
+button.red:hover
+  color: $white
+  background: $red
+
+.block-button
+  display: block
+  margin: .5rem auto
+  font-size: 1.5rem
+  height: 1.8rem
+  width: 6rem
+  line-height: 1rem
+
+  span
+    display: inline-block
+    line-height: 1rem
+    vertical-align: middle
+
+ul
+  margin: 0
+  padding: 0
+
+main
+  width: 80%
+  margin: 0 auto
+  height: auto
+  background-color: #f3f3f3
+  border-radius: .4rem
+  border: 1px solid #bbb
+  overflow: hidden
+
+.blocklist
+  display: block
+
+  li
+    display: block
+    padding: .4rem
+    border-bottom: 1px solid #ddd
+
+    button
+      display: block
+      float: right
+
+  li:nth-of-type(even)
+    background-color: #f3f3f3 - #080808
+
+li.ng-enter
+  transition: background-color 1s
+
+li.ng-enter-active
+  background-color: #222
+
+li.ng-leave
+  background-color: #222

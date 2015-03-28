@@ -13,6 +13,10 @@ $slimApp->get('/login', function() use ($slimApp){
 
 });
 
+$slimApp->get('/admin', function() use ($slimApp) {
+  $slimApp->response->redirect('/admin.html', 303);
+});
+
 $slimApp->get('/logout', function(){
   echo 'logout';
 });

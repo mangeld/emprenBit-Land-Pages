@@ -19,7 +19,7 @@ class Hasher
 
     public function __construct()
     {
-
+        //TODO: Do something wen blowfish is not present (php 5.3 < )
     }
 
     /**
@@ -119,7 +119,7 @@ class Hasher
 
         //We have to provide a salt anyway
         //If openssl is not present, then use a less
-        //entropy source.
+        //entropy source. (A little sketchy, but whatever...)
         if( !function_exists('openssl_random_pseudo_bytes') )
         {
             for( $c = 0; $c < $length; $c++ )

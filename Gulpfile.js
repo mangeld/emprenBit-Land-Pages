@@ -14,7 +14,7 @@ gulp.task('phpunit', function(){
 });
 
 gulp.task('watchPhpunit', function(){
-  gulp.watch('src/*/*.php', { debounceDelay: 2000 }, ['phpunit']);
+  gulp.watch(['src/*/*.php', 'tests/*/*.php'], { debounceDelay: 2000 }, ['phpunit']);
 });
 
 gulp.task('livereload', function(){
@@ -24,13 +24,13 @@ gulp.task('livereload', function(){
 
 gulp.task('sass', function(){
   gulp.src('public/css/*.sass')
-    .pipe(sass({indentedSyntax: true}))
+    .pipe(sass({indentedSyntax: true, errLogToConsole: true}))
     .pipe(gulp.dest('public/css/'));
 });
 
 gulp.task('watch', function(){
   livereload.listen();
-  gulp.watch('templates/*.html', ['livereload']);
+  gulp.watch(['templates/*.html', 'public/*.html', 'public/js/*.js'], ['livereload']);
   gulp.watch('public/css/*.sass', ['sass', 'livereload']);
 });
 
