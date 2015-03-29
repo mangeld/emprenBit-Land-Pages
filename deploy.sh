@@ -4,7 +4,7 @@ debconf-set-selections <<< 'mysql-server mysql-server/root_password password too
 debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password toor'
 
 sudo apt-get update
-sudo apt-get install -y php5 php5-mysql mysql-server apache2
+sudo apt-get install -y php5 php5-mysql mysql-server apache2 nodejs nodejs-legacy npm
 
 #Clean existing config files
 sudo rm /etc/apache2/sites-available/*
@@ -40,3 +40,5 @@ sudo mv composer.phar /usr/bin/composer
 # Install required dependencies for running the app
 cd /vagrant
 composer install
+
+npm install --save-dev gulp gulp-livereload gulp-sass
