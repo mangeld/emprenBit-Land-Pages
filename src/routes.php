@@ -1,8 +1,6 @@
 <?php
 
-$test = new \mangeld\App();
-$test->setName("Hello World");
-
+$app = new \mangeld\App();
 $slimApp = new \Slim\Slim();
 
 $slimApp->get('/login', function() use ($slimApp){
@@ -35,9 +33,18 @@ $slimApp->get('/passHash/:pasw', function($pasw) use ($slimApp){
     'Length: ' . strlen($hash) . ' | Hash: ' . $hash );
 });
 
-$slimApp->group('/v1', function() use ($slimApp) {
+$slimApp->group('/v1', function() use ($slimApp){
 
-  //TODO: ADD HERE API ROUTES FOR ANGULAR JS
+  $slimApp->get('/pages/:id', function($id){
+    //TODO: Fetch data & define json object
+  });
+
+  $slimApp->post('/pages', function(){
+    //TODO: Add page & define json object
+    //TODO: Authenticate user
+  });
+
+
 
 });
 

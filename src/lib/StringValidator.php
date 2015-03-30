@@ -11,6 +11,12 @@ class StringValidator
         //code...
     }
 
+    /**
+     * Checks if the given string is a valid uuid v.4
+     * @param  string $uuid string to check
+     * @return boolean true if the string given is uuid4 compilant
+     * false if is not.
+     */
     public function validateUuid4($uuid)
     {
       return 1 == preg_match($this->uuid4Regex, $uuid);
