@@ -71,6 +71,7 @@ main
   border-radius: .4rem
   border: 1px solid #bbb
   overflow: hidden
+  box-shadow: 0 0 3px rgba( 23, 23, 23, .2 )
 
 .blocklist
   display: block
@@ -79,6 +80,7 @@ main
     display: block
     padding: .4rem
     border-bottom: 1px solid #ddd
+    transition: margin-bottom .5s
 
     button
       display: block
@@ -87,11 +89,12 @@ main
   li:nth-of-type(even)
     background-color: #f3f3f3 - #080808
 
-li.ng-enter
-  transition: background-color 1s
+.fade
+  transition: margin-bottom .5s
 
-li.ng-enter-active
-  background-color: #222
+.fade.ng-enter
+  animation: fadeIn 1s;
 
-li.ng-leave
-  background-color: #222
+.fade.ng-leave
+  animation: fadeOut .5s;
+  overflow: hidden
