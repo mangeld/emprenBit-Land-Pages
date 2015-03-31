@@ -18,7 +18,11 @@ class Page
   public static function createPage()
   {
     $val = new \mangeld\lib\StringValidator();
-    return new \mangeld\obj\Page($val);
+    $uuid4 = \Rhumsaa\Uuid\Uuid::uuid4();
+    $page = new \mangeld\obj\Page($val);
+    $page->setCreationTimestamp(microtime(true));
+    $page->setId($uuid4->toString());
+    return $page;
   }
 
   private function validateUuid($id)
