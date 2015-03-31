@@ -7,7 +7,7 @@ php:
   - 7
 
 before_script:
-  - mysql < dbTables.sql
+  - mysql < dbTables.sql -uroot
 
 services:
   - mysql
