@@ -12,7 +12,7 @@ class DB implements DBInterface
       $this->pdo = new \PDO(
         'mysql:host=localhost;dbname=landingPages',
         'root',
-        ''
+        getenv('MYSQLPASSWD')
         );
   }
 
