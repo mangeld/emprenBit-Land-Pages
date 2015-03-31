@@ -1,6 +1,6 @@
-var admin = angular.module('admin', ['ngAnimate']);
+var admin = angular.module('admin', [  ]);
 
-admin.controller('adminCtrl', function($scope, $animate){
+admin.controller('adminCtrl', function($scope){
 
   $scope.appName = 'Landing Pages';
   $scope.title = 'Title set in controller';
@@ -15,13 +15,31 @@ admin.controller('adminCtrl', function($scope, $animate){
     { name: 'test8', hidden: false },
     { name: 'test9', hidden: false },
     { name: 'test10', hidden: false }
-    ];
+  ];
 
-  console.log($animate);
+  var animateOut = function(element, callback){
+    Velocity(
+          element,
+          { opacity: 0, height: 0 },
+          {
+            duration: 500,
+            complete: function(){ callback(); }
+          }
+        );
+  };
 
-  $scope.removeItem = function(index){
-    console.log('Item deleted');
-    $scope.landingPages.splice(index, 1);
+  var deleteFromPages = function(element, i){
+    console.log(element);
+    console.log(i);
+    console.log($scope.landingPages);
+    element.parentNode.removeChild(element);
+    $scope.landingPages.splice(i, 1);
+  };
+
+  $scope.removeItem = function(evnt, i){
+    //$scope.landingPages.splice(i, 1).pop();
+    element = document.getElementsByClassName("blocklist")[0].children[i];
+    animateOut(element, function(){ deleteFromPages(element, i); });
   };
 
   $scope.clickedBtn = function (event){

@@ -80,7 +80,6 @@ main
     display: block
     padding: .4rem
     border-bottom: 1px solid #ddd
-    transition: margin-bottom .5s
 
     button
       display: block
@@ -91,10 +90,18 @@ main
 
 .fade
   transition: margin-bottom .5s
+  overflow: hidden
 
 .fade.ng-enter
   animation: fadeIn 1s;
 
 .fade.ng-leave
-  animation: fadeOut .5s;
-  overflow: hidden
+  animation: fadeMinimizeOut 3s;
+
+@keyframes fadeMinimizeOut
+  from
+    height: 1rem
+    opacity: 1
+  to
+    height: 0px
+    opacity: 0
