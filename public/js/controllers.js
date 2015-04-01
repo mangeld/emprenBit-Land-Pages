@@ -1,21 +1,14 @@
-var admin = angular.module('admin', [  ]);
+var admin = angular.module('admin', []);
 
-admin.controller('adminCtrl', function($scope){
+admin.controller('adminCtrl', function($scope, $http){
 
   $scope.appName = 'Landing Pages';
   $scope.title = 'Title set in controller';
-  $scope.landingPages = [
-    { name: 'test', hidden: false },
-    { name: 'test2', hidden: false },
-    { name: 'test3', hidden: false },
-    { name: 'test4', hidden: false },
-    { name: 'test5', hidden: false },
-    { name: 'test6', hidden: false },
-    { name: 'test7', hidden: false },
-    { name: 'test8', hidden: false },
-    { name: 'test9', hidden: false },
-    { name: 'test10', hidden: false }
-  ];
+  $scope.landingPages = [ ];
+
+  $http.get('v1/pages').success(function(data, status, headers, config){
+    $scope.landingPages = data.body;
+  });
 
   var animateOut = function(element, callback){
     Velocity(
