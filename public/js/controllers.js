@@ -20,7 +20,7 @@ admin.controller('adminCtrl', function($scope, $http){
   var animateOut = function(element, callback){
     Velocity(
           element,
-          { opacity: 0, height: 0 },
+          { opacity: 0, height: 0, padding: 0 },
           {
             duration: 500,
             complete: function(){ callback(); }
@@ -29,9 +29,6 @@ admin.controller('adminCtrl', function($scope, $http){
   };
 
   var deleteFromPages = function(element, i){
-    console.log(element);
-    console.log(i);
-    console.log($scope.landingPages);
     element.parentNode.removeChild(element);
     $scope.landingPages.splice(i, 1);
   };
@@ -58,5 +55,11 @@ admin.controller('adminCtrl', function($scope, $http){
 
   $scope.newPage = function(){
     console.log($scope.newPageForm);
+    landing = {
+      name: $scope.newPageForm.name,
+      id: $scope.newPageForm.email
+    };
+    $scope.landingPages.push(landing);
+    $scope.cancelNewPage(); 
   };
 });

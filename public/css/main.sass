@@ -30,6 +30,7 @@ button
   background: none
   color: $baseColor
   font-size: 1rem
+  padding-bottom: .1rem
   margin: 0 .2rem
   border: 1px solid $baseColor
   border-radius: .2rem
@@ -105,12 +106,18 @@ main
 
   li
     display: block
-    padding: .4rem
+    clear: both
+    padding: 0
     border-bottom: 1px solid #ddd
 
     button
       display: block
       float: right
+
+.blocklist > li > span
+  display: block
+  padding: .4rem
+  overflow: auto
 
   li:nth-of-type(even)
     background-color: #f3f3f3 - #080808

@@ -11,10 +11,11 @@
   <main>
     <div class="container">
       <ul class="blocklist">
-        <li class="fade" ng-repeat="landing in landingPages" ng-hide='landing.hidden'>
-          {{ landing.name }}
+        <li class="fade" ng-repeat="landing in landingPages track by landing.id" ng-hide='landing.hidden'>
+          <span>{{ landing.name }}
           <button><span class="fa fa-pencil"></span></button>
           <button class="red" ng-click='removeItem($event, $index)'><span class="fa fa-trash"></span></button>
+          </span>
         </li>
       </ul>
       <button class="block-button" ng-show="show_button_new_page" ng-click="toggleShowFormNewPage()"><span class="fa fa-plus"></span></button>
