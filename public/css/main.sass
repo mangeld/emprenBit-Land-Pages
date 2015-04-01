@@ -1,5 +1,6 @@
 @import url('http://fonts.googleapis.com/css?family=Montserrat')
 @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
+@import url('http://fonts.googleapis.com/css?family=Slabo+13px')
 
 $baseColor: #559
 $red: #D33
@@ -59,6 +60,32 @@ button.red:hover
     line-height: 1rem
     vertical-align: middle
 
+.inline-buttons
+  width: auto
+  text-align: center
+  vertical-align: middle
+
+/**
+ * TODO: Refactor Buttons
+ */
+.inline-button
+  display: inline-block
+  margin: .5rem auto
+  font-size: 1.5rem
+  height: 1.8rem
+  width: 6rem
+  line-height: 1rem
+
+  span
+    display: inline-block
+    line-height: 1rem
+    vertical-align: middle
+
+.container
+  position: relative
+  top: 0
+  left: 0
+
 ul
   margin: 0
   padding: 0
@@ -87,6 +114,31 @@ main
 
   li:nth-of-type(even)
     background-color: #f3f3f3 - #080808
+
+form
+  width: 60%
+  overflow: auto
+  margin: .5rem auto
+
+  input
+    display: block
+    padding: .2rem
+    margin: .5rem auto
+    text-align: center
+    font-size: 1rem
+
+input
+  font-family: 'Slabo 13px'
+  background: none
+  border: none
+  background-color: #EFEFEF
+  border-bottom: 2px solid #888
+  transition: border-bottom .4s, background-color .4s, box-shadow .4s
+
+input:focus
+  background-color: #EFEFF4
+  border-bottom: 2px solid #88f
+  box-shadow: 0 0 3px rgba( 45, 45, 120, 0.1 )
 
 .fade
   transition: margin-bottom .5s

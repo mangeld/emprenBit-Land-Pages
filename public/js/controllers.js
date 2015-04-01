@@ -5,6 +5,13 @@ admin.controller('adminCtrl', function($scope, $http){
   $scope.appName = 'Landing Pages';
   $scope.title = 'Title set in controller';
   $scope.landingPages = [ ];
+  $scope.show_button_new_page = true;
+  $scope.show_form_new_page = false;
+
+  $scope.newPageForm = {
+    name: "",
+    email: ""
+  };
 
   $http.get('v1/pages').success(function(data, status, headers, config){
     $scope.landingPages = data.body;
@@ -37,5 +44,19 @@ admin.controller('adminCtrl', function($scope, $http){
 
   $scope.clickedBtn = function (event){
     console.log(event);
+  };
+
+  $scope.toggleShowFormNewPage = function(){
+    $scope.show_form_new_page = !$scope.show_form_new_page;
+    $scope.show_button_new_page = !$scope.show_button_new_page;
+  };
+
+  $scope.cancelNewPage = function(){
+    $scope.toggleShowFormNewPage();
+    $scope.newPageForm = {};
+  };
+
+  $scope.newPage = function(){
+    console.log($scope.newPageForm);
   };
 });
