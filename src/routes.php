@@ -1,6 +1,6 @@
 <?php
 
-$app = new \mangeld\App();
+$app = \mangeld\App::createApp();
 $slimApp = new \Slim\Slim();
 
 $slimApp->get('/login', function() use ($slimApp){
@@ -33,15 +33,19 @@ $slimApp->get('/passHash/:pasw', function($pasw) use ($slimApp){
     'Length: ' . strlen($hash) . ' | Hash: ' . $hash );
 });
 
-$slimApp->group('/v1', function() use ($slimApp){
+$slimApp->group('/v1', function() use ($slimApp, $app){
 
   $slimApp->get('/pages/:id', function($id){
     //TODO: Fetch data & define json object
   });
 
-  $slimApp->post('/pages', function(){
+  $slimApp->get('/pages', function() use ($slimApp, $app){
     //TODO: Add page & define json object
     //TODO: Authenticate user
+    
+    $pages = $app->getPages();
+    $slimApp->response->headers->set('Content-Type', 'application/json');
+    $slimApp->response->setBody($pages);
   });
 
 

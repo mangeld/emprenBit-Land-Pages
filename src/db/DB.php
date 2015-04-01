@@ -9,11 +9,15 @@ class DB implements DBInterface
 
   public function __construct()
   {
-      $this->pdo = new \PDO(
-        'mysql:host=localhost;dbname=landingPages',
-        'root',
-        getenv('MYSQLPASSWD')
-        );
+    $pass = 'toor';
+    if( getenv('MYSQLPASSWD') )
+      $pass = getenv('MYSQLPASSWD');
+
+    $this->pdo = new \PDO(
+      'mysql:host=localhost;dbname=landingPages',
+      'root',
+      $pass
+    );
   }
 
   public function savePage(\mangeld\obj\Page $page)
@@ -42,7 +46,7 @@ class DB implements DBInterface
       $page->setName( $row->name );
       $page->setId( $row->idPages );
       $page->setCreationTimestamp( (double) $row->creationDate );
-      $pages[] = $row;
+      $pages[] = $page;
     }
 
     return $pages;
