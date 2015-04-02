@@ -14,7 +14,7 @@ class DB implements DBInterface
       $pass = getenv('MYSQLPASSWD');
 
     print 'PASSWORD USADO: ' . $pass . PHP_EOL;
-    print 'VARIABLE GLOBAL: ' . getenv('MYSQLPASSWD') . PHP_EOL;
+    var_dump(getenv('MYSQLPASSWD'));
 
     $this->pdo = new \PDO(
       'mysql:host=localhost;dbname=landingPages',
