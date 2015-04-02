@@ -9,12 +9,10 @@ class DB implements DBInterface
 
   public function __construct()
   {
-    $pass = 'toor';
-    if( getenv('MYSQLPASSWD') !== false )
-      $pass = getenv('MYSQLPASSWD');
-
-    print 'PASSWORD USADO: ' . $pass . PHP_EOL;
-    var_dump(getenv('MYSQLPASSWD'));
+    $pass = 'toor'; //TODO: Load this from configuration obj
+    $env = getenv('MYSQLPASSWD');
+    if( $env !== false )
+      $pass = $env;
 
     $this->pdo = new \PDO(
       'mysql:host=localhost;dbname=landingPages',
