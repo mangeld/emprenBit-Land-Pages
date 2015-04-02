@@ -6,6 +6,10 @@ php:
   - 5.6
   - 7
 
+env:
+  global:
+    - MYSQLPASSWD=''
+
 before_script:
   - mysql < dbTables.sql -uroot
 
