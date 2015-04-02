@@ -10,7 +10,7 @@ class DB implements DBInterface
   public function __construct()
   {
     $pass = 'toor';
-    if( getenv('MYSQLPASSWD') )
+    if( getenv('MYSQLPASSWD') != false )
       $pass = getenv('MYSQLPASSWD');
 
     print 'PASSWORD USADO: ' . $pass . PHP_EOL;
@@ -19,7 +19,7 @@ class DB implements DBInterface
     $this->pdo = new \PDO(
       'mysql:host=localhost;dbname=landingPages',
       'root',
-      ''
+      $pass
     );
   }
 
