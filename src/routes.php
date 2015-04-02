@@ -51,9 +51,10 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
      *
      * Returns: A json object with the page created.
      */
-    $slimApp->post('/:name', function($name){
-      //TODO: Add page & define json object
-      //TODO: Authenticate user
+    $slimApp->post('/', function() use ($slimApp, $app){
+      $json = $slimApp->request->getBody();
+      $jsonObj = json_decode($json);
+      $app->createPage($jsonObj->name);
     });
 
     /**

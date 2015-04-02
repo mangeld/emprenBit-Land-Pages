@@ -17,7 +17,11 @@ class App
   public static function createApp()
   {
     $db = new \mangeld\db\DB();
-    $app = new \mangeld\App($db);
+    $idGen = \Rhumsaa\Uuid\Uuid::uuid4();
+    //TODO: DO NOT Retrieve a single uuid4, but
+    //a class that generates a new one every time
+    //it's requested
+    $app = new \mangeld\App($db, $idGen);
     return $app;
   }
 
@@ -62,5 +66,6 @@ class App
     $page->setId( $this->uuidGen->toString() );
     $page->setCreationTimestamp($time);
     $this->db->savePage($page);
+    return $page;
   }
 }

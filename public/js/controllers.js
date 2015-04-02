@@ -13,9 +13,27 @@ admin.controller('adminCtrl', function($scope, $http){
     email: ""
   };
 
-  $http.get('v1/pages').success(function(data, status, headers, config){
-    $scope.landingPages = data.body;
-  });
+  $scope.retrievePages = function(){
+    $http.get('v1/pages').success(function(data, status, headers, config){
+      $scope.landingPages = data.body.sort(function(a, b){
+        return b.creation_timestamp - a.creation_timestamp;
+      });
+
+      $scope.landingPages.forEach(function(obj){
+        date = new Date( obj.creation_timestamp * 1000 );
+        d = date.getDate();
+        mon = date.getMonth();
+        y = date.getFullYear();
+        mm = date.getMinutes();
+        hh = date.getHours();
+        obj.date = d + '/' + mon + '/' + y + ' ' + hh + ':' + mm;
+        console.log(obj);
+        //return obj;
+      });
+    });
+  };
+
+  $scope.retrievePages();
 
   var animateOut = function(element, callback){
     Velocity(
@@ -54,12 +72,20 @@ admin.controller('adminCtrl', function($scope, $http){
   };
 
   $scope.newPage = function(){
-    console.log($scope.newPageForm);
+    console.dir($scope.landingPages);
     landing = {
       name: $scope.newPageForm.name,
       id: $scope.newPageForm.email
     };
-    $scope.landingPages.push(landing);
+    
+    $http.post('v1/pages', landing)
+      .success(function(){
+        $scope.retrievePages();
+      })
+      .error(function(){
+
+    });
+
     $scope.cancelNewPage(); 
   };
 });
