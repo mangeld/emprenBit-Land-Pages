@@ -10,4 +10,7 @@ interface DBInterface
    * @return array Array of Page objects
    */
   public function fetchPages();
+
+  
+  public function fetchPage($pageId);
 }

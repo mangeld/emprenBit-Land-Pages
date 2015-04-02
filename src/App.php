@@ -41,10 +41,10 @@ class App
 
     if( !is_array($pages) ) return;
 
-    $jsonArr = [
+    $jsonArr = array(
       'status_code' => 200,
       'body' => []
-    ];
+    );
 
     foreach($pages as $page)
     {
