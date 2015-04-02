@@ -43,16 +43,16 @@ class App
 
     $jsonArr = array(
       'status_code' => 200,
-      'body' => []
+      'body' => array()
     );
 
     foreach($pages as $page)
     {
-      $jsonArr['body'][] = [
+      $jsonArr['body'][] = array(
         'name' => $page->getName(),
         'creation_timestamp' => $page->getCreationTimestamp(),
         'id' => $page->getId()
-      ];
+      );
     }
 
     return json_encode($jsonArr);
