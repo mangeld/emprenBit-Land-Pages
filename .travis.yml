@@ -8,7 +8,7 @@ php:
 
 env:
   global:
-    - MYSQLPASSWD='cacota'
+    - MYSQLPASSWD=''
 
 before_script:
   - mysql < dbTables.sql -uroot
