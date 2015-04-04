@@ -28,6 +28,32 @@ class DBTest extends PHPUnit_Framework_TestCase
 		$this->assertGreaterThan(0, count($result));
 	}
 
+	public function testPageIsDeleted()
+	{
+		$page = \mangeld\obj\Page::createPage();
+		$page->setName('Page to delete');
+		$uid = $page->getId();
+		$this->db->savePage($page);
+		$status = $this->db->deletePage($page);
+		$result = $this->db->fetchPage($uid);
+
+		$this->assertEquals(true, $status);
+		$this->assertEquals(false, $result);
+	}
+
+	public function testPageIdIsDeleted()
+	{
+		$page = \mangeld\obj\Page::createPage();
+		$page->setName('Page to delete');
+		$uid = $page->getId();
+		$this->db->savePage($page);
+		$status = $this->db->deletePage($page->getId());
+		$result = $this->db->fetchPage($uid);
+
+		$this->assertEquals(true, $status);
+		$this->assertEquals(false, $result);
+	}
+
 	public function testSpecificPageIsFetched()
 	{
 		$page = \mangeld\obj\Page::createPage();
