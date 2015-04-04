@@ -48,7 +48,10 @@ admin.controller('adminCtrl', function($scope, $http){
 
   var deleteFromPages = function(element, i){
     element.parentNode.removeChild(element);
-    $scope.landingPages.splice(i, 1);
+    page = $scope.landingPages.splice(i, 1).pop();
+    $http.delete('v1/pages/' + page.id).success(function(){
+      $scope.retrievePages();
+    });
   };
 
   $scope.removeItem = function(evnt, i){

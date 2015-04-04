@@ -12,9 +12,11 @@
     <div class="container">
       <ul class="blocklist">
         <li class="fade" ng-repeat="landing in landingPages track by landing.id" ng-hide='landing.hidden'>
-          <span>{{ landing.name }} | {{ landing.date }}
-          <button><span class="fa fa-pencil"></span></button>
-          <button class="red" ng-click='removeItem($event, $index)'><span class="fa fa-trash"></span></button>
+          <span class="page_overview">
+            <span>{{ landing.name }}</span>
+            <span class="superscript">{{ landing.date }}</span>
+            <button><span class="fa fa-pencil"></span></button>
+            <button class="red" ng-click='removeItem($event, $index)'><span class="fa fa-trash"></span></button>
           </span>
         </li>
       </ul>

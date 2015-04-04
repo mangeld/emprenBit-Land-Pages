@@ -20,6 +20,16 @@ button:active
 .red
   color: $red
 
+.superscript
+  display: inline-block
+  float: right
+  position: absolute
+  right: 5rem
+  color: #999
+  font-size: .6rem
+  vertical-align: top
+  text-align: right
+
 body
   font-family: 'Montserrat', sans-serif
   font-size: 18px
@@ -114,17 +124,17 @@ main
       display: block
       float: right
 
-.blocklist > li > span
+.page_overview
   display: block
   padding: .4rem
   overflow: auto
 
-  li:nth-of-type(even)
+.blocklist > li:nth-of-type(even)
     background-color: #f3f3f3 - #080808
 
 form
   width: 60%
-  overflow: auto
+  overflow: visible
   margin: .5rem auto
 
   input
