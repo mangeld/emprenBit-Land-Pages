@@ -11,6 +11,13 @@ interface DBInterface
    */
   public function fetchPages();
 
-  
+  /**
+   * @return \mangeld\obj\Page the page requested
+   */
   public function fetchPage($pageId);
+
+  /**
+   * @return boolean True on success, false on failure
+   */
+  public function deletePage($pageId);
 }

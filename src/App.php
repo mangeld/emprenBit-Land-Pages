@@ -25,6 +25,11 @@ class App
     return $app;
   }
 
+  public function closeDB()
+  {
+    $this->db->close();
+  }
+
   public function setName($name)
   {
     $this->name = $name;
@@ -33,6 +38,11 @@ class App
   public function getName()
   {
     return $this->name;
+  }
+
+  public function deletePage($pageId)
+  {
+    $this->db->deletePage($pageId);
   }
 
   public function getPages()

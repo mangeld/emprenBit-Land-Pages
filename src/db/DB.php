@@ -21,6 +21,12 @@ class DB implements DBInterface
     );
   }
 
+  public function close()
+  {
+    if( $this->pdo )
+      $this->pdo = null;
+  }
+
   public function savePage(\mangeld\obj\Page $page)
   {
     $sql = 'insert into `Pages` (`idPages`, `name`, `owner`, `creationDate`)
@@ -30,7 +36,9 @@ class DB implements DBInterface
     $prepared->bindValue(2, $page->getName());
     $prepared->bindValue(3, null);
     $prepared->bindValue(4, $page->getCreationTimestamp());
-    return $prepared->execute();
+    $result = $prepared->execute();
+    $prepared = null;
+    return $result;
   }
 
   public function fetchPages()
@@ -50,7 +58,23 @@ class DB implements DBInterface
       $pages[] = $page;
     }
 
+    $prepared = null;
     return $pages;
+  }
+
+  public function deletePage($page)
+  {
+    if( $page instanceof \mangeld\obj\Page)
+      $pageId = $page->getId();
+    else
+      $pageId = $page;
+
+    $sql = 'DELETE FROM `Pages` WHERE `idPages` = ?';
+    $prepared = $this->pdo->prepare($sql);
+    $prepared->bindValue( 1, $pageId );
+    $result = $prepared->execute();
+    $prepared = null;
+    return $result;
   }
 
   public function fetchPage($pageId)
@@ -61,11 +85,18 @@ class DB implements DBInterface
     $prepared->execute();
     $row = $prepared->fetch(\PDO::FETCH_OBJ);
 
+    if($row === false)
+    {
+      $prepared = null;
+      return false;
+    }
+
     $page = \mangeld\obj\Page::createPage();
     $page->setName( $row->name );
     $page->setCreationTimestamp( (double) $row->creationDate );
     $page->setId( $row->idPages );
 
+    $prepared = null;
     return $page;
   }
 }

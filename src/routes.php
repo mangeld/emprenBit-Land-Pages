@@ -44,6 +44,7 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
       $pages = $app->getPages();
       $slimApp->response->headers->set('Content-Type', 'application/json');
       $slimApp->response->setBody($pages);
+      $app->closeDB();
     });
 
     /**
@@ -55,6 +56,7 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
       $json = $slimApp->request->getBody();
       $jsonObj = json_decode($json);
       $app->createPage($jsonObj->name);
+      $app->closeDB();
     });
 
     /**
@@ -62,8 +64,11 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
      *
      * Return: A json object with the status.
      */
-    $slimApp->delete('/:id', function($id){
+    $slimApp->delete('/:id', function($id) use ($slimApp, $app){
       //TODO: Remove from database & send confirmation
+      $res = $app->deletePage($id);
+      $slimApp->response->setBody('DELETED RESOURCE: ' + $res);
+      $app->closeDB();
     });
 
   });
