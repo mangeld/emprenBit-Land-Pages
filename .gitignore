@@ -1,7 +1,9 @@
 .vagrant/
-proj.*
 node_modules
 *.css
+
+#Sublime Text Files
+proj.*
 
 #Composer Related Files
 vendor
