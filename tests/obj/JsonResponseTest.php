@@ -33,7 +33,7 @@ class JsonResponseTest extends PHPUnit_Framework_TestCase
   public function testSetData()
   {
     $this->jsonResponse->setData(new \StdClass());
-    $serialized = $this->jsonResponse->serialize();
+    $serialized = $this->jsonResponse->jsonSerialize();
     $jsonObj = json_decode($serialized);
 
     $this->assertInstanceOf('\StdClass', $jsonObj);
@@ -41,7 +41,7 @@ class JsonResponseTest extends PHPUnit_Framework_TestCase
 
   public function testBasicSchemaIsSerialized()
   {
-    $json = $this->jsonResponse->serialize();
+    $json = $this->jsonResponse->jsonSerialize();
     $deserialized = json_decode($json);
 
     $this->assertInternalType('int', $deserialized->meta->code, var_export($deserialized, true));
@@ -66,7 +66,7 @@ class JsonResponseTest extends PHPUnit_Framework_TestCase
 
   public function testStringIsReturnedOnSerialize()
   {
-    $json = $this->jsonResponse->serialize();
+    $json = $this->jsonResponse->jsonSerialize();
 
     $this->assertInternalType('string', $json, 'Serialized json is not a string');
   }
