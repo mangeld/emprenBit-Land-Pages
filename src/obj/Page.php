@@ -2,12 +2,11 @@
 
 namespace mangeld\obj;
 
-class Page
+class Page extends DataStore
 {
   private $name = '';
   private $uuid = '';
   private $creationTimestamp = 0.0;
-  private $validator;
 
   public function __construct(
     \mangeld\lib\StringValidator $validator = null)
@@ -23,28 +22,6 @@ class Page
     $page->setCreationTimestamp(microtime(true));
     $page->setId($uuid4->toString());
     return $page;
-  }
-
-  private function validateUuid($id)
-  {
-    if( !$this->validator )
-      throw new \mangeld\exceptions\DependencyNotGivenException();
-
-    $ok = $this->validator->validateUuid4($id);
-    if( !$ok )
-      throw new \mangeld\exceptions\MalformatedStringException();
-  }
-
-  private function attrIsSet($arg)
-  {
-    if( !$arg )
-      throw new \mangeld\exceptions\AttributeNotSetException();
-  }
-
-  private function validateArgumentType($argument, $type)
-  {
-    if( gettype($argument) != $type )
-      throw new \mangeld\exceptions\InvalidArgumentTypeException();
   }
 
   public function setCreationTimestamp($timestamp)

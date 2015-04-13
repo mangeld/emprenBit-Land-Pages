@@ -49,7 +49,7 @@ class JsonResponse
     $this->data = $data;
   }
 
-  public function serialize()
+  public function jsonSerialize()
   {
     return json_encode(get_object_vars($this));
   }
