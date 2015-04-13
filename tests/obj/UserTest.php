@@ -5,7 +5,8 @@ class UserTest extends PHPUnit_Framework_TestCase
 
 	public function setUp()
 	{
-		$this->user = new \mangeld\obj\User();
+		$validator = new \mangeld\lib\StringValidator();
+		$this->user = new \mangeld\obj\User($validator);
 	}
 
 	public function testUserFactoryIsCreated()
@@ -28,9 +29,19 @@ class UserTest extends PHPUnit_Framework_TestCase
 	/**
 	 * @expectedException \mangeld\exceptions\DependencyNotGivenException
 	 */
-	public function testDependencyNotGivenExceptionIfNoStringValidator()
+	public function testDependencyNotGivenExceptionIfNoStringValidatorWhenSetId()
 	{
+		$this->user = new \mangeld\obj\User();
 		$this->user->setUuid('3e85276f-8777-4d5b-9589-7d1ff14dbf75');
+	}
+
+	/**
+	 * @expectedException \mangeld\exceptions\DependencyNotGivenException
+	 */
+	public function testDependencyNotGivenExceptionIfNoStringValidatorWhenSetEmail()
+	{
+		$this->user = new \mangeld\obj\User();
+		$this->user->setEmail('email@email.com');
 	}
 
 	/**
@@ -100,6 +111,14 @@ class UserTest extends PHPUnit_Framework_TestCase
 		$email = 'contact@mangel.me';
 		$this->user->setEmail($email);
 		$this->assertEquals($email, $this->user->getEmail());
+	}
+
+	/**
+	 * @expectedException \mangeld\exceptions\MalformatedStringException
+	 */
+	public function testMalformatedMailException()
+	{
+		$this->user->setEmail('thizzz is not a email');
 	}
 
 	public function testGetterSetterName()

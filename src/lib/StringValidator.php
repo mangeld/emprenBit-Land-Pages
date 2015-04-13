@@ -4,7 +4,8 @@ namespace mangeld\lib;
 
 class StringValidator
 {
-    private $uuid4Regex = '/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[98ab][0-9a-f]{3}-[0-9a-f]{12}/';
+    private $uuid4Regex = '/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[98ab][0-9a-f]{3}-[0-9a-f]{12}$/i';
+    private $emailRegex = '/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i';
 
     public function __construct()
     {
@@ -20,5 +21,10 @@ class StringValidator
     public function validateUuid4($uuid)
     {
       return 1 == preg_match($this->uuid4Regex, $uuid);
+    }
+
+    public function validateEmail($email)
+    {
+      return 1 == preg_match($this->emailRegex, $email);
     }
 }

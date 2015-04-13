@@ -2,11 +2,6 @@
 
 namespace mangeld\obj;
 
-use mangeld\exceptions\AttributeNotSetException;
-use mangeld\exceptions\InvalidArgumentTypeException;
-use mangeld\exceptions\MalformatedStringException;
-use mangeld\exceptions\DependencyNotGivenException;
-
 class User extends DataStore
 {
   private $name = '';
@@ -54,7 +49,11 @@ class User extends DataStore
     return $this->email;
   }
 
-  public function setEmail($email) { $this->email = $email; }
+  public function setEmail($email)
+  {
+    $this->validateEmail($email);
+    $this->email = $email;
+  }
 
   public function setAdmin($admin)
   {

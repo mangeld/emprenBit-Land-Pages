@@ -17,7 +17,23 @@ class StringValidatorTest extends PHPUnit_Framework_TestCase
       $validUuid4 = 'de305d54-75b4-431b-adb2-eb6b9e546013';
       $result = $this->validator->validateUuid4($validUuid4);
 
-      $this->assertTrue($result, 'Valid uuid4');
+      $this->assertTrue($result, 'Uuid 4 validation should be true');
+    }
+
+    public function testCorrectValidationEmail()
+    {
+      $validEmail = 'test@test.com';
+      $ok = $this->validator->validateEmail($validEmail);
+
+      $this->assertTrue($ok, 'Email validation should be true');
+    }
+
+    public function testNotValidEmail()
+    {
+      $falseMail = 'not an email';
+      $notOk = $this->validator->validateEmail($falseMail);
+
+      $this->assertFalse($notOk, 'Email validation should be false');
     }
 
     public function testNotValidUuid4()

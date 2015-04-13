@@ -23,6 +23,17 @@ class DataStore
       throw new \mangeld\exceptions\AttributeNotSetException();
   }
 
+  protected function validateEmail($email)
+  {
+    if( !$this->validator )
+      throw new \mangeld\exceptions\DependencyNotGivenException();
+
+    $ok = $this->validator->validateEmail($email);
+
+    if( !$ok )
+      throw new \mangeld\exceptions\MalformatedStringException();
+  }
+
   protected function validateUuid($id)
   {
     if( !$this->validator )
