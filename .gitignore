@@ -1,5 +1,12 @@
 .vagrant/
-vendor
 proj.*
 node_modules
 *.css
+
+#Composer Related Files
+vendor
+composer.phar
+
+#Php Storm Files
+.idea
+.directory
