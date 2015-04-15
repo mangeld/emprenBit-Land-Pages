@@ -10,14 +10,7 @@ admin.directive('ngFileUpload', function(){
     },
     scope: true,
     restrict: 'A',
-    templateUrl: 'ngFileUpload.html',
-    controller: function($scope){
-      $scope.readFile = function(evnt){
-        var file = evnt.target.files[0];
-        console.log(file[0]);
-        $scope.imgName = file.name;
-      };
-    }
+    templateUrl: 'ngFileUpload.html'
   }
 });
 
@@ -25,9 +18,12 @@ admin.controller('landingListCtrl', function($scope, $http){
 
   $scope.appName = 'Landing Pages';
   $scope.title = 'Title set in controller';
+  $scope.imgName = '';
   $scope.landingPages = [ ];
+  $scope.show_overlay = false;
   $scope.show_button_new_page = true;
   $scope.show_form_new_page = false;
+  $scope.showFileUpload = true;
 
   $scope.newPageForm = {
     name: "",
@@ -35,9 +31,9 @@ admin.controller('landingListCtrl', function($scope, $http){
   };
 
   $scope.$on('fileSelected', function(evnt, args){
-    //var file = evnt.target.files[0];
-    //console.log(evnt.target);
-    console.log(args[0].files[0]);
+    var size = (args[0].files[0].size / 1024 / 1024).toFixed(2);
+    $scope.imgName = args[0].files[0].name + ' ' + '(' + size + 'MB)';
+    $scope.$apply();
     $scope.newPageFormImage = args[0].files[0];
   });
 
@@ -100,6 +96,9 @@ admin.controller('landingListCtrl', function($scope, $http){
   $scope.cancelNewPage = function(){
     $scope.toggleShowFormNewPage();
     $scope.newPageForm = {};
+    $scope.imgName = '';
+    $scope.showFileUpload = false;
+    $scope.showFileUpload = true;
   };
 
   $scope.newPage = function(){
@@ -115,7 +114,7 @@ admin.controller('landingListCtrl', function($scope, $http){
     //   })
     //   .error(function(){
     // });
-
+    $scope.show_overlay = true;
     $http({
       method: 'POST',
       url: 'v1/pages',
@@ -129,12 +128,11 @@ admin.controller('landingListCtrl', function($scope, $http){
       }
     })
     .success(function(data, status, headers, config){
-      alert("Success");
+      $scope.cancelNewPage();
+      $scope.show_overlay = false;
     })
     .error(function(data, status, headers, config){
       alert("Error");
-    });
-
-    $scope.cancelNewPage(); 
+    }); 
   };
 });
