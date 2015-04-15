@@ -22,6 +22,13 @@ class User extends DataStore
     return $user;
   }
 
+  public static function createUser()
+  {
+    $user = new User(new \mangeld\lib\StringValidator);
+    $user->uid = \Rhumsaa\Uuid\Uuid::uuid4()->toString();
+    return $user;
+  }
+
   public function setRegistrationDateTimestamp($timestamp)
   {
     $this->validateArgumentType($timestamp, 'double');
@@ -63,11 +70,11 @@ class User extends DataStore
 
   public function isAdmin() { return $this->isAdmin; }
 
-  public function setUuid($uid)
+/*  public function setUuid($uid)
   {
     $this->validateUuid($uid);
     $this->uid = $uid;
-  }
+  }*/
 
   public function getUuid()
   {
