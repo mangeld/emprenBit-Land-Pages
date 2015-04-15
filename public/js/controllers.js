@@ -84,10 +84,6 @@ admin.controller('landingListCtrl', function($scope, $http){
     animateOut(element, function(){ deleteFromPages(element, i); });
   };
 
-  $scope.clickedBtn = function (event){
-    console.log(event);
-  };
-
   $scope.toggleShowFormNewPage = function(){
     $scope.show_form_new_page = !$scope.show_form_new_page;
     $scope.show_button_new_page = !$scope.show_button_new_page;
@@ -102,18 +98,10 @@ admin.controller('landingListCtrl', function($scope, $http){
   };
 
   $scope.newPage = function(){
-    console.dir($scope.landingPages);
-    landing = {
-      name: $scope.newPageForm.name,
-      id: $scope.newPageForm.email
-    };
-    
-    // $http.post('v1/pages', landing)
-    //   .success(function(){
-    //     $scope.retrievePages();
-    //   })
-    //   .error(function(){
-    // });
+
+    if( $scope.newPageForm.name.length < 1
+      || $scope.newPageForm.email.length < 1 ) return;
+
     $scope.show_overlay = true;
     $http({
       method: 'POST',

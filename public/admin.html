@@ -24,8 +24,8 @@
       <button class="block-button" ng-show="show_button_new_page" ng-click="toggleShowFormNewPage()"><span class="fa fa-plus"></span></button>
       <form ng-show="show_form_new_page">
         <div class="column-5 center_content font_size_08">
-          <input ng-model="newPageForm.name" type="text" name="name" id="form_name" placeholder="Name of Landing Page">
-          <input ng-model="newPageForm.email" type="text" name="email" id="form_owner" placeholder="Email of the owner">
+          <input ng-model="newPageForm.name" ng-required="true" type="text" name="name" id="form_name" placeholder="Name of Landing Page">
+          <input ng-model="newPageForm.email" ng-required="true" type="text" name="email" id="form_owner" placeholder="Email of the owner">
           <input ng-model="newPageForm.title" type="text" placeholder="Title of the landing">
           <div ng-if="showFileUpload" ng-file-upload ></div>
           <span>{{ imgName }}</span>
