@@ -4,9 +4,39 @@ namespace mangeld\obj;
 
 class Page extends DataStore
 {
+  /**
+   * Name for displaying the Page
+   * internally.
+   * @var string
+   */
   private $name = '';
+  /**
+   * Id in uuid v.4 format
+   * @var string
+   */
   private $uuid = '';
+  /**
+   * Creation timestamp in UTC
+   * @var float
+   */
   private $creationTimestamp = 0.0;
+  /**
+   * The image id of the landing page logo
+   * @var string
+   */
+  private $logoId = '';
+  /**
+   * Short title that describes the landing page,
+   * it is shown to the public.
+   * @var string
+   */
+  private $title = '';
+  /**
+   * Short description that is shown to te public.
+   * @var string
+   */
+  private $description = '';
+  private $owner = ''; //TODO: Load here the user object that represents the owner
 
   public function __construct(
     \mangeld\lib\StringValidator $validator = null)
@@ -34,6 +64,38 @@ class Page extends DataStore
   {
     $this->attrIsSet( $this->creationTimestamp );
     return $this->creationTimestamp;
+  }
+
+  public function setLogoId($id)
+  {
+    $this->validateArgumentType($id, 'string');
+    $this->validateUuid($id);
+    $this->logoId = $id;
+  }
+
+  public function getLogoId()
+  {
+    return $this->logoId;
+  }
+
+  public function setDescription($desc)
+  {
+    $this->description = $desc;
+  }
+
+  public function getDescription()
+  {
+    return $this->description;
+  }
+
+  public function setTitle($title)
+  {
+    $this->title = $title;
+  }
+
+  public function getTitle()
+  {
+    return $this->title;
   }
 
   public function setName($name)

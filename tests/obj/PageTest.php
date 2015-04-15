@@ -92,6 +92,42 @@ class PageTest extends PHPUnit_Framework_TestCase
     $this->assertEquals('double', gettype($result));
   }
 
+  public function testGetterSetterTitle()
+  {
+    $title = 'cool title';
+    $this->page->setTitle($title);
+    $result = $this->page->getTitle();
+
+    $this->assertEquals($title, $result);
+  }
+
+  public function testGetterSetterLogoId()
+  {
+    $id = 'e5de8b5c-080b-4609-a749-754a45284dba';
+    $this->page->setLogoId($id);
+    $result = $this->page->getLogoId();
+
+    $this->assertEquals($id, $result);
+  }
+
+  /**
+   * @expectedException \mangeld\exceptions\MalformatedStringException
+   */
+  public function testUuidMalformedStringExceptionOnSetLogoId()
+  {
+    $id = 'alskjdalsdjalsjd';
+    $this->page->setLogoId($id);
+  }
+
+  public function testGetterSetterDescription()
+  {
+    $description = 'cool description';
+    $this->page->setDescription($description);
+    $result = $this->page->getDescription();
+
+    $this->assertEquals($description, $result);
+  }
+
   /**
    * @expectedException \mangeld\exceptions\DependencyNotGivenException
    */
