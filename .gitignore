@@ -12,3 +12,6 @@ composer.phar
 #Php Storm Files
 .idea
 .directory
+
+#storage folder for the app
+public/storage
