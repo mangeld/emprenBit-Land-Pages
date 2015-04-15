@@ -36,10 +36,38 @@ body
   background-color: #F9F9F9
   color: #333
 
-button
+[ng-file-upload]
+  text-align: center
+  
+  div
+    position: relative
+    overflow: hidden
+    cursor: pointer
+
+  input
+    margin: 0
+    display: block
+    padding: 0
+    cursor: pointer
+
+  > span
+    font-size: .8rem
+    width: 70%
+    display: inline-block
+
+
+.present_hidden
+  position: absolute
+  top: 0
+  left: 0
+  opacity: 0
+
+button, .button
+  display: inline-block
   background: none
   color: $baseColor
-  width: 1.7rem
+  width: auto
+  vertical-align: middle
   font-size: 1rem
   padding-bottom: .1rem
   margin: 0 .2rem
@@ -48,14 +76,19 @@ button
   cursor: pointer
   transition: background-color $time, color $time
 
-button:hover
+button.margin, .button.margin
+  
+  span
+    margin: .3rem
+
+button:hover, .button:hover
   background: $baseColor
   color: #fff
 
-button.red
+button.red, .button.red
   border: 1px solid $red
 
-button.red:hover
+button.red:hover, .button.red:hover
   color: $white
   background: $red
 
@@ -157,6 +190,14 @@ input:focus
   background-color: #EFEFF4
   border-bottom: 2px solid #88f
   box-shadow: 0 0 3px rgba( 45, 45, 120, 0.1 )
+
+textarea
+  resize: vertical
+  width: 100%
+
+.column-5
+  float: left
+  width: 50%
 
 .fade
   transition: margin-bottom .5s

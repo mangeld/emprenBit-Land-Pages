@@ -6,9 +6,9 @@
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/2.0/animate.min.css">
   <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
-<body ng-controller="adminCtrl">
+<body>
   
-  <main>
+  <main ng-controller="landingListCtrl">
     <div class="container">
       <ul class="blocklist">
         <li class="fade" ng-repeat="landing in landingPages track by landing.id" ng-hide='landing.hidden'>
@@ -22,11 +22,18 @@
       </ul>
       <button class="block-button" ng-show="show_button_new_page" ng-click="toggleShowFormNewPage()"><span class="fa fa-plus"></span></button>
       <form ng-show="show_form_new_page">
-        <input ng-model="newPageForm.name" type="text" name="name" id="form_name" placeholder="Name of Landing Page">
-        <input ng-model="newPageForm.email" type="text" name="name" id="form_owner" placeholder="Email of the owner">
-        <div class="inline-buttons">
-          <button class="inline-button" ng-click="newPage()"><span>Add</span></button>
-          <button class="inline-button red" ng-click="cancelNewPage()" form=""><span>Cancel</span></button>
+        <div class="column-5">
+          <input ng-model="newPageForm.name" type="text" name="name" id="form_name" placeholder="Name of Landing Page">
+          <input ng-model="newPageForm.email" type="text" name="email" id="form_owner" placeholder="Email of the owner">
+          <input ng-model="newPageForm.title" type="text" placeholder="Title of the landing">
+          <div ng-file-upload ></div>
+          <div class="inline-buttons">
+            <button class="inline-button" ng-click="newPage()"><span>Add</span></button>
+            <button class="inline-button red" ng-click="cancelNewPage()" form=""><span>Cancel</span></button>
+          </div>
+        </div>
+        <div class="column-5">
+          <textarea ng-model="newPageForm.desc" name="landing_desc" id="" cols="20" rows="10" placeholder="Short description of the landing"></textarea>
         </div>
       </form>
     </div>

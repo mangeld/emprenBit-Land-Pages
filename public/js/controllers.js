@@ -1,6 +1,27 @@
 var admin = angular.module('admin', []);
 
-admin.controller('adminCtrl', function($scope, $http){
+admin.directive('ngFileUpload', function(){
+  return {
+    link: function(scope, ele){
+      var input = ele.find('input');
+      input.on('change', function(){
+        scope.$emit('fileSelected', input);
+      });
+    },
+    scope: true,
+    restrict: 'A',
+    templateUrl: 'ngFileUpload.html',
+    controller: function($scope){
+      $scope.readFile = function(evnt){
+        var file = evnt.target.files[0];
+        console.log(file[0]);
+        $scope.imgName = file.name;
+      };
+    }
+  }
+});
+
+admin.controller('landingListCtrl', function($scope, $http){
 
   $scope.appName = 'Landing Pages';
   $scope.title = 'Title set in controller';
@@ -12,6 +33,13 @@ admin.controller('adminCtrl', function($scope, $http){
     name: "",
     email: ""
   };
+
+  $scope.$on('fileSelected', function(evnt, args){
+    //var file = evnt.target.files[0];
+    //console.log(evnt.target);
+    console.log(args[0].files[0]);
+    $scope.newPageFormImage = args[0].files[0];
+  });
 
   $scope.retrievePages = function(){
     $http.get('v1/pages').success(function(data, status, headers, config){
@@ -81,12 +109,30 @@ admin.controller('adminCtrl', function($scope, $http){
       id: $scope.newPageForm.email
     };
     
-    $http.post('v1/pages', landing)
-      .success(function(){
-        $scope.retrievePages();
-      })
-      .error(function(){
+    // $http.post('v1/pages', landing)
+    //   .success(function(){
+    //     $scope.retrievePages();
+    //   })
+    //   .error(function(){
+    // });
 
+    $http({
+      method: 'POST',
+      url: 'v1/pages',
+      headers: { 'Content-Type': undefined },
+      data: { jsonData: $scope.newPageForm, image: $scope.newPageFormImage },
+      transformRequest: function(data){
+        var fdata = new FormData();
+        fdata.append( "data", angular.toJson(data.jsonData) );
+        fdata.append( 'image', data.image );
+        return fdata;
+      }
+    })
+    .success(function(data, status, headers, config){
+      alert("Success");
+    })
+    .error(function(data, status, headers, config){
+      alert("Error");
     });
 
     $scope.cancelNewPage(); 
