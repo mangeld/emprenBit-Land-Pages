@@ -117,6 +117,7 @@ admin.controller('landingListCtrl', function($scope, $http){
     })
     .success(function(data, status, headers, config){
       $scope.cancelNewPage();
+      $scope.retrievePages();
       $scope.show_overlay = false;
     })
     .error(function(data, status, headers, config){
