@@ -36,7 +36,10 @@ class Page extends DataStore
    * @var string
    */
   private $description = '';
-  private $owner = ''; //TODO: Load here the user object that represents the owner
+  /**
+   * @var \mangeld\obj\User
+   */
+  private $owner = null; //TODO: Load here the user object that represents the owner
 
   public function __construct(
     \mangeld\lib\StringValidator $validator = null)
@@ -51,6 +54,17 @@ class Page extends DataStore
     $page = new \mangeld\obj\Page($val);
     $page->setCreationTimestamp(microtime(true));
     $page->setId($uuid4->toString());
+    return $page;
+  }
+
+  public static function createPageWithNewUser()
+  {
+    $val = new \mangeld\lib\StringValidator();
+    $uuid4 = \Rhumsaa\Uuid\Uuid::uuid4();
+    $page = new \mangeld\obj\Page($val);
+    $page->setCreationTimestamp(microtime(true));
+    $page->owner = User::createUser();
+    $page->uuid = $uuid4->toString();
     return $page;
   }
 
@@ -96,6 +110,16 @@ class Page extends DataStore
   public function getTitle()
   {
     return $this->title;
+  }
+
+  public function setOwner(\mangeld\obj\User $owner)
+  {
+    $this->owner = $owner;
+  }
+
+  public function getOwner()
+  {
+    return $this->owner;
   }
 
   public function setName($name)

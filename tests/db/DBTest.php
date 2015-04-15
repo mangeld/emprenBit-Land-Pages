@@ -11,7 +11,7 @@ class DBTest extends PHPUnit_Framework_TestCase
 	{
 		$page = \mangeld\obj\Page::createPage();
 		$page->setName('Test Page Is Saved');
-		$uid = $page->getId();
+		$page->getId();
 		$status = $this->db->savePage($page);
 
 		$this->assertEquals(1, $status);
@@ -21,7 +21,7 @@ class DBTest extends PHPUnit_Framework_TestCase
 	{
 		$page = \mangeld\obj\Page::createPage();
 		$page->setName('Test Page Is Fetched');
-		$uid = $page->getId();
+		$page->getId();
 		$this->db->savePage($page);
 		$result = $this->db->fetchPages();
 

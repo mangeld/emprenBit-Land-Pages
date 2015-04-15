@@ -24,6 +24,21 @@ class PageTest extends PHPUnit_Framework_TestCase
       $page);
   }
 
+  public function testPageFactoryWithUserReturnsValidTypes()
+  {
+    $page = \mangeld\obj\Page::createPageWithNewUser();
+
+    $this->assertInstanceOf('\mangeld\obj\Page', $page);
+    $this->assertAttributeInstanceOf(
+      '\mangeld\lib\StringValidator',
+      'validator',
+      $page);
+    $this->assertAttributeInstanceOf(
+      '\mangeld\obj\User',
+      'owner',
+      $page);
+  }
+
   public function testGetterSetterName()
   {
     $name = 'Name';

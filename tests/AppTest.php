@@ -41,7 +41,10 @@ class AppTest extends PHPUnit_Framework_TestCase
       ->with($this->isInstanceOf('\mangeld\obj\Page'));
 
     $this->app = new \mangeld\App($db, $this->uuid4Obj);
-    $this->app->createPage('Name');
+    $obj = new \StdClass();
+    $obj->name = 'name';
+    $obj->email = 'test@test.com';
+    $this->app->createPage($obj);
   }
 
   public function testPageIsRequested()

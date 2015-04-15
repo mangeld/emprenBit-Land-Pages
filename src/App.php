@@ -5,6 +5,9 @@ namespace mangeld;
 class App
 {
   private $name = "";
+  /**
+   * @var \mangeld\db\DB
+   */
   private $db = null;
   private $uuidGen = null;
 
@@ -68,13 +71,20 @@ class App
     return json_encode($jsonArr);
   }
 
-  public function createPage($name)
+  /**
+   * @param \StdClass a standard class with
+   * these public fields:
+   * - name
+   * - email
+   * - title
+   * - desc
+   * @return obj\Page
+   */
+  public function createPage($jsonObj)
   {
-    $time = microtime(true);
-    $page = \mangeld\obj\Page::createPage();
-    $page->setName($name);
-    $page->setId( $this->uuidGen->toString() );
-    $page->setCreationTimestamp($time);
+    $page = \mangeld\obj\Page::createPageWithNewUser();
+    $page->setName($jsonObj->name);
+    $page->getOwner()->setEmail($jsonObj->email);
     $this->db->savePage($page);
     return $page;
   }
