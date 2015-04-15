@@ -23,6 +23,13 @@ class StringValidator
       return 1 == preg_match($this->uuid4Regex, $uuid);
     }
 
+    /**
+     * Checks if the given string is a valid email.
+     * 
+     * @param  string $email The email to be checked
+     * @return booelan True if the email is valid, false if it
+     * is invalid.
+     */
     public function validateEmail($email)
     {
       return 1 == preg_match($this->emailRegex, $email);

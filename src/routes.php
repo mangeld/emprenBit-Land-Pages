@@ -53,10 +53,12 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
      * Returns: A json object with the page created.
      */
     $slimApp->post('/', function() use ($slimApp, $app){
-      $json = $slimApp->request->getBody();
-      $jsonObj = json_decode($json);
-      $app->createPage($jsonObj->name);
-      $app->closeDB();
+      //$json = $slimApp->request->getBody();
+      //var_dump( $_FILES );
+      echo var_export($_FILES);
+      //$jsonObj = json_decode($json);
+      //$app->createPage($jsonObj->name);
+      //$app->closeDB();
     });
 
     /**

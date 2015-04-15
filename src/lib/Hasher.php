@@ -128,6 +128,7 @@ class Hasher
             return $salt;
         }
 
+        //If the execution arrives here, openssl is avaible.
         for($i = 0; $i < $length; $i++)
           $salt .= $words[ $this->cryptoRandSecure(0, $wordCount) ];
         

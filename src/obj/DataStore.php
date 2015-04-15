@@ -2,7 +2,7 @@
 
 namespace mangeld\obj;
 
-class DataStore
+abstract class DataStore
 {
   protected $validator;
 
