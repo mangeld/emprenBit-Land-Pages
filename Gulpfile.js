@@ -2,6 +2,8 @@
 
 var gulp = require('gulp'),
     sass = require('gulp-sass'),
+    uglify = require('gulp-uglify'),
+    concat = require('gulp-concat'),
     livereload = require('gulp-livereload');
 
 gulp.task('phpunit', function(){
@@ -11,6 +13,13 @@ gulp.task('phpunit', function(){
   exec('php vendor/phpunit/phpunit/phpunit', function(error, stdout){
     sys.puts(stdout);
   });
+});
+
+gulp.task('compress', function(){
+  gulp.src('public/js/*.js')
+    .pipe( concat('final.js') )
+    .pipe( uglify() )
+    .pipe( gulp.dest('public/js/dist/') );
 });
 
 gulp.task('watchPhpunit', function(){
