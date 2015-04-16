@@ -9,7 +9,7 @@ class DBTest extends PHPUnit_Framework_TestCase
 
 	public function testPageIsSaved()
 	{
-		$page = \mangeld\obj\Page::createPage();
+		$page = \mangeld\obj\Page::createPageWithNewUser();
 		$page->setName('Test Page Is Saved');
 		$page->getId();
 		$status = $this->db->savePage($page);
@@ -19,9 +19,8 @@ class DBTest extends PHPUnit_Framework_TestCase
 
 	public function testPageIsFetched()
 	{
-		$page = \mangeld\obj\Page::createPage();
+		$page = \mangeld\obj\Page::createPageWithNewUser();
 		$page->setName('Test Page Is Fetched');
-		$page->getId();
 		$this->db->savePage($page);
 		$result = $this->db->fetchPages();
 

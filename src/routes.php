@@ -53,12 +53,12 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
      * Returns: A json object with the page created.
      */
     $slimApp->post('/', function() use ($slimApp, $app){
-      //$json = $slimApp->request->getBody();
-      //var_dump( $_FILES );
+      $json = $slimApp->request->post('data');
+      $jsonObj = json_decode($json);
+      //TODO: CREAR PAGINA Y DEVOLVER DATOS DE LA PAGINA CREADA, GUARDAR IMAGEN
       echo var_export($_FILES);
-      //$jsonObj = json_decode($json);
-      //$app->createPage($jsonObj->name);
-      //$app->closeDB();
+      //move_uploaded_file($_FILES['image']['tmp_name'], '../public/storage/'.$_FILES['image']['name']);
+      $app->createPage($jsonObj);
     });
 
     /**
