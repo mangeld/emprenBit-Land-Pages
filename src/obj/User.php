@@ -22,10 +22,18 @@ class User extends DataStore
     return $user;
   }
 
+  public static function createUserWithId($id)
+  {
+    $user = new User(new \mangeld\lib\StringValidator());
+    $user->uid = $id;
+    return $user;
+  }
+
   public static function createUser()
   {
     $user = new User(new \mangeld\lib\StringValidator);
     $user->uid = \Rhumsaa\Uuid\Uuid::uuid4()->toString();
+    $user->registrationTimestamp = microtime(true);
     return $user;
   }
 

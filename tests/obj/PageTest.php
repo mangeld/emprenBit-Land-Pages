@@ -26,7 +26,7 @@ class PageTest extends PHPUnit_Framework_TestCase
 
   public function testPageFactoryWithUserReturnsValidTypes()
   {
-    $page = \mangeld\obj\Page::createPageWithNewUser();
+    $page = \mangeld\obj\Page::createPageWithNewUser('test@test.com');
 
     $this->assertInstanceOf('\mangeld\obj\Page', $page);
     $this->assertAttributeInstanceOf(

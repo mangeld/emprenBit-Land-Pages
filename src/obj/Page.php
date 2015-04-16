@@ -57,13 +57,14 @@ class Page extends DataStore
     return $page;
   }
 
-  public static function createPageWithNewUser()
+  public static function createPageWithNewUser($email)
   {
     $val = new \mangeld\lib\StringValidator();
     $uuid4 = \Rhumsaa\Uuid\Uuid::uuid4();
     $page = new \mangeld\obj\Page($val);
     $page->setCreationTimestamp(microtime(true));
     $page->owner = User::createUser();
+    $page->owner->setEmail($email);
     $page->uuid = $uuid4->toString();
     return $page;
   }

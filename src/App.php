@@ -82,9 +82,8 @@ class App
    */
   public function createPage($jsonObj)
   {
-    $page = \mangeld\obj\Page::createPageWithNewUser();
+    $page = \mangeld\obj\Page::createPageWithNewUser( $jsonObj->email );
     $page->setName($jsonObj->name);
-    $page->getOwner()->setEmail($jsonObj->email);
     $this->db->savePage($page);
     return $page;
   }
