@@ -64,6 +64,19 @@ class DBTest extends PHPUnit_Framework_TestCase
 		$this->assertGreaterThan(0, count($result));
 	}
 
+  public function testFullPageIsSavedAndRetrieved()
+  {
+    $page = \mangeld\obj\Page::createPageWithNewUser('juanito@juan.com');
+    $page->setName("Nombre full");
+    $page->setTitle('Title test');
+    $page->setDescription('cool description');
+    $page->setLogoId('4f65bb11-d1fb-41b9-8c53-55b05b3c7202');
+    $this->db->savePage($page);
+    $result = $this->db->fetchPage($page->getId());
+
+    $this->assertEquals($page, $result, '', .0001);
+  }
+
 	public function testPageIsDeleted()
 	{
 		$page = \mangeld\obj\Page::createPage();

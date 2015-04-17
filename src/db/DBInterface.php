@@ -20,4 +20,16 @@ interface DBInterface
    * @return boolean True on success, false on failure
    */
   public function deletePage($pageId);
+
+  /**
+   * @param \mangeld\obj\User $user
+   * @return mixed
+   */
+  public function saveUser(\mangeld\obj\User $user);
+
+  /**
+   * @param $userId
+   * @return mixed
+   */
+  public function fetchUser($userId);
 }

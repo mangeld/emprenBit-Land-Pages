@@ -37,8 +37,8 @@ class DB implements DBInterface
     if( $page->getOwner() != null )
       $userSaved = $this->saveUser( $page->getOwner() );
 
-    $sql = 'insert into `Pages` (`idPages`, `name`, `owner`, `creationDate`)
-    values (?, ?, ?, ?);';
+    $sql = 'insert into `Pages` (`idPages`, `name`, `owner`, `creationDate`, `title`, `description`, `logoId`)
+    values (?, ?, ?, ?, ?, ?, ?);';
     $prepared = $this->pdo->prepare($sql);
     $prepared->bindValue(1, $page->getId());
     $prepared->bindValue(2, $page->getName());
@@ -49,6 +49,12 @@ class DB implements DBInterface
       $prepared->bindValue(3, null);
 
     $prepared->bindValue(4, $page->getCreationTimestamp());
+    $prepared->bindValue(5, $page->getTitle());
+    $prepared->bindValue(6, $page->getDescription());
+    if( $page->getLogoId() )
+      $prepared->bindValue(7, $page->getLogoId());
+    else
+      $prepared->bindValue(7, null);
     $result = $prepared->execute();
     $prepared = null;
 
@@ -101,7 +107,7 @@ class DB implements DBInterface
    */
   public function fetchPage($pageId)
   {
-    $sql = 'SELECT `idPages`, `name`, `creationDate`, `owner` FROM `Pages` WHERE `idPages` = ?';
+    $sql = 'SELECT `idPages`, `name`, `creationDate`, `owner`, `title`, `description`, `logoId` FROM `Pages` WHERE `idPages` = ?';
     $prepared = $this->pdo->prepare($sql);
     $prepared->bindValue(1, $pageId);
     $prepared->execute();
@@ -117,6 +123,10 @@ class DB implements DBInterface
     $page->setName( $row->name );
     $page->setCreationTimestamp( (double) $row->creationDate );
     $page->setId( $row->idPages );
+    $page->setTitle( $row->title );
+    $page->setDescription( $row->description );
+    if( $row->logoId )
+      $page->setLogoId( $row->logoId );
 
     if( $row->owner )
       $page->setOwner( $this->fetchUser( $row->owner ) );
