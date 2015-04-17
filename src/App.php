@@ -51,7 +51,7 @@ class App
   public function getPages()
   {
     $pages = $this->db->fetchPages();
-
+    //TODO: Put here a json builder (fetches data from class & converts to json) instead of doing it here
     if( !is_array($pages) ) return;
 
     $jsonArr = array(
@@ -59,13 +59,20 @@ class App
       'body' => array()
     );
 
+    /** @var \mangeld\obj\Page[] $pages */
     foreach($pages as $page)
     {
-      $jsonArr['body'][] = array(
-        'name' => $page->getName(),
-        'creation_timestamp' => $page->getCreationTimestamp(),
-        'id' => $page->getId()
-      );
+      $obj = new \StdClass();
+      $obj->name = $page->getName();
+      $obj->creation_timestamp = $page->getCreationTimestamp();
+      $obj->id = $page->getId();
+      $obj->title = $page->getTitle();
+      $obj->description = $page->getDescription();
+
+      if( $page->getOwner() )
+        $obj->owner = $page->getOwner()->getUuid();
+
+      $jsonArr['body'][] = $obj;
     }
 
     return json_encode($jsonArr);
@@ -84,6 +91,9 @@ class App
   {
     $page = \mangeld\obj\Page::createPageWithNewUser( $jsonObj->email );
     $page->setName($jsonObj->name);
+    //TODO: Provide a better way to ignore optional fields
+    @$page->setTitle( $jsonObj->title );
+    @$page->setDescription( $jsonObj->description );
     $this->db->savePage($page);
     return $page;
   }

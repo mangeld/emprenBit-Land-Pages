@@ -77,6 +77,20 @@ class DBTest extends PHPUnit_Framework_TestCase
     $this->assertEquals($page, $result, '', .0001);
   }
 
+  public function testFullSpecificPageIsSavedAndRetrievedInList()
+  {
+    $page = \mangeld\obj\Page::createPageWithNewUser('testFullLista@test.com');
+    $page->setName('CoolName');
+    $page->setTitle('Cooler Title');
+    $page->setDescription('Some random description');
+    $page->setLogoId('4f65bb11-d1fb-41b9-8c53-55b05b3c7202');
+    $this->db->savePage($page);
+    $resultSet = $this->db->fetchPages();
+    $interestingObj = $resultSet[$page->getId()];
+
+    $this->assertEquals($page, $interestingObj, '', 0.0001);
+  }
+
 	public function testPageIsDeleted()
 	{
 		$page = \mangeld\obj\Page::createPage();

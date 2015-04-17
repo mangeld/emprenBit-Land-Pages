@@ -4,7 +4,7 @@ $app = \mangeld\App::createApp();
 $slimApp = new \Slim\Slim();
 
 $slimApp->get('/login', function() use ($slimApp){
-  
+
   $loader = new Twig_Loader_Filesystem('../templates/');
   $twig = new Twig_Environment($loader);
   $slimApp->response->setBody($twig->loadTemplate('index.html')->render(array()));
@@ -56,7 +56,6 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
       $json = $slimApp->request->post('data');
       $jsonObj = json_decode($json);
       //TODO: CREAR PAGINA Y DEVOLVER DATOS DE LA PAGINA CREADA, GUARDAR IMAGEN
-      echo var_export($_FILES);
       //move_uploaded_file($_FILES['image']['tmp_name'], '../public/storage/'.$_FILES['image']['name']);
       $app->createPage($jsonObj);
     });

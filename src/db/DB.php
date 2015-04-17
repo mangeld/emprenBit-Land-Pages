@@ -61,9 +61,13 @@ class DB implements DBInterface
     return $result && $userSaved;
   }
 
+  /**
+   * @return \mangeld\obj\Page[] A key => value array where the key
+   * is the id of the page and the value the page itself.
+   */
   public function fetchPages()
   {
-    $sql = 'SELECT `idPages`, `name`, `creationDate` FROM `Pages`';
+    $sql = 'SELECT `idPages`, `name`, `creationDate`, `title`, `description`, `owner`, `logoId` FROM `Pages`';
     $prepared = $this->pdo->prepare($sql);
     $prepared->execute();
 
@@ -71,11 +75,7 @@ class DB implements DBInterface
 
     while( $row = $prepared->fetch(\PDO::FETCH_OBJ) )
     {
-      $page = \mangeld\obj\Page::createPage();
-      $page->setName( $row->name );
-      $page->setId( $row->idPages );
-      $page->setCreationTimestamp( (double) $row->creationDate );
-      $pages[] = $page;
+      $pages[$row->idPages] = $this->buildPage($row);
     }
 
     $prepared = null;
@@ -119,6 +119,12 @@ class DB implements DBInterface
       return false;
     }
 
+    $prepared = null;
+    return $this->buildPage($row);
+  }
+
+  private function buildPage($row)
+  {
     $page = \mangeld\obj\Page::createPage();
     $page->setName( $row->name );
     $page->setCreationTimestamp( (double) $row->creationDate );
@@ -131,7 +137,6 @@ class DB implements DBInterface
     if( $row->owner )
       $page->setOwner( $this->fetchUser( $row->owner ) );
 
-    $prepared = null;
     return $page;
   }
 
