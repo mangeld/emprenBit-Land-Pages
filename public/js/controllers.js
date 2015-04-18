@@ -27,12 +27,15 @@ admin.controller('landingListCtrl', function($scope, $http){
 
   $scope.newPageForm = {
     name: "",
-    email: ""
+    email: "",
+    title: "",
+    description: ""
   };
 
   $scope.$on('fileSelected', function(evnt, args){
     var size = (args[0].files[0].size / 1024 / 1024).toFixed(2);
     $scope.imgName = args[0].files[0].name + ' ' + '(' + size + 'MB)';
+    console.log(evnt);
     $scope.$apply();
     $scope.newPageFormImage = args[0].files[0];
   });
@@ -43,17 +46,17 @@ admin.controller('landingListCtrl', function($scope, $http){
         return b.creation_timestamp - a.creation_timestamp;
       });
 
-      $scope.landingPages.forEach(function(obj){
-        date = new Date( obj.creation_timestamp * 1000 );
-        d = date.getDate();
-        mon = date.getMonth();
-        y = date.getFullYear();
-        mm = date.getMinutes();
-        hh = date.getHours();
-        obj.date = d + '/' + mon + '/' + y + ' ' + hh + ':' + mm;
-        console.log(obj);
-        //return obj;
-      });
+      //$scope.landingPages.forEach(function(obj){
+      //  date = new Date( obj.creation_timestamp * 1000 );
+      //  d = date.getDate();
+      //  mon = date.getMonth();
+      //  y = date.getFullYear();
+      //  mm = date.getMinutes();
+      //  hh = date.getHours();
+      //  obj.date = d + '/' + mon + '/' + y + ' ' + hh + ':' + mm;
+      //  //console.log(obj);
+      //  //return obj;
+      //});
     });
   };
 
@@ -98,9 +101,6 @@ admin.controller('landingListCtrl', function($scope, $http){
   };
 
   $scope.newPage = function(){
-
-    if( $scope.newPageForm.name.length < 1
-      || $scope.newPageForm.email.length < 1 ) return;
 
     $scope.show_overlay = true;
     $http({
