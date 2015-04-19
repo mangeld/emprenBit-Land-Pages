@@ -24,6 +24,8 @@ admin.controller('landingListCtrl', function($scope, $http){
   $scope.show_button_new_page = true;
   $scope.show_form_new_page = false;
   $scope.showFileUpload = true;
+  $scope.show_main = true;
+  $scope.show_edit_page = false;
 
   $scope.newPageForm = {
     name: "",
@@ -45,18 +47,7 @@ admin.controller('landingListCtrl', function($scope, $http){
       $scope.landingPages = data.body.sort(function(a, b){
         return b.creation_timestamp - a.creation_timestamp;
       });
-
-      //$scope.landingPages.forEach(function(obj){
-      //  date = new Date( obj.creation_timestamp * 1000 );
-      //  d = date.getDate();
-      //  mon = date.getMonth();
-      //  y = date.getFullYear();
-      //  mm = date.getMinutes();
-      //  hh = date.getHours();
-      //  obj.date = d + '/' + mon + '/' + y + ' ' + hh + ':' + mm;
-      //  //console.log(obj);
-      //  //return obj;
-      //});
+      console.log($scope.landingPages);
     });
   };
 
@@ -124,4 +115,8 @@ admin.controller('landingListCtrl', function($scope, $http){
       alert("Error");
     }); 
   };
+});
+
+admin.controller('PageEditController', function($scope){
+
 });

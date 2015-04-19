@@ -56,6 +56,61 @@ body
 .font_size_08
   font-size: .8rem
 
+.inline_inputs
+  width: 100%
+  margin: 0 auto
+  vertical-align: middle
+
+  form
+    margin: .5rem 1rem
+    border: 1px solid #AAA
+    border-radius: .2rem
+    overflow: hidden
+
+.inline_input:not(:last-child)
+  border-bottom: 1px solid #AAA
+
+.inline_input
+  width: 100%
+  //margin-bottom: .5rem
+  padding: .5rem 0
+  //box-shadow: inset 0px -3px 3px -3px rgba(34, 34, 34, 0.2), inset 0px 4px 3px -3px rgba(34, 34, 34, 0.2)
+  background-color: #e5e5e5
+  //border-top: 1px solid #AAA
+  overflow: auto
+  font-size: .9rem
+
+  span
+    float: left
+    margin: 0 .5rem
+
+  input, textarea
+    background-color: #eeeeee
+    padding: .4rem
+    font-size: .8rem
+    border-radius: .4rem
+
+  input
+    float: right
+    width: 50%
+    border-bottom: none
+    margin: 0 .5rem
+
+  input:focus
+    background-color: #f4f4f4
+    border: none
+
+  textarea
+    border: none
+    float: right
+    width: 70%
+    margin: 0 .3rem
+    text-align: center
+
+  textarea:focus
+    background-color: #f3f3f3
+    box-shadow: 0 0 3px rgba( 45, 45, 120, 0.1 )
+
 .overlay
   position: absolute
   top: 0
@@ -176,7 +231,6 @@ main
     background-color: #f3f3f3 - #080808
 
 form
-  width: 60%
   overflow: visible
   margin: .5rem auto
 
@@ -186,6 +240,9 @@ form
     margin: .5rem auto
     text-align: center
     font-size: 1rem
+
+  textarea
+    width: 80%
 
 input
   font-family: 'Slabo 13px'
@@ -203,6 +260,7 @@ input:focus
 textarea
   resize: vertical
   width: 100%
+  transition: background-color .4s, box-shadow .4s
 
 .column-5
   float: left
@@ -213,10 +271,10 @@ textarea
   overflow: hidden
 
 .fade.ng-enter
-  animation: fadeIn 1s;
+  animation: fadeIn 1s
 
 .fade.ng-leave
-  animation: fadeMinimizeOut 3s;
+  animation: fadeMinimizeOut 3s
 
 @keyframes fadeMinimizeOut
   from
