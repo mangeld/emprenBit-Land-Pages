@@ -78,6 +78,11 @@ class App
     return json_encode($jsonArr);
   }
 
+  public function getPagesAsObj()
+  {
+    return $this->db->fetchPages();
+  }
+
   /**
    * @param \StdClass a standard class with
    * these public fields:

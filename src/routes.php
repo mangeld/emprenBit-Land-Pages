@@ -7,7 +7,7 @@ $slimApp->get('/login', function() use ($slimApp){
 
   $loader = new Twig_Loader_Filesystem('../templates/');
   $twig = new Twig_Environment($loader);
-  $slimApp->response->setBody($twig->loadTemplate('index.html')->render(array()));
+  $slimApp->response->setBody($twig->loadTemplate('index.twig')->render(array()));
 
 });
 
@@ -24,6 +24,25 @@ $slimApp->get('/passHash/:pasw', function($pasw) use ($slimApp){
   $hash = $hasher->create_hash_blowfish($pasw, 12);
   $slimApp->response->setBody(
     'Length: ' . strlen($hash) . ' | Hash: ' . $hash );
+});
+
+$slimApp->get('/:pageName', function($pageName) use ($slimApp){
+  $app = \mangeld\App::createApp();
+  $loader = new Twig_Loader_Filesystem('../templates/landing1');
+  $twig = new Twig_Environment($loader);
+
+  $pages = $app->getPagesAsObj();
+  /**
+   * @var  $key
+   * @var \mangeld\obj\Page $page
+   */
+  foreach( $pages as $key => $page )
+  {
+    if( $page->getName() == $pageName )
+    {
+      $slimApp->response->setBody( $twig->loadTemplate('index.twig')->render([ 'page' => $page ]) );
+    }
+  }
 });
 
 $slimApp->group('/v1', function() use ($slimApp, $app){
