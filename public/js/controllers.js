@@ -33,6 +33,7 @@ admin.factory('api', ['$http', function($http){
 admin.controller('LandingEditController', function($scope, $route, api){
 
   $scope.landing = {};
+  $scope.showAddBlockOverlay = false;
 
   api.getPages().success(function(data){
     for(var i = 0; i < data.length; i++)
@@ -42,6 +43,21 @@ admin.controller('LandingEditController', function($scope, $route, api){
         break;
       }
   });
+
+  $scope.addBlock = function()
+  {
+    $scope.showAddBlockOverlay = true;
+  };
+
+  $scope.closeOverlay = function()
+  {
+    $scope.showAddBlockOverlay = false;
+  };
+
+  $scope.addThreeColumns = function()
+  {
+    $scope.closeOverlay();
+  };
 
   console.log($route.current.params.landingName);
   console.log($scope.landing);

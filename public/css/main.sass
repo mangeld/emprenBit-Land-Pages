@@ -67,16 +67,33 @@ body
     border-radius: .2rem
     overflow: hidden
 
+    h3
+      margin: .2rem .4rem
+
 .inline_input:not(:last-child)
   border-bottom: 1px solid #AAA
 
+.inline_input, .column_input
+  input, textarea
+    background-color: #eeeeee
+    border-radius: .4rem
+    font-size: .8rem
+    padding: .4rem
+    border: none
+    text-align: center
+
+  input:focus
+    background-color: #f4f4f4
+    border: none
+
+  textarea:focus
+    background-color: #f3f3f3
+    box-shadow: 0 0 3px rgba( 45, 45, 120, 0.1 )
+
 .inline_input
   width: 100%
-  //margin-bottom: .5rem
   padding: .5rem 0
-  //box-shadow: inset 0px -3px 3px -3px rgba(34, 34, 34, 0.2), inset 0px 4px 3px -3px rgba(34, 34, 34, 0.2)
   background-color: #e5e5e5
-  //border-top: 1px solid #AAA
   overflow: auto
   font-size: .9rem
 
@@ -84,32 +101,40 @@ body
     float: left
     margin: 0 .5rem
 
-  input, textarea
-    background-color: #eeeeee
-    padding: .4rem
-    font-size: .8rem
-    border-radius: .4rem
-
   input
     float: right
     width: 50%
-    border-bottom: none
     margin: 0 .5rem
-
-  input:focus
-    background-color: #f4f4f4
-    border: none
 
   textarea
     border: none
     float: right
     width: 70%
     margin: 0 .3rem
-    text-align: center
 
-  textarea:focus
-    background-color: #f3f3f3
-    box-shadow: 0 0 3px rgba( 45, 45, 120, 0.1 )
+.padding
+  padding: .3rem
+
+.column_input
+  width: auto
+  float: left
+  margin: .3rem
+  font-size: 0.9rem
+  background-color: #e5e5e5
+  border: 1px solid #AAA
+  border-radius: .3rem
+  overflow: hidden
+  span
+    display: block
+    margin: .2rem .4rem
+  textarea
+    display: block
+    margin: .4rem auto
+
+.column-3
+  width: 29%
+.column-4
+  width: 39%
 
 .overlay
   position: absolute
@@ -119,6 +144,40 @@ body
   height: 100%
   z-index: 1
   background-color: rgba( 67, 67, 67, 0.8 )
+
+.modal
+  position: fixed
+  top: 0
+  left: 0
+  z-index: 4
+  width: 100%
+  height: 100%
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.6) 100%)
+
+  .window
+    position: relative
+    top: 50%
+    left: 50%
+    margin-top: -7.5rem
+    margin-left: -10rem
+    width: 20rem
+    height: 10rem
+    border-radius: .3rem
+    box-shadow: 0 0 10px #444
+    background-color: #EEE
+    overflow: hidden
+    .title
+      padding: .3rem .6rem
+      padding-right: .3rem
+      text-align: left
+      background-color: #50b6e8
+      color: #f7f7f7
+      text-shadow: 1px 1px 1px #777
+      button
+        float: right
+        margin: 0
+    .content
+      padding-top: .4rem
 
 .present_hidden
   position: absolute
@@ -159,9 +218,10 @@ button.red:hover, .button.red:hover
 .block-button
   display: block
   margin: .5rem auto
+  padding: 0 .5rem
   font-size: 1.5rem
   height: 1.8rem
-  width: 6rem
+  width: auto
   line-height: 1rem
 
   span
@@ -191,6 +251,7 @@ button.red:hover, .button.red:hover
     vertical-align: middle
 
 .container
+  clear: both
   position: relative
   top: 0
   left: 0

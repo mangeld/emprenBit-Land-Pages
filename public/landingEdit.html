@@ -1,6 +1,24 @@
 <main class="container" ng-controller="LandingEditController">
 
   <div class="container inline_inputs">
+
+    <div class="modal" ng-show="showAddBlockOverlay">
+      <div class="window">
+        <div class="title">
+          <span>Añadir nuevo...</span>
+          <button ng-click="closeOverlay()"><span class="fa fa-close"></span></button>
+        </div>
+        <div class="content">
+          <button class="block-button">
+            <span>Formulario</span>
+          </button>
+          <button class="block-button" ng-click="addThreeColumns()">
+            <span>Triptico</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <form action="">
       <div class="inline_input">
         <span>Landing Name</span>
@@ -19,12 +37,60 @@
         <input type="text" ng-model="landing.owner"/>
       </div>
     </form>
+
+    <form action="" class="padding">
+      <div class="container">
+        <h3>Columna 1</h3>
+        <div class="column_input column-3">
+          <span>Titulo 1</span>
+          <input type="text"/>
+        </div>
+        <div class="column_input column-4">
+          <span>Texto</span>
+          <textarea name="" id="" cols="15" rows="3"></textarea>
+        </div>
+        <div class="column_input column-3">
+          <span>Imagen...</span>
+          <input type="file"/>
+        </div>
+      </div>
+      <div class="container">
+        <h3>Columna 2</h3>
+        <div class="column_input column-3">
+          <span>Titulo 1</span>
+          <input type="text"/>
+        </div>
+        <div class="column_input column-4">
+          <span>Texto</span>
+          <textarea name="" id="" cols="15" rows="3"></textarea>
+        </div>
+        <div class="column_input column-3">
+          <span>Imagen...</span>
+          <input type="file"/>
+        </div>
+      </div>
+      <div class="container">
+        <h3>Columna 3</h3>
+        <div class="column_input column-3">
+          <span>Titulo 1</span>
+          <input type="text"/>
+        </div>
+        <div class="column_input column-4">
+          <span>Texto</span>
+          <textarea name="" id="" cols="15" rows="3"></textarea>
+        </div>
+        <div class="column_input column-3">
+          <span>Imagen...</span>
+          <input type="file"/>
+        </div>
+      </div>
+    </form>
   </div>
 
-  <div class="container inline_inputs">
-    <div class="inline_input">
-      <button class="inline_button"><span>Añadir Bloque...</span></button>
-    </div>
+  <div class="container">
+      <button class="block-button" ng-click="addBlock()">
+        <span>Añadir Bloque...</span>
+      </button>
   </div>
 
 </main>
