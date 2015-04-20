@@ -6,62 +6,13 @@
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/2.0/animate.min.css">
   <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
-<body>
-  
-  <main class="container" ng-controller="landingListCtrl">
-    <div ng-show="show_overlay" class="overlay"></div>
-    <div class="container" ng-show="show_main">
-      <ul class="blocklist">
-        <li class="fade" ng-repeat="landing in landingPages track by landing.id" ng-hide='landing.hidden'>
-          <span class="page_overview" ng-hide="show_page_overview">
-            <span>{{ landing.name }}</span>
-            <span class="superscript">{{ landing.creation_timestamp * 1000 | date:"dd/MM/yyyy HH:mm:ss" }}</span>
-            <button ng-click="show_edit_page = !show_edit_page"><span class="fa fa-pencil"></span></button>
-            <button class="red" ng-click='removeItem($event, $index)'><span class="fa fa-trash"></span></button>
-          </span>
-          <div class="container inline_inputs" ng-show="show_edit_page" ng-controller="PageEditController">
-            <form action="" ng-submit="">
-              <div class="inline_input">
-                <span>Landing title</span>
-                <input ng-model="landing.title" type="text"/>
-              </div>
-              <div class="inline_input">
-                <span>Owner email</span>
-                <input ng-model="landing.owner_email" type="text"/>
-              </div>
-              <div class="inline_input">
-                <span>Landing description</span>
-                <textarea cols="10" rows="3" ng-model="landing.description"></textarea>
-              </div>
-            </form>
-          </div>
-        </li>
-      </ul>
-      <button class="block-button" ng-show="show_button_new_page" ng-click="toggleShowFormNewPage()"><span class="fa fa-plus"></span></button>
-      <form name="newPageFormObj" ng-show="show_form_new_page" ng-submit="newPage()">
-        <div class="column-5 center_content font_size_08">
-          <input ng-model="newPageForm.name" ng-required="true" ng-minlength="4" type="text" name="name" id="form_name" placeholder="Name of Landing Page">
-          <input ng-model="newPageForm.email" ng-required="true" type="email" name="email" id="form_owner" placeholder="Email of the owner">
-          <input ng-model="newPageForm.title" type="text" placeholder="Title of the landing">
-          <div ng-if="showFileUpload" ng-file-upload ></div>
-          <span>{{ imgName }}</span>
-          <div class="inline-buttons">
-            <button class="inline-button"><span>Add</span></button>
-            <button class="inline-button red" ng-click="cancelNewPage()" form=""><span>Cancel</span></button>
-          </div>
-        </div>
-        <div class="column-5">
-          <textarea ng-model="newPageForm.description" name="landing_desc" id="" cols="20" rows="10" placeholder="Short description of the landing"></textarea>
-        </div>
-      </form>
-    </div>
-  </main>
-
-  <script src="//cdn.jsdelivr.net/velocity/1.2.2/velocity.min.js"></script>
-  <script src="//cdn.jsdelivr.net/velocity/1.2.2/velocity.ui.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
-  <script src="https://code.angularjs.org/1.3.15/angular-animate.js"></script>
-  <script src="js/controllers.js"></script>
+<body ng-view>
 
 </body>
+<script src="//cdn.jsdelivr.net/velocity/1.2.2/velocity.min.js"></script>
+<script src="//cdn.jsdelivr.net/velocity/1.2.2/velocity.ui.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.js"></script>
+<script src="https://code.angularjs.org/1.3.15/angular-animate.js"></script>
+<script src="js/controllers.js"></script>
 </html>

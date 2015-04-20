@@ -1,4 +1,51 @@
-var admin = angular.module('admin', []);
+var admin = angular.module('admin', ['ngRoute']);
+
+admin.config(['$routeProvider', function($routeProvider){
+  $routeProvider
+    .when('/edit/:landingName', {
+      templateUrl: 'landingEdit.html',
+      controllerAs: 'LandingEditController'
+    })
+    .when('/', {
+      templateUrl: 'adminTemplate.html',
+      controller: 'landingListCtrl'
+    });
+}]);
+
+admin.factory('api', ['$http', function($http){
+  var retPages = {};
+  retPages.getPages = function(){
+    return $http({
+      method: 'GET',
+      url: 'v1/pages',
+      transformResponse: function(data){
+        var toSort = angular.fromJson(data);
+        sorted = toSort.body.sort(function (a, b) {
+          return b.creation_timestamp - a.creation_timestamp;
+        });
+        return sorted;
+      }
+    });
+  };
+  return retPages;
+}]);
+
+admin.controller('LandingEditController', function($scope, $route, api){
+
+  $scope.landing = {};
+
+  api.getPages().success(function(data){
+    for(var i = 0; i < data.length; i++)
+      if( data[i].owner == $route.current.params.landingName )
+      {
+        $scope.landing = data[i];
+        break;
+      }
+  });
+
+  console.log($route.current.params.landingName);
+  console.log($scope.landing);
+});
 
 admin.directive('ngFileUpload', function(){
   return {
