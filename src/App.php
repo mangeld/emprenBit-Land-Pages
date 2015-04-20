@@ -70,7 +70,9 @@ class App
       $obj->description = $page->getDescription();
 
       if( $page->getOwner() )
-        $obj->owner = $page->getOwner()->getUuid();
+        $obj->owner = $page->getOwner()->getEmail();
+      else
+        $obj->owner = '';
 
       $jsonArr['body'][] = $obj;
     }

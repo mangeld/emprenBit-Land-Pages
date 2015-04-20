@@ -4,8 +4,13 @@ namespace mangeld\db;
 
 class DB implements DBInterface
 {
-
   private $pdo;
+  private static $sql_select_page_by_id = <<<SQL
+    SELECT `idPages`, `name`, `creationDate`, `owner`, `title`, `description`, `logoId` FROM `Pages` WHERE `idPages` = ?
+SQL;
+  private static $sql_select_page_by_email = <<<SQL
+    SELECT * FROM Pages WHERE owner = ( SELECT userId FROM Users WHERE email = ? )
+SQL;
 
   public function __construct()
   {
@@ -107,13 +112,31 @@ class DB implements DBInterface
    */
   public function fetchPage($pageId)
   {
-    $sql = 'SELECT `idPages`, `name`, `creationDate`, `owner`, `title`, `description`, `logoId` FROM `Pages` WHERE `idPages` = ?';
+    $sql = self::$sql_select_page_by_id;
     $prepared = $this->pdo->prepare($sql);
     $prepared->bindValue(1, $pageId);
     $prepared->execute();
     $row = $prepared->fetch(\PDO::FETCH_OBJ);
 
     if($row === false)
+    {
+      $prepared = null;
+      return false;
+    }
+
+    $prepared = null;
+    return $this->buildPage($row);
+  }
+
+  public function fetchPageByEmail($email)
+  {
+    $sql = self::$sql_select_page_by_email;
+    $prepared = $this->pdo->prepare($sql);
+    $prepared->bindValue( 1, $email );
+    $prepared->execute();
+    $row = $prepared->fetch(\PDO::FETCH_OBJ);
+
+    if( $row === false )
     {
       $prepared = null;
       return false;

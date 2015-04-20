@@ -91,6 +91,25 @@ class DBTest extends PHPUnit_Framework_TestCase
     $this->assertEquals($page, $interestingObj, '', 0.0001);
   }
 
+  public function testFullPageIsSavedAndRetrievedByEmail()
+  {
+    $page = $this->buildFullPage('fullPageByEmail@mail.com', 'Test Full Page Is Saved And Retrieved By Email');
+    $this->db->savePage($page);
+    $result = $this->db->fetchPageByEmail($page->getOwner()->getEmail());
+
+    $this->assertEquals($page, $result, '', 0.0001);
+  }
+
+  private function buildFullPage($email, $name)
+  {
+    $page = \mangeld\obj\Page::createPageWithNewUser($email);
+    $page->setName($name);
+    $page->setTitle('Title title title title title title titletitle titletitle titletitle title');
+    $page->setDescription('Description description description description description description');
+    $page->setLogoId(\Rhumsaa\Uuid\Uuid::uuid4()->toString());
+    return $page;
+  }
+
 	public function testPageIsDeleted()
 	{
 		$page = \mangeld\obj\Page::createPage();
