@@ -164,4 +164,32 @@ class PageTest extends PHPUnit_Framework_TestCase
   {
     $this->page->setId('asdq3234');
   }
+
+  public function testPageReferences()
+  {
+    $page = \mangeld\obj\Page::createPageWithNewUser('testPageReference@reference.com');
+    $card = \mangeld\obj\Card::createEmptyCard();
+    $card->setPage( $page );
+
+    $this->assertEquals( $page, $card->getPage() );
+    $this->assertEquals( $card, $page->getCard( $card->getId()) );
+  }
+
+  public function testCardReferences()
+  {
+    $page = \mangeld\obj\Page::createPageWithNewUser('testPageReference@reference.io');
+    $card = \mangeld\obj\Card::createEmptyCard();
+    $page->addCard( $card );
+
+    $this->assertEquals( $card->getPage(), $page);
+  }
+
+  public function testCardIsAddedAndRetrieved()
+  {
+    $card = \mangeld\obj\Card::createEmptyCard();
+    $this->page->addCard( $card );
+    $result = $this->page->getCard( $card->getId() );
+
+    $this->assertEquals( $card, $result );
+  }
 }

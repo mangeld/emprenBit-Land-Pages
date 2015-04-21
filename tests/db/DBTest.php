@@ -123,6 +123,18 @@ class DBTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals(false, $result);
 	}
 
+  public function testPageWithCardIsSavedAndRetrieved()
+  {
+    $page = \mangeld\obj\Page::createPageWithNewUser('testPageWithCard@test.com');
+    $card = \mangeld\obj\Card::createEmptyCard();
+    $page->addCard( $card );
+    $page->setName( 'Test Page With Card Save & Retrieved' );
+    $this->db->savePage( $page );
+    $result = $this->db->fetchPage( $page->getId() );
+
+    $this->assertEquals($page, $result, '', 0.001);
+  }
+
 	public function testPageIdIsDeleted()
 	{
 		$page = \mangeld\obj\Page::createPage();
