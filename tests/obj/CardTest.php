@@ -13,6 +13,15 @@ class CardTests extends PHPUnit_Framework_TestCase
     $this->assertTrue( $validator->validateUuid4($id) );
   }
 
+  public function testCardIsCreatedWithIdAndCardType()
+  {
+    $card = \mangeld\obj\Card::createCard(\mangeld\obj\DataTypes::cardThreeColumns);
+    $validator = new \mangeld\lib\StringValidator();
+
+    $this->assertTrue($validator->validateUuid4($card->getId()));
+    $this->assertEquals(\mangeld\obj\DataTypes::cardThreeColumns, $card->getType());
+  }
+
   public function testFieldIsAddedAndRetrieved()
   {
     $card = \mangeld\obj\Card::createEmptyCard();

@@ -135,7 +135,7 @@ SQL;
 
   private function buildCard($row)
   {
-    $card = \mangeld\obj\Card::createCard($row->idCard, $row->cardTypeId);
+    $card = \mangeld\obj\Card::createCard($row->cardTypeId, $row->idCard);
     return $card;
   }
 

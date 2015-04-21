@@ -13,6 +13,16 @@ class CardFieldTest extends PHPUnit_Framework_TestCase
     $this->assertTrue( $validator->validateUuid4($id) );
   }
 
+  public function testFieldIsCreatedWithValidType()
+  {
+    $id = \Rhumsaa\Uuid\Uuid::uuid4()->toString();
+    $type = \mangeld\obj\DataTypes::fieldEmail;
+    $field = \mangeld\obj\CardField::createField($type, $id);
+
+    $this->assertEquals($field->getType(), $type);
+    $this->assertEquals($field->getId(), $id);
+  }
+
   public function testCardFieldReferencesToCard()
   {
     $card = \mangeld\obj\Card::createEmptyCard();

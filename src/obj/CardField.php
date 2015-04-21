@@ -18,6 +18,37 @@ class CardField extends DataStore
     return $field;
   }
 
+  public static function createField($type, $id = '')
+  {
+    $field = new CardField();
+    $field->validator = new \mangeld\lib\StringValidator();
+    $field->type = $type;
+    if( $id )
+    {
+      $field->validateUuid($id);
+      $field->id = $id;
+    }
+    else
+      $field->id = \Rhumsaa\Uuid\Uuid::uuid4()->toString();
+
+    return $field;
+  }
+
+  public function setText($text)
+    { $this->text = $text; }
+
+  public function getText()
+    { return $this->text; }
+
+  public function setIndex($index)
+    { $this->index = $index; }
+
+  public function getIndex()
+    { return $this->index; }
+
+  public function getType()
+    { return $this->type; }
+
   public function getId()
     { return $this->id; }
 
