@@ -8,4 +8,6 @@ class DataTypes
   const cardForm = 'a8620342-f3e2-4b90-9f01-eb3b412db22d';
   const fieldEmail = 'd082a408-e024-4998-8484-3f0b3d4902af';
   const fieldText = '48fa0dfc-ecce-4adf-ab22-4dacb307e452';
+  const fieldTitle = '';
+  const fieldImage = '';
 }
