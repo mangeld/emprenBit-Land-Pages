@@ -35,15 +35,66 @@ class ThreeColumnCard extends Card
     $field->setText($image);
     $this->columns[$column]->image = $field;
   }
+
+  public function getIterator()
+  {
+    $iterator = new ThreeColumnCard();
+    $iterator->columns = $this->columns;
+    return $iterator;
+  }
 }
 
 class ThreeColumnCardIterator implements \Iterator
 {
   private $columns = array();
-  private $position;
+  private $size;
+  private $position = 0;
+  private $field = 0;
 
-  public function setData(array $columns)
-    { $this->columns = $columns; }
+  /**
+   * @param $pos
+   * @param $field
+   * @return CardField
+   */
+  private function getFieldOfIndex($pos, $field)
+  {
+    switch($field)
+    {
+      case 0:
+        $title = $this->columns[$pos]->title;
+        if( !$title )
+          $this->forwardPos();
+        else
+          return $title;
+      case 1:
+        $body = $this->columns[$pos]->body;
+        if( !$body )
+          $this->forwardPos();
+        else
+          return $body;
+      case 2:
+        $image = $this->columns[$pos]->image;
+        if( !$image )
+          $this->forwardPos();
+        else
+          return $image;
+      default:
+        return null;
+    }
+  }
+
+  private function forwardPos()
+  {
+    if( $this->size ) $this->size = count($this->columns);
+
+    if( $this->field > 2 && $this->position < 3 )
+    {
+      $this->field = 0;
+      $this->position++;
+    }
+    else if ( $this->position < 3 )
+      $this->field++;
+  }
 
   /**
    * (PHP 5 &gt;= 5.0.0)<br/>
@@ -53,7 +104,7 @@ class ThreeColumnCardIterator implements \Iterator
    */
   public function current()
   {
-    // TODO: Implement current() method.
+    return $this->getFieldOfIndex($this->position, $this->field);
   }
 
   /**
@@ -64,7 +115,7 @@ class ThreeColumnCardIterator implements \Iterator
    */
   public function next()
   {
-    // TODO: Implement next() method.
+    $this->forwardPos();
   }
 
   /**
@@ -75,7 +126,7 @@ class ThreeColumnCardIterator implements \Iterator
    */
   public function key()
   {
-    // TODO: Implement key() method.
+    return $this->getFieldOfIndex($this->position, $this->field)->getId();
   }
 
   /**
@@ -87,7 +138,15 @@ class ThreeColumnCardIterator implements \Iterator
    */
   public function valid()
   {
-    // TODO: Implement valid() method.
+    $field = $this->getFieldOfIndex($this->position, $this->field);
+    if( $field == null )
+      while( $this->position < $this->size && $field == null )
+      {
+        $this->position++;
+        $field = $this->getFieldOfIndex($this->position, $this->field);
+      }
+
+    return $field != null;
   }
 
   /**
@@ -98,6 +157,7 @@ class ThreeColumnCardIterator implements \Iterator
    */
   public function rewind()
   {
-    // TODO: Implement rewind() method.
+    $this->position = 0;
+    $this->field = 0;
   }
 }
