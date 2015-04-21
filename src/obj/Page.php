@@ -40,6 +40,8 @@ class Page extends DataStore
    * @var \mangeld\obj\User
    */
   private $owner = null; //TODO: Load here the user object that represents the owner
+  /** @var Card[] */
+  private $cards;
 
   public function __construct(
     \mangeld\lib\StringValidator $validator = null)
@@ -81,9 +83,30 @@ class Page extends DataStore
     return $this->creationTimestamp;
   }
 
+  public function addCard(Card $card)
+  {
+    $card->setPage( $this );
+    $this->cards[ $card->getId() ] = $card;
+  }
+
+  public function getCard($cardId)
+  {
+    return $this->cards[ $cardId ];
+  }
+
+  /**
+   * @return Card[]
+   */
+  public function getCards()
+  {
+    return $this->cards;
+  }
+
+  public function countCards() { return count( $this->cards ); }
+
   public function setLogoId($id)
   {
-    $this->validateArgumentType($id, 'string');
+    $this->validateArgumentType($id, 'string', 'Logo id must be a string');
     $this->validateUuid($id);
     $this->logoId = $id;
   }
@@ -130,13 +153,13 @@ class Page extends DataStore
 
   public function getName()
   {
-    $this->attrIsSet( $this->name );
+    $this->attrIsSet( $this->name, 'Name must be set first');
     return $this->name;
   }
 
   public function setId($id)
   {
-    $this->validateArgumentType($id, 'string');
+    $this->validateArgumentType($id, 'string', 'Id must be a string');
     $this->validateUuid($id);
     $this->uuid = $id;
   }

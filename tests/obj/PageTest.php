@@ -167,16 +167,6 @@ class PageTest extends PHPUnit_Framework_TestCase
 
   public function testPageReferences()
   {
-    $page = \mangeld\obj\Page::createPageWithNewUser('testPageReference@reference.com');
-    $card = \mangeld\obj\Card::createEmptyCard();
-    $card->setPage( $page );
-
-    $this->assertEquals( $page, $card->getPage() );
-    $this->assertEquals( $card, $page->getCard( $card->getId()) );
-  }
-
-  public function testCardReferences()
-  {
     $page = \mangeld\obj\Page::createPageWithNewUser('testPageReference@reference.io');
     $card = \mangeld\obj\Card::createEmptyCard();
     $page->addCard( $card );

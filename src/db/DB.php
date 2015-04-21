@@ -11,6 +11,18 @@ SQL;
   private static $sql_select_page_by_email = <<<SQL
     SELECT * FROM Pages WHERE owner = ( SELECT userId FROM Users WHERE email = ? )
 SQL;
+  private static $sql_insert_card = <<<SQL
+  INSERT INTO `PageCards` (`idPage`, `idCard`, `cardTypeId`) VALUES ( ?, ?, ? )
+SQL;
+  private static $sql_count_cards = <<<SQL
+  SELECT count(`idCard`) count FROM `PageCards` WHERE `idPage` = ?
+SQL;
+  private static $sql_select_cards = <<<SQL
+  SELECT `idPage`, `idCard`, `cardTypeId` FROM `PageCards` WHERE `idPage` = ?
+SQL;
+
+
+
 
   public function __construct()
   {
@@ -35,6 +47,7 @@ SQL;
   /**
    * @param \mangeld\obj\Page $page
    * @return bool
+   * @TODO: Make this a controller & split in save_page, save_cards, save_owner
    */
   public function savePage(\mangeld\obj\Page $page)
   {
@@ -63,7 +76,25 @@ SQL;
     $result = $prepared->execute();
     $prepared = null;
 
+    if( $page->countCards() > 0 )
+      $this->saveCards( $page->getCards() );
+
     return $result && $userSaved;
+  }
+
+  /**
+   * @param $cards \mangeld\obj\Card[]
+   */
+  private function saveCards($cards)
+  {
+    foreach( $cards as $id => $card )
+    {
+      $prepared = $this->pdo->prepare( self::$sql_insert_card );
+      $prepared->bindValue( 1, $card->getPage()->getId() );
+      $prepared->bindValue( 2, $card->getId() );
+      $prepared->bindValue( 3, null );
+      $prepared->execute();
+    }
   }
 
   /**
@@ -80,11 +111,42 @@ SQL;
 
     while( $row = $prepared->fetch(\PDO::FETCH_OBJ) )
     {
-      $pages[$row->idPages] = $this->buildPage($row);
+      $page = $this->buildPage($row);
+
+      if( $this->countCards( $page->getId() ) > 0 )
+        $this->fetchCardsIntoPage($page);
+
+      $pages[$page->getId()] = $page;
     }
 
     $prepared = null;
     return $pages;
+  }
+
+  private function fetchCardsIntoPage(\mangeld\obj\Page &$page)
+  {
+    $prepared = $this->pdo->prepare( self::$sql_select_cards );
+    $prepared->bindValue( 1, $page->getId() );
+    $prepared->execute();
+
+    while( $row = $prepared->fetch(\PDO::FETCH_OBJ) )
+      $page->addCard( $this->buildCard($row) );
+  }
+
+  private function buildCard($row)
+  {
+    $card = \mangeld\obj\Card::createCard($row->idCard, $row->cardTypeId);
+    return $card;
+  }
+
+  private function countCards($pageId)
+  {
+    $prepared = $this->pdo->prepare( self::$sql_count_cards );
+    $prepared->bindValue( 1, $pageId );
+    $status = $prepared->execute();
+    $row = $prepared->fetchObject();
+
+    return $row->count;
   }
 
   /**
@@ -123,9 +185,13 @@ SQL;
       $prepared = null;
       return false;
     }
-
     $prepared = null;
-    return $this->buildPage($row);
+
+    $page = $this->buildPage($row);
+    if( $this->countCards($page->getId()) > 0 )
+      $this->fetchCardsIntoPage( $page );
+
+    return $page;
   }
 
   public function fetchPageByEmail($email)

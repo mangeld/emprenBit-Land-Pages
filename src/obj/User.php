@@ -39,13 +39,13 @@ class User extends DataStore
 
   public function setRegistrationDateTimestamp($timestamp)
   {
-    $this->validateArgumentType($timestamp, 'double');
+    $this->validateArgumentType($timestamp, 'double', 'Timestamp must be double');
     $this->registrationTimestamp = $timestamp;
   }
 
   public function getResitrationDateTimestamp()
   {
-    $this->attrIsSet($this->registrationTimestamp);
+    $this->attrIsSet($this->registrationTimestamp, 'You have to set the registration timestamp first.');
     return $this->registrationTimestamp;
   }
 
@@ -54,13 +54,13 @@ class User extends DataStore
 
   public function getPasswordHash()
   {
-    $this->attrIsSet($this->passWordHash, 'You have to provide a password hash first', 1);
+    $this->attrIsSet($this->passWordHash, 'You have to provide a password hash first.', 1);
     return $this->passWordHash;
   }
 
   public function getEmail()
   {
-    $this->attrIsSet($this->email, 'You have to provide an email first');
+    $this->attrIsSet($this->email, 'You have to provide an email first.');
     return $this->email;
   }
 
@@ -72,7 +72,7 @@ class User extends DataStore
 
   public function setAdmin($admin)
   {
-    $this->validateArgumentType($admin, 'boolean');
+    $this->validateArgumentType($admin, 'boolean', 'Admin is not a boolean');
     $this->isAdmin = $admin;
   }
 
