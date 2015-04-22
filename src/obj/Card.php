@@ -4,12 +4,12 @@ namespace mangeld\obj;
 
 class Card extends DataStore
 {
-  private $id;
+  protected $id;
   /** @var Page */
-  private $page;
-  private $cardType;
+  protected $page;
+  protected $cardType;
   /** @var  CardField */
-  private $fields;
+  protected $fields = array();
 
   public static function createEmptyCard()
   {
@@ -45,6 +45,9 @@ class Card extends DataStore
   {
     return $this->fields[ $fieldId ];
   }
+
+  public function getFields()
+    { return $this->fields; }
 
   public function getType() { return $this->cardType; }
 

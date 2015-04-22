@@ -4,36 +4,87 @@ namespace mangeld\obj;
 
 class ThreeColumnCard extends Card
 {
-  private $columns = array();
-
-  public function __construct()
-  {
-    for($i = 0; $i < 3; $i++)
-      $this->columns[$i] = new \StdClass();
-  }
+  /** @var array Array of title keys */
+  private $titles = array();
+  /** @var array Array of body keys */
+  private $bodies = array();
+  /** @var array Array of image keys */
+  private $images = array();
 
   public function setTitle($title, $column)
   {
+    if ( !$this->checkBounds($column) ) return;
     $field = \mangeld\obj\CardField::createField(\mangeld\obj\DataTypes::fieldTitle);
     $field->setIndex($column);
     $field->setText($title);
-    $this->columns[$column]->title = $field;
+    $this->fields[ $field->getId() ] = $field;
+    $this->titles[$column] = $field->getId();
+  }
+
+  /**
+   * @param $column
+   * @return CardField
+   */
+  public function getTitle($column)
+  {
+    if( !$this->checkSet( $this->titles, $column ) )
+      return null;
+    return $this->fields[ $this->titles[$column] ];
   }
 
   public function setBody($body, $column)
   {
+    if ( !$this->checkBounds($column) ) return;
     $field = \mangeld\obj\CardField::createField(\mangeld\obj\DataTypes::fieldText);
     $field->setIndex($column);
     $field->setText($body);
-    $this->columns[$column]->body = $field;
+    $this->fields[ $field->getId() ] = $field;
+    $this->bodies[$column] = $field->getId();
+  }
+
+  /**
+   * @param $column
+   * @return CardField
+   */
+  public function getBody($column)
+  {
+    if( !$this->checkSet( $this->bodies, $column ) )
+      return null;
+    return $this->fields[ $this->bodies[$column] ];
   }
 
   public function setImage($image, $column)
   {
-    $field = \mangeld\obj\CardField::createField(\mangeld\obj\DataTypes::fieldImage);
+    if( !$this->checkBounds($column) ) return;
+    $field = CardField::createField(DataTypes::fieldImage);
     $field->setIndex($column);
     $field->setText($image);
-    $this->columns[$column]->image = $field;
+    $this->fields[ $field->getId() ] = $field;
+    $this->images[$column] = $field->getId();
+  }
+
+  /**
+   * @param $column
+   * @return CardField
+   */
+  public function getImage($column)
+  {
+    if( !$this->checkSet( $this->images, $column ) )
+      return null;
+    return $this->fields[ $this->images[$column] ];
+  }
+
+  private function checkBounds($n)
+  {
+    if( $n > 3 || $n < 1 )
+      return false;
+    else
+      return true;
+  }
+
+  private function checkSet($list, $n)
+  {
+    return array_key_exists($n, $list);
   }
 
   public function getIterator()
@@ -85,7 +136,7 @@ class ThreeColumnCardIterator implements \Iterator
 
   private function forwardPos()
   {
-    if( $this->size ) $this->size = count($this->columns);
+    if( !$this->size ) $this->size = count($this->columns);
 
     if( $this->field > 2 && $this->position < 3 )
     {
