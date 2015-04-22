@@ -40,6 +40,7 @@ admin.controller('LandingEditController', function($scope, $route, api){
       if( data[i].owner == $route.current.params.landingName )
       {
         $scope.landing = data[i];
+        console.log(data[i]);
         break;
       }
   });
@@ -60,7 +61,6 @@ admin.controller('LandingEditController', function($scope, $route, api){
   };
 
   console.log($route.current.params.landingName);
-  console.log($scope.landing);
 });
 
 admin.directive('ngFileUpload', function(){

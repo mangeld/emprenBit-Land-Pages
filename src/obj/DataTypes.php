@@ -10,4 +10,30 @@ class DataTypes
   const fieldText = '48fa0dfc-ecce-4adf-ab22-4dacb307e452';
   const fieldTitle = '2b870b7c-7d25-4366-a948-49b0b0fb512b';
   const fieldImage = 'c48f1022-60d3-4b51-9290-6605152b8a90';
+
+  public static function typeName($type)
+  {
+    switch( $type )
+    {
+      case DataTypes::cardForm:
+        return 'cardForm';
+        break;
+      case DataTypes::cardThreeColumns:
+        return 'cardThreeColumns';
+        break;
+      case DataTypes::fieldEmail:
+        return 'fieldEmail';
+        break;
+      case DataTypes::fieldText:
+        return 'fieldText';
+        break;
+      case DataTypes::fieldTitle:
+        return 'fieldTitle';
+        break;
+      case DataTypes::fieldImage:
+        return 'fieldImage';
+        break;
+
+    }
+  }
 }

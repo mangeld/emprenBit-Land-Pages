@@ -88,8 +88,14 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
     $slimApp->delete('/:id', function($id) use ($slimApp, $app){
       //TODO: Remove from database & send confirmation
       $res = $app->deletePage($id);
-      $slimApp->response->setBody('DELETED RESOURCE: ' + $res);
+      $slimApp->response->setBody('DELETED RESOURCE: ' . $res);
       $app->closeDB();
+    });
+
+    $slimApp->group('/cards', function() use ($slimApp, $app){
+      $slimApp->get('/', function() use ($slimApp, $app){
+        $slimApp->response->setBody("CARD IN PAGES");
+      });
     });
 
   });

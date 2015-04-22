@@ -69,6 +69,9 @@ class Card extends DataStore
   public function countFields()
     { return count($this->fields); }
 
+  public function hasFields()
+    { return count($this->fields) > 0; }
+
   public function getType() { return $this->cardType; }
 
   public function getId() { return $this->id; }

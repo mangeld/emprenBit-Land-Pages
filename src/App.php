@@ -2,6 +2,8 @@
 
 namespace mangeld;
 
+use mangeld\obj\DataTypes;
+
 class App
 {
   private $name = "";
@@ -73,6 +75,23 @@ class App
         $obj->owner = $page->getOwner()->getEmail();
       else
         $obj->owner = '';
+
+      if( $page->countCards() > 0)
+        foreach( $page->getCards() as $key => $card )
+        {
+          if( $card->hasFields() )
+          {
+            $cardJson = new \StdClass;
+            foreach( $card->getFields() as $key2 => $field )
+            {
+              $typeName = DataTypes::typeName($field->getType());
+              $index = $field->getIndex();
+              $cardJson->fields[$typeName][(integer) $index] = $field->getText();
+            }
+            $obj->cards[DataTypes::typeName($card->getType())][] = $cardJson;
+          }
+        }
+
 
       $jsonArr['body'][] = $obj;
     }
