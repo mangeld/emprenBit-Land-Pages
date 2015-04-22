@@ -11,14 +11,36 @@ class ThreeColumnCard extends Card
   /** @var array Array of image keys */
   private $images = array();
 
+  public function addField(CardField $field)
+  {
+    parent::addField($field);
+    $this->loadKeys();
+  }
+
+  private function loadKeys()
+  {
+    foreach( $this->fields as $key => $field )
+      switch( $field->getType() )
+      {
+        case DataTypes::fieldTitle:
+          $this->titles[ $field->getIndex() ] = $field->getId();
+          break;
+        case DataTypes::fieldText:
+          $this->bodies[ $field->getIndex() ] = $field->getId();
+          break;
+        case DataTypes::fieldImage:
+          $this->images[ $field->getIndex() ] = $field->getId();
+          break;
+      }
+  }
+
   public function setTitle($title, $column)
   {
     if ( !$this->checkBounds($column) ) return;
     $field = \mangeld\obj\CardField::createField(\mangeld\obj\DataTypes::fieldTitle);
     $field->setIndex($column);
     $field->setText($title);
-    $this->fields[ $field->getId() ] = $field;
-    $this->titles[$column] = $field->getId();
+    $this->addField( $field );
   }
 
   /**
@@ -38,8 +60,7 @@ class ThreeColumnCard extends Card
     $field = \mangeld\obj\CardField::createField(\mangeld\obj\DataTypes::fieldText);
     $field->setIndex($column);
     $field->setText($body);
-    $this->fields[ $field->getId() ] = $field;
-    $this->bodies[$column] = $field->getId();
+    $this->addField( $field );
   }
 
   /**
@@ -59,8 +80,7 @@ class ThreeColumnCard extends Card
     $field = CardField::createField(DataTypes::fieldImage);
     $field->setIndex($column);
     $field->setText($image);
-    $this->fields[ $field->getId() ] = $field;
-    $this->images[$column] = $field->getId();
+    $this->addField( $field );
   }
 
   /**

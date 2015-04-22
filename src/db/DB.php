@@ -17,12 +17,18 @@ SQL;
   private static $sql_count_cards = <<<SQL
   SELECT count(`idCard`) count FROM `PageCards` WHERE `idPage` = ?
 SQL;
+  private static $sql_count_card_fields = <<<SQL
+  SELECT count(`idCardContent`) count FROM `CardContent` WHERE `idCard` = ?
+SQL;
   private static $sql_select_cards = <<<SQL
   SELECT `idPage`, `idCard`, `cardTypeId` FROM `PageCards` WHERE `idPage` = ?
 SQL;
-
-
-
+  private static $sql_insert_card_content = <<<SQL
+  INSERT INTO `CardContent` (`idCardContent`, `idCard`, `typeId`, `text`, `index`) VALUES ( ?, ?, ?, ?, ? )
+SQL;
+  private static $sql_select_card_content = <<<SQL
+  SELECT `idCardContent`, `idCard`, `typeId`, `text`, `index` FROM `CardContent` WHERE `idCard` = ?
+SQL;
 
   public function __construct()
   {
@@ -92,7 +98,24 @@ SQL;
       $prepared = $this->pdo->prepare( self::$sql_insert_card );
       $prepared->bindValue( 1, $card->getPage()->getId() );
       $prepared->bindValue( 2, $card->getId() );
-      $prepared->bindValue( 3, null );
+      $prepared->bindValue( 3, $card->getType() );
+      $prepared->execute();
+
+      if( $card->countFields() > 0 )
+        $this->saveCardFields($card);
+    }
+  }
+
+  private function saveCardFields(\mangeld\obj\Card $card)
+  {
+    foreach( $card->getFields() as $id => $field )
+    {
+      $prepared = $this->pdo->prepare( self::$sql_insert_card_content );
+      $prepared->bindValue( 1, $field->getId() );
+      $prepared->bindValue( 2, $field->getCard()->getId() );
+      $prepared->bindValue( 3, $field->getType() );
+      $prepared->bindValue( 4, $field->getText() );
+      $prepared->bindValue( 5, $field->getIndex() );
       $prepared->execute();
     }
   }
@@ -116,6 +139,11 @@ SQL;
       if( $this->countCards( $page->getId() ) > 0 )
         $this->fetchCardsIntoPage($page);
 
+      if( $page->countCards() > 0 )
+        foreach( $page->getCards() as $key => $card )
+          if( $this->countCardFields($card->getId()) > 0 )
+            $this->fetchFieldsIntoCard($card);
+
       $pages[$page->getId()] = $page;
     }
 
@@ -133,6 +161,28 @@ SQL;
       $page->addCard( $this->buildCard($row) );
   }
 
+  private function fetchFieldsIntoCard(\mangeld\obj\Card &$card)
+  {
+    $prepared = $this->pdo->prepare( self::$sql_select_card_content );
+    $prepared->bindValue( 1, $card->getId() );
+    $status = $prepared->execute();
+
+    while( $row = $prepared->fetchObject() )
+      $card->addField( $this->buildCardFields($row) );
+  }
+
+  private function buildCardFields($row)
+  {
+    $field = \mangeld\obj\CardField::createField(
+      $row->typeId,
+      $row->idCardContent
+    );
+    $field->setText( $row->text );
+    $field->setIndex( $row->index );
+
+    return $field;
+  }
+
   private function buildCard($row)
   {
     $card = \mangeld\obj\Card::createCard($row->cardTypeId, $row->idCard);
@@ -144,6 +194,16 @@ SQL;
     $prepared = $this->pdo->prepare( self::$sql_count_cards );
     $prepared->bindValue( 1, $pageId );
     $status = $prepared->execute();
+    $row = $prepared->fetchObject();
+
+    return $row->count;
+  }
+
+  private function countCardFields($cardId)
+  {
+    $prepared = $this->pdo->prepare( self::$sql_count_card_fields );
+    $prepared->bindValue( 1, $cardId );
+    $prepared->execute();
     $row = $prepared->fetchObject();
 
     return $row->count;
@@ -190,6 +250,11 @@ SQL;
     $page = $this->buildPage($row);
     if( $this->countCards($page->getId()) > 0 )
       $this->fetchCardsIntoPage( $page );
+
+    if( $page->countCards() > 0 )
+      foreach( $page->getCards() as $key => $card )
+        if( $this->countCardFields($card->getId()) > 0 )
+          $this->fetchFieldsIntoCard($card);
 
     return $page;
   }

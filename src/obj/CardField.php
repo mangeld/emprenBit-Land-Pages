@@ -54,7 +54,6 @@ class CardField extends DataStore
 
   public function setCard(Card $card)
   {
-    $card->addField( $this );
     $this->card = $card;
   }
 

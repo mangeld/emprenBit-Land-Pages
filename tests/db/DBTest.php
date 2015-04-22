@@ -1,5 +1,10 @@
 <?php
 
+use \mangeld\obj\Card;
+use \mangeld\obj\CardField;
+use \mangeld\obj\Page;
+use \mangeld\obj\DataTypes;
+
 class DBTest extends PHPUnit_Framework_TestCase
 {
   /**
@@ -159,4 +164,27 @@ class DBTest extends PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('\mangeld\obj\Page', $result);
 		$this->assertEquals($uid, $result->getId());
 	}
+
+  public function testCardFieldsOfPageAreSaved()
+  {
+    $page = \mangeld\obj\Page::createPageWithNewUser('testCardFieldsSaved@test.io');
+    $page->setName('testCardFieldsOfPageAreSaved');
+    $uid = $page->getId();
+    $card = Card::createCard(DataTypes::cardThreeColumns);
+    $card->setBody('asdfasdfasdf1', 1);
+    $card->setBody('asdfasdfasdf2', 2);
+    $card->setBody('asdfasdfasdf3', 3);
+    $card->setImage('asdasdasdasdasdasdasd1', 1);
+    $card->setImage('asdasdasdasdasdasdasd2', 2);
+    $card->setImage('asdasdasdasdasdasdasd3', 3);
+    $card->setTitle('asdf343a4fe34faet1', 1);
+    $card->setTitle('asdf343a4fe34faet2', 2);
+    $card->setTitle('asdf343a4fe34faet3', 3);
+    $page->addCard($card);
+
+    $this->db->savePage( $page );
+    $result = $this->db->fetchPage($uid);
+
+    $this->assertEquals($page, $result, '', 0.0001);
+  }
 }

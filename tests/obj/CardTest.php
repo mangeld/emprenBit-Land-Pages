@@ -1,5 +1,8 @@
 <?php
 
+use \mangeld\obj\Card;
+use \mangeld\obj\DataTypes;
+
 class CardTests extends PHPUnit_Framework_TestCase
 {
   public function testCardIsCreatedWithValidUuid()
@@ -11,6 +14,13 @@ class CardTests extends PHPUnit_Framework_TestCase
     $this->assertInstanceOf('\mangeld\obj\Card', $card);
     $this->assertNotEmpty( $id );
     $this->assertTrue( $validator->validateUuid4($id) );
+  }
+
+  public function test3ColCardIsCreated()
+  {
+    $card = Card::createCard( DataTypes::cardThreeColumns );
+
+    $this->assertInstanceOf('\mangeld\obj\ThreeColumnCard', $card);
   }
 
   public function testCardIsCreatedWithIdAndCardType()

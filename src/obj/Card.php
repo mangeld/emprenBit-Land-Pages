@@ -8,7 +8,7 @@ class Card extends DataStore
   /** @var Page */
   protected $page;
   protected $cardType;
-  /** @var  CardField */
+  /** @var CardField[] */
   protected $fields = array();
 
   public static function createEmptyCard()
@@ -21,7 +21,20 @@ class Card extends DataStore
 
   public static function createCard($cardType, $cardId = '')
   {
-    $card = new Card();
+    switch( $cardType )
+    {
+      case DataTypes::cardThreeColumns:
+        $card = new ThreeColumnCard();
+        break;
+      case DataTypes::cardForm:
+        //TODO: Create class cardForm
+        $card = new Card();
+        break;
+      default:
+        $card = new Card();
+        break;
+    }
+
     $card->validator = new \mangeld\lib\StringValidator();
     $card->cardType = $cardType;
 
@@ -38,6 +51,7 @@ class Card extends DataStore
 
   public function addField(CardField $field)
   {
+    $field->setCard( $this );
     $this->fields[$field->getId()] = $field;
   }
 
@@ -46,8 +60,14 @@ class Card extends DataStore
     return $this->fields[ $fieldId ];
   }
 
+  /**
+   * @return CardField[]
+   */
   public function getFields()
     { return $this->fields; }
+
+  public function countFields()
+    { return count($this->fields); }
 
   public function getType() { return $this->cardType; }
 

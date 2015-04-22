@@ -27,7 +27,7 @@ class CardFieldTest extends PHPUnit_Framework_TestCase
   {
     $card = \mangeld\obj\Card::createEmptyCard();
     $field = \mangeld\obj\CardField::createEmptyField();
-    $field->setCard( $card );
+    $card->addField( $field );
 
     $this->assertEquals( $card, $field->getCard() );
     $this->assertEquals( $field, $card->getField($field->getId()) );
