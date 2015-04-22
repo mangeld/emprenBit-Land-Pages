@@ -87,6 +87,9 @@ class ThreeColumnCard extends Card
     return array_key_exists($n, $list);
   }
 
+  /**
+   * @deprecated
+   */
   public function getIterator()
   {
     $iterator = new ThreeColumnCard();
