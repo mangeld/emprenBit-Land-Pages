@@ -2,6 +2,7 @@
 
 $app = \mangeld\App::createApp();
 $slimApp = new \Slim\Slim();
+$slimApp->config('debug', true);
 
 $slimApp->get('/login', function() use ($slimApp){
 
@@ -42,10 +43,19 @@ $slimApp->get('/:pageName', function($pageName) use ($slimApp){
     {
       $slimApp->response->setBody( $twig->loadTemplate('index.twig')->render([ 'page' => $page ]) );
     }
+    else
+      $slimApp->notFound();
   }
 });
 
 $slimApp->group('/v1', function() use ($slimApp, $app){
+
+  $slimApp->post('/upload', function() use($slimApp, $app){
+
+    $file = \mangeld\lib\filesystem\File::fromUploadedFile('image');
+    $file->saveToStorage(\mangeld\obj\User::createUser());
+
+  });
 
   /**
    * Here we define the routes for the 'pages' resource, wich lets
