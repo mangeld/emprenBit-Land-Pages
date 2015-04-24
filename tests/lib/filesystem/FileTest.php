@@ -16,7 +16,7 @@ class FileTest extends PHPUnit_Framework_TestCase
   public function testFileIsCreated()
   {
     $file =File::newFile(vfsStream::url('test/test.txt'));
-    $this->assertTrue(\org\bovigo\vfs\vfsStreamWrapper::getRoot()->hasChild('test.txt'));
+    $this->assertTrue(vfsStreamWrapper::getRoot()->hasChild('test.txt'));
   }
 
   public function testFileIsMovedInSameDir()

@@ -81,7 +81,9 @@ class File
     if( file_exists($path) )
       throw new FileSystemException("Path $path already exists.");
 
-    touch($path);
+    //echo PHP_EOL . $path . PHP_EOL;
+
+    fclose( fopen( $path, 'x' ) );
     $file = new File();
     $file->path = $path;
     $file->size = filesize($path);
