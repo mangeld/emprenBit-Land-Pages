@@ -38,31 +38,31 @@
       </div>
     </form>
 
-    <form ng-repeat="card3col in landing.cards.cardThreeColumns" ng-if="landing.cards" action="" class="padding">
+    <form ng-repeat="card3col in landing.cards.cardThreeColumns" ng-if="landing.cards.cardThreeColumns" action="" class="padding">
       <div class="container">
         <h3>Columna 1</h3>
         <div class="column_input column-3">
           <span>Titulo 1</span>
-          <input ng-model="card3col.fields.fieldTitle[1]" type="text"/>
+          <input ng-model="card3col.fieldTitle[1]" type="text"/>
         </div>
         <div class="column_input column-4">
           <span>Texto</span>
-          <textarea ng-model="card3col.fields.fieldText[1]" name="" id="" cols="15" rows="3"></textarea>
+          <textarea ng-model="card3col.fieldText[1]" name="" id="" cols="15" rows="3"></textarea>
         </div>
         <div class="column_input column-3">
           <span>Imagen...</span>
-          <input ng-model="card3col.fields.fieldImage[1]" type="file"/>
+          <input ng-model="card3col.fieldImage[1]" type="file"/>
         </div>
       </div>
       <div class="container">
         <h3>Columna 2</h3>
         <div class="column_input column-3">
           <span>Titulo 1</span>
-          <input ng-model="card3col.fields.fieldTitle[2]" type="text"/>
+          <input ng-model="card3col.fieldTitle[2]" type="text"/>
         </div>
         <div class="column_input column-4">
           <span>Texto</span>
-          <textarea ng-model="card3col.fields.fieldText[2]" name="" id="" cols="15" rows="3"></textarea>
+          <textarea ng-model="card3col.fieldText[2]" name="" id="" cols="15" rows="3"></textarea>
         </div>
         <div class="column_input column-3">
           <span>Imagen...</span>
@@ -73,11 +73,11 @@
         <h3>Columna 3</h3>
         <div class="column_input column-3">
           <span>Titulo 1</span>
-          <input ng-model="card3col.fields.fieldTitle[3]" type="text"/>
+          <input ng-model="card3col.fieldTitle[3]" type="text"/>
         </div>
         <div class="column_input column-4">
           <span>Texto</span>
-          <textarea ng-model="card3col.fields.fieldText[3]" name="" id="" cols="15" rows="3"></textarea>
+          <textarea ng-model="card3col.fieldText[3]" name="" id="" cols="15" rows="3"></textarea>
         </div>
         <div class="column_input column-3">
           <span>Imagen...</span>

@@ -1,0 +1,37 @@
+{
+  "status_code": 200, //Status of the response, if its != 200 error message is displayed
+  "body": //Array of landings
+  [
+    { //Landing object
+      "creation_timestamp": 123.1231, //Double with the unix creation timestamp (UTC)
+      "name": "asdasd", // Name identifier of the landing (For the url)
+      "owner": "asd@asd.com", //Email of the owner
+      "title": "asdasd", //Short description of the landing
+      "description": "sadasdfasdf", //Description of the landing
+      "id": "", //Unique uuid 4 identifier for the page
+      "cards": // Object whose fields are diferent types of cards
+      {
+        "cardThreeColumns": //Array of cardThreeColumns card objects
+        [
+          {
+            "fieldText" : //Array of columns (3)
+            [
+              "asdas",
+              "",
+              "asda"
+            ],
+            "fieldTitle" : //Array of title columns (3)
+            [
+              // ...
+            ],
+            "fieldImage" : [] //Array of image url columns (3)
+          },
+          { /* ... */ }
+        ]
+      }
+    },
+    {
+      // ...
+    }
+  ]
+}

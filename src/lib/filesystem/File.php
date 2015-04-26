@@ -145,36 +145,7 @@ class File
 
   public function isImage()
   {
-
-  }
-
-  public function size()
-  {
-
-  }
-
-  public function copy()
-  {
-
-  }
-
-  public function rename()
-  {
-
-  }
-
-  public function delete()
-  {
-
-  }
-
-  public function getOwner()
-  {
-
-  }
-
-  public function getGroup()
-  {
-
+    $image = new \Imagick();
+    $test = array( _('test') );
   }
 }

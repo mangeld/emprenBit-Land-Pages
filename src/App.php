@@ -81,12 +81,12 @@ class App
         {
           if( $card->hasFields() )
           {
-            $cardJson = new \StdClass;
+            $cardJson = array( );
             foreach( $card->getFields() as $key2 => $field )
             {
               $typeName = DataTypes::typeName($field->getType());
               $index = $field->getIndex();
-              $cardJson->fields[$typeName][(integer) $index] = $field->getText();
+              $cardJson[$typeName][(integer) $index] = $field->getText();
             }
             $obj->cards[DataTypes::typeName($card->getType())][] = $cardJson;
           }
@@ -120,6 +120,9 @@ class App
     //TODO: Provide a better way to ignore optional fields
     @$page->setTitle( $jsonObj->title );
     @$page->setDescription( $jsonObj->description );
+
+    if( $page->cards )
+
     $this->db->savePage($page);
     return $page;
   }
