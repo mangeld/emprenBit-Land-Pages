@@ -85,6 +85,7 @@ class App
           if( $card->hasFields() )
           {
             $cardJson = new \StdClass;
+            $cardJson->id = $card->getId();
             foreach( $card->getFields() as $key2 => $field )
             {
               $typeName = DataTypes::typeName($field->getType());

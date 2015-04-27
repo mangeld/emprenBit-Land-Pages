@@ -27,6 +27,25 @@ admin.factory('api', ['$http', function($http){
       }
     });
   };
+
+  api.updateCard = function(cardId, jsonData, images){
+    return $http({
+      method: 'PUT',
+      url: 'v1/cards/' + cardId,
+      headers: { 'Content-Type': undefined },
+      data: { jsonData: jsonData, images: images },
+      transformRequest: function(data){
+        var fdata = new FormData();
+        fdata.append( "data", angular.toJson(data.jsonData) );
+        data.images.forEach(function(image, index, array){
+          fdata.append("image" + index, image);
+        });
+        console.log(fdata);
+        return fdata;
+      }
+    });
+  };
+
   api.uploadPage = function(jsonData, images){
     return $http({
       method: 'POST',
@@ -82,6 +101,21 @@ admin.controller('LandingEditController', function($scope, $route, api){
         fieldImage: []
       }
     ];
+  };
+
+  $scope.updateCard = function(data, event)
+  {
+    var inputs = angular.element(event.target).find('input');
+    var files = [];
+
+    for(i=0; i<inputs.length;i++)
+      if( inputs[i].files )
+        files.push(inputs[i].files[0]);
+
+    api.updateCard(data.id, data, files)
+      .success(function(responseData){
+        console.log(responseData);
+      });
   };
 
   console.log($route.current.params.landingName);

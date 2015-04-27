@@ -57,6 +57,15 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
 
   });
 
+  $slimApp->group('/cards', function() use ($slimApp, $app){
+
+    $slimApp->put('/:id', function() use ($slimApp, $app){
+      $da = var_export($_FILES, true);
+      $slimApp->response->setBody( $da );
+    });
+
+  });
+
   /**
    * Here we define the routes for the 'pages' resource, wich lets
    * us list all the pages, add, remove, or get an specific Page data.

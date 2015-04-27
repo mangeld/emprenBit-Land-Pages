@@ -46,7 +46,7 @@
       </div>
     </form>
 
-    <form ng-repeat="card3col in landing.cards.cardThreeColumns" ng-if="landing.cards.cardThreeColumns" action="" class="padding">
+    <form ng-submit="updateCard(card3col, $event)" ng-repeat="card3col in landing.cards.cardThreeColumns" ng-if="landing.cards.cardThreeColumns" action="" class="padding">
       <div class="container">
         <h3>Columna 1</h3>
         <div class="column_input column-3">
@@ -89,9 +89,10 @@
         </div>
         <div class="column_input column-3">
           <span>Imagen...</span>
-          <input type="file"/>
+          <input type="file" />
         </div>
       </div>
+      <button><span>Actualizar</span></button>
     </form>
   </div>
 
