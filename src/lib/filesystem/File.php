@@ -76,8 +76,10 @@ class File
     return $file;
   }
 
-  public static function newFile($path)
+  public static function newFile($path, $overWrite = false)
   {
+    if( $overWrite ) unlink( $path );
+
     if( file_exists($path) )
       throw new FileSystemException("Path $path already exists.");
 
@@ -85,11 +87,25 @@ class File
 
     fclose( fopen( $path, 'x' ) );
     $file = new File();
-    $file->path = $path;
+    $file->path = pathinfo($path, PATHINFO_DIRNAME);
     $file->size = filesize($path);
     $file->filename = pathinfo($path, PATHINFO_BASENAME);
     return $file;
   }
+
+  public function open()
+  {
+    $this->handle = fopen($this->fullPath(), 'r+');
+  }
+
+  public function close()
+  {
+    fclose( $this->handle );
+    $this->handle = null;
+  }
+
+  public function getHandle()
+    { return $this->handle; }
 
   public function saveToStorage(\mangeld\obj\Page $page, \mangeld\App $app = null)
   {
