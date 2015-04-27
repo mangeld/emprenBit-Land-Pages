@@ -89,18 +89,18 @@ class File
     return $file;
   }
 
-  public function saveToStorage(\mangeld\obj\User $owner, \mangeld\App $app = null)
+  public function saveToStorage(\mangeld\obj\Page $page, \mangeld\App $app = null)
   {
     $id = \Rhumsaa\Uuid\Uuid::uuid4();
-    $this->id = $id;
-    $this->ownerId = $owner->getUuid();
+    $this->id = $id->toString();
+    $this->ownerId = $page->getId();
 
     $this->move(
       Config::storage_folder .
       DIRECTORY_SEPARATOR .
-      $owner->getUuid() .
+      $page->getId() .
       DIRECTORY_SEPARATOR .
-      $id
+      $id . '.jpg'
     );
   }
 
@@ -140,6 +140,9 @@ class File
   {
     return $this->path . DIRECTORY_SEPARATOR . $this->filename;
   }
+
+  public function getId()
+    { return $this->id; }
 
   public function isImage()
   {

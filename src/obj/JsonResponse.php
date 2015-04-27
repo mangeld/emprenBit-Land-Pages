@@ -26,6 +26,15 @@ class JsonResponse
     return $jsonObj;
   }
 
+  public static function postTooLargeFactory($message = '')
+  {
+    $jsonObj = new JsonResponse();
+    $jsonObj->meta->code = 413;
+    $jsonObj->meta->errorMessage = $message;
+
+    return $jsonObj;
+  }
+
   public static function resourceCreatedFactory()
   {
     $jsonObj = new JsonResponse();

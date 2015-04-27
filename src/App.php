@@ -2,6 +2,8 @@
 
 namespace mangeld;
 
+use mangeld\exceptions\FileUploadException;
+use mangeld\lib\filesystem\File;
 use mangeld\obj\DataTypes;
 
 class App
@@ -70,6 +72,7 @@ class App
       $obj->id = $page->getId();
       $obj->title = $page->getTitle();
       $obj->description = $page->getDescription();
+      $obj->logo = ($page->getLogoId() ? "storage/{$page->getId()}/{$page->getLogoId()}.jpg" : '');
 
       if( $page->getOwner() )
         $obj->owner = $page->getOwner()->getEmail();
@@ -86,10 +89,12 @@ class App
             {
               $typeName = DataTypes::typeName($field->getType());
               $index = $field->getIndex();
-              $cardJson->fields[$typeName][(integer) $index] = $field->getText();
+              $cardJson->{$typeName}[(integer) $index] = $field->getText();
             }
             $obj->cards[DataTypes::typeName($card->getType())][] = $cardJson;
           }
+          else
+            $obj->cards = new \StdClass();
         }
 
 
@@ -120,7 +125,47 @@ class App
     //TODO: Provide a better way to ignore optional fields
     @$page->setTitle( $jsonObj->title );
     @$page->setDescription( $jsonObj->description );
+    try
+    {
+      $img = File::fromUploadedFile('image');
+      $img->saveToStorage($page);
+      $page->setLogoId($img->getId());
+    } catch ( FileUploadException $e ) {}
     $this->db->savePage($page);
     return $page;
+  }
+
+  /**
+   * @param $size
+   * @return bool True if max size is exceeded
+   */
+  public function maxPostSizeExceeded($size)
+  {
+    return $size > $this->getMaxPostSize();
+  }
+
+  public function getMaxPostSize()
+  {
+    $max_upload = $this->human2byte( ini_get('upload_max_filesize') );
+    $max_post = $this->human2byte( ini_get('post_max_size') );
+    $memory_limit = $this->human2byte( ini_get('memory_limit') );
+    return (int) min($max_upload, $max_post, $memory_limit);
+  }
+
+  private function human2byte($value)
+  {
+    return preg_replace_callback('/^\s*(\d+)\s*(?:([kmgt]?)b?)?\s*$/i', function ($m) {
+      switch (strtolower($m[2])) {
+        case 't':
+          $m[1] *= 1024;
+        case 'g':
+          $m[1] *= 1024;
+        case 'm':
+          $m[1] *= 1024;
+        case 'k':
+          $m[1] *= 1024;
+      }
+      return $m[1];
+    }, $value);
   }
 }

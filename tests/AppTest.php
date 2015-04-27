@@ -44,6 +44,7 @@ class AppTest extends PHPUnit_Framework_TestCase
     $obj = new \StdClass();
     $obj->name = 'name';
     $obj->email = 'test@test.com';
+
     $this->app->createPage($obj);
   }
 

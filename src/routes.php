@@ -82,12 +82,25 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
      * Returns: A json object with the page created.
      */
     $slimApp->post('/', function() use ($slimApp, $app){
-      $json = $slimApp->request->post('data');
-      $jsonObj = json_decode($json);
-      //TODO: CREAR PAGINA Y DEVOLVER DATOS DE LA PAGINA CREADA, GUARDAR IMAGEN
-      //TODO: Usar parametros y no un objeto json para mas compatibilidad
-      //move_uploaded_file($_FILES['image']['tmp_name'], '../public/storage/'.$_FILES['image']['name']);
-      $app->createPage($jsonObj);
+
+      if( $app->maxPostSizeExceeded( (int) $slimApp->request->headers->get('Content-Length') ) )
+      {
+        $slimApp->response->status( 413 );
+        $slimApp->response->headers->set('Content-Type', 'application/json');
+        $maxPost = $app->getMaxPostSize();
+        $message = "The image provided is too large, max size is $maxPost ";
+        $json = \mangeld\obj\JsonResponse::postTooLargeFactory($message)->jsonSerialize();
+        $slimApp->response->setBody($json);
+      }
+      else
+      {
+        $json = $slimApp->request->post('data');
+        $jsonObj = json_decode($json);
+        //TODO: CREAR PAGINA Y DEVOLVER DATOS DE LA PAGINA CREADA, GUARDAR IMAGEN
+        //TODO: Usar parametros y no un objeto json para mas compatibilidad
+        //move_uploaded_file($_FILES['image']['tmp_name'], '../public/storage/'.$_FILES['image']['name']);
+        $app->createPage($jsonObj);
+      }
     });
 
     /**

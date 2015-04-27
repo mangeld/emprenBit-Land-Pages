@@ -13,8 +13,8 @@ admin.config(['$routeProvider', function($routeProvider){
 }]);
 
 admin.factory('api', ['$http', function($http){
-  var retPages = {};
-  retPages.getPages = function(){
+  var api = {};
+  api.getPages = function(){
     return $http({
       method: 'GET',
       url: 'v1/pages',
@@ -27,7 +27,24 @@ admin.factory('api', ['$http', function($http){
       }
     });
   };
-  return retPages;
+  api.uploadPage = function(jsonData, images){
+    return $http({
+      method: 'POST',
+      url: 'v1/pages',
+      headers: { 'Content-Type': undefined },
+      data: { jsonData: jsonData, images: images },
+      transformRequest: function(data){
+        var fdata = new FormData();
+        fdata.append( "data", angular.toJson(data.jsonData) );
+        data.images.forEach(function(image, index, array){
+          fdata.append("image" + index, image);
+        });
+        console.log(fdata);
+        return fdata;
+      }
+    });
+  };
+  return api;
 }]);
 
 admin.controller('LandingEditController', function($scope, $route, api){
@@ -58,6 +75,13 @@ admin.controller('LandingEditController', function($scope, $route, api){
   $scope.addThreeColumns = function()
   {
     $scope.closeOverlay();
+    $scope.landing.cards.cardThreeColumns = [
+      {
+        fieldTitle: [],
+        fieldDescription: [],
+        fieldImage: []
+      }
+    ];
   };
 
   console.log($route.current.params.landingName);
@@ -175,7 +199,9 @@ admin.controller('landingListCtrl', function($scope, $http){
       $scope.show_overlay = false;
     })
     .error(function(data, status, headers, config){
-      alert("Error");
+      alert("Error: " + status);
+      $scope.cancelNewPage();
+      $scope.show_overlay = false;
     }); 
   };
 });
