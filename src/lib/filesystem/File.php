@@ -81,7 +81,9 @@ class File
     if( file_exists($path) )
       throw new FileSystemException("Path $path already exists.");
 
-    touch($path);
+    //echo PHP_EOL . $path . PHP_EOL;
+
+    fclose( fopen( $path, 'x' ) );
     $file = new File();
     $file->path = $path;
     $file->size = filesize($path);
@@ -146,36 +148,7 @@ class File
 
   public function isImage()
   {
-
-  }
-
-  public function size()
-  {
-
-  }
-
-  public function copy()
-  {
-
-  }
-
-  public function rename()
-  {
-
-  }
-
-  public function delete()
-  {
-
-  }
-
-  public function getOwner()
-  {
-
-  }
-
-  public function getGroup()
-  {
-
+    $image = new \Imagick();
+    $test = array( _('test') );
   }
 }
