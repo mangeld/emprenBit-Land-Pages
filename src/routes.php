@@ -59,8 +59,9 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
 
   $slimApp->group('/cards', function() use ($slimApp, $app){
 
-    $slimApp->put('/:id', function() use ($slimApp, $app){
-      $da = var_export($_FILES, true);
+    $slimApp->post('/:id', function($id) use ($slimApp, $app){
+
+      $da = var_export($slimApp->request->params('data'), true);
       $slimApp->response->setBody( $da );
     });
 
@@ -124,10 +125,16 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
       $app->closeDB();
     });
 
-    $slimApp->group('/cards', function() use ($slimApp, $app){
-      $slimApp->get('/', function() use ($slimApp, $app){
+    $slimApp->group('/:pageId/cards', function() use ($slimApp, $app){
+
+      $slimApp->get('/', function($pageId) use ($slimApp, $app){
         $slimApp->response->setBody("CARD IN PAGES");
       });
+
+      $slimApp->post('/', function($pageId) use ($slimApp, $app){
+        $app->addCard($slimApp->request->params('data'), $pageId);
+      });
+
     });
 
   });

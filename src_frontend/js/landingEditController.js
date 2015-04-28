@@ -26,15 +26,18 @@ admin.controller('LandingEditController', function($scope, $route, api){
   $scope.addThreeColumns = function()
   {
     $scope.closeOverlay();
-    $scope.landing.cards.cardThreeColumns = [
+    $scope.landing.cards.cardThreeColumns.push(
       {
         fieldTitle: [],
-        fieldDescription: [],
-        fieldImage: []
+        fieldText: [],
+        fieldImage: [],
+        cardType: 'cardThreeColumns'
       }
-    ];
+    );
+    console.log($scope.landing.cards.cardThreeColumns);
   };
 
+  //TODO: RENAME TO updateCardThreeColumns
   $scope.updateCard = function(data, event)
   {
     var inputs = angular.element(event.target).find('input');
@@ -44,10 +47,22 @@ admin.controller('LandingEditController', function($scope, $route, api){
       if( inputs[i].files )
         files.push(inputs[i].files[0]);
 
-    api.updateCard(data.id, data, files)
-      .success(function(responseData){
-        console.log(responseData);
-      });
+    if( typeof data.id == 'undefined' )
+    {
+      api.uploadCard($scope.landing.id, data, files)
+        .success( function(responseData){
+          console.log("CARD SUBIDO");
+          console.log(files);
+          console.log(responseData);
+        });
+    }
+    else
+    {
+      api.updateCard(data.id, data, files)
+        .success(function(responseData){
+          console.log(responseData);
+        });
+    }
   };
 
   console.log($route.current.params.landingName);

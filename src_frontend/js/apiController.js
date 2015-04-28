@@ -14,6 +14,29 @@ admin.factory('api', ['$http', function($http){
     });
   };
 
+  api.requestTransform = function(data)
+  {
+    var fdata = new FormData();
+    fdata.append( "data", angular.toJson(data.jsonData) );
+    data.images.forEach(function(image, index, array){
+      fdata.append("image" + index, image);
+    });
+    console.log(data);
+    return fdata;
+  };
+
+  api.uploadCard = function(landingId, jsonData, images){
+
+    return $http({
+      method: 'POST',
+      url: 'v1/pages/'+landingId+"/cards",
+      headers: { 'Content-Type': undefined },
+      data: { jsonData: jsonData, images: images},
+      transformRequest: function(data){ return api.requestTransform(data); }
+    });
+
+  };
+
   api.updateCard = function(cardId, jsonData, images){
     return $http({
       method: 'POST',
@@ -49,5 +72,6 @@ admin.factory('api', ['$http', function($http){
       }
     });
   };
+
   return api;
 }]);
