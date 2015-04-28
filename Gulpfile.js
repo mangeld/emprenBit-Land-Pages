@@ -15,11 +15,11 @@ gulp.task('phpunit', function(){
   });
 });
 
-gulp.task('compress', function(){
-  gulp.src('public/js/*.js')
-    .pipe( concat('final.js') )
-    .pipe( uglify() )
-    .pipe( gulp.dest('public/js/dist/') );
+gulp.task('compressJs', function(){
+  gulp.src(['src_frontend/js/controllers.js', 'src_frontend/js/*.js'])
+    .pipe( concat('app.js') )
+    //.pipe( uglify() )
+    .pipe( gulp.dest('public/js/') );
 });
 
 gulp.task('watchPhpunit', function(){
@@ -32,7 +32,7 @@ gulp.task('livereload', function(){
 });
 
 gulp.task('sass', function(){
-  gulp.src('public/css/*.sass')
+  gulp.src('src_frontend/sass/*.sass')
     .pipe(sass({indentedSyntax: true, errLogToConsole: true}))
     .pipe(gulp.dest('public/css/'));
 });
@@ -40,7 +40,8 @@ gulp.task('sass', function(){
 gulp.task('watch', function(){
   livereload.listen();
   gulp.watch(['templates/*.html', 'public/*.html', 'public/js/*.js'], ['livereload']);
-  gulp.watch('public/css/*.sass', ['sass', 'livereload']);
+  gulp.watch('src_frontend/sass/*.sass', ['sass', 'livereload']);
+  gulp.watch('src_frontend/js/*.js', ['compressJs', 'livereload']);
 });
 
 gulp.task('default', ['livereload', 'sass', 'watch']);
