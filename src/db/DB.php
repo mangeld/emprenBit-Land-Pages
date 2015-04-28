@@ -29,6 +29,10 @@ SQL;
   private static $sql_select_card_content = <<<SQL
   SELECT `idCardContent`, `idCard`, `typeId`, `text`, `index` FROM `CardContent` WHERE `idCard` = ?
 SQL;
+  private static $sql_update_page = <<<SQL
+  UPDATE `Pages` SET `idPages` = ?, `name` = ?, `owner` = ?, `creationDate` = ?, `title` = ?, `description` = ?, `logoId` = ? WHERE `idPages` = ?;
+SQL;
+
 
   public function __construct()
   {
@@ -56,6 +60,21 @@ SQL;
    * @TODO: Make this a controller & split in save_page, save_cards, save_owner
    */
   public function savePage(\mangeld\obj\Page $page)
+  {
+    $status = true;
+
+    if( !$this->insertPage($page) )
+      $status = $this->updatePage($page);
+
+    return $status;
+  }
+
+  private function updatePage(\mangeld\obj\Page $page)
+  {
+
+  }
+
+  private function insertPage(\mangeld\obj\Page $page)
   {
     $userSaved = true;
     $cardsSaved = true;

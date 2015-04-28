@@ -187,4 +187,21 @@ class DBTest extends PHPUnit_Framework_TestCase
 
     $this->assertEquals($page, $result, '', 0.0001);
   }
+
+  public function testPageIsUpdated()
+  {
+    $originalPage = Page::createPageWithNewUser('testPageIsUpdated@update.io');
+    $originalPage->setName('coolname');
+    $originalPage->setTitle('coolTitle');
+    $originalPage->setDescription('coolDesc');
+    $this->db->savePage($originalPage);
+    $modifiedPage = $this->db->fetchPage($originalPage->getId());
+    $modifiedPage->setTitle('newTitle');
+    $this->db->savePage($modifiedPage);
+
+    $result = $this->db->fetchPage($originalPage->getId());
+
+    $this->assertNotEquals($originalPage, $result, '', 0.0001);
+    $this->assertEquals($modifiedPage, $result, '', 0.0001);
+  }
 }
