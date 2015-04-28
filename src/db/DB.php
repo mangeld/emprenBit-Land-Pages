@@ -58,8 +58,6 @@ SQL;
   public function savePage(\mangeld\obj\Page $page)
   {
     $userSaved = true;
-    $cardsSaved = true;
-
     if( $page->getOwner() != null )
       $userSaved = $this->saveUser( $page->getOwner() );
 
@@ -85,9 +83,9 @@ SQL;
     $prepared = null;
 
     if( $page->countCards() > 0 )
-      $cardsSaved = $this->saveCards( $page->getCards() );
+      $this->saveCards( $page->getCards() );
 
-    return $result && $userSaved && $cardsSaved;
+    return $result && $userSaved;
   }
 
   /**
@@ -95,27 +93,21 @@ SQL;
    */
   private function saveCards($cards)
   {
-    $result = true;
-    $fieldStatus = true;
     foreach( $cards as $id => $card )
     {
       $prepared = $this->pdo->prepare( self::$sql_insert_card );
       $prepared->bindValue( 1, $card->getPage()->getId() );
       $prepared->bindValue( 2, $card->getId() );
       $prepared->bindValue( 3, $card->getType() );
-      $status = $prepared->execute();
+      $prepared->execute();
 
       if( $card->countFields() > 0 )
-        $fieldStatus = $this->saveCardFields($card);
-
-      $result = $status && $fieldStatus && $result;
+        $this->saveCardFields($card);
     }
-    return $result;
   }
 
   private function saveCardFields(\mangeld\obj\Card $card)
   {
-    $result = true;
     foreach( $card->getFields() as $id => $field )
     {
       $prepared = $this->pdo->prepare( self::$sql_insert_card_content );
@@ -124,10 +116,8 @@ SQL;
       $prepared->bindValue( 3, $field->getType() );
       $prepared->bindValue( 4, $field->getText() );
       $prepared->bindValue( 5, $field->getIndex() );
-      $status = $prepared->execute();
-      $result = $status && $result;
+      $prepared->execute();
     }
-    return $result;
   }
 
   /**
