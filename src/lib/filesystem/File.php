@@ -78,7 +78,7 @@ class File
 
   public static function newFile($path, $overWrite = false)
   {
-    if( $overWrite ) unlink( $path );
+    if( $overWrite && file_exists($path) ) unlink( $path );
 
     if( file_exists($path) )
       throw new FileSystemException("Path $path already exists.");
