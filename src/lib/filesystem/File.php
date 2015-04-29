@@ -160,7 +160,7 @@ class File
     if( $this->path != $newPathDir && !is_dir($newPathDir) )
       $folderCreation = mkdir($newPathDir, Config::storage_permission, true);
 
-    if( $this->isImage() )
+    if( $this->isImage() && class_exists('Imagick') )
       $this->makeImageVersions($newPath);
     elseif( $this->uploadedFile )
       $movedUploaded = move_uploaded_file( $currPath, $newPath );
