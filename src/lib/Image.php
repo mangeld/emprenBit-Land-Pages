@@ -19,6 +19,12 @@ class Image
     return $image;
   }
 
+  public function getFormat()
+  {
+    //var_dump($this->image->queryFormats());
+    return $this->image->getImageFormat();
+  }
+
   public function blur($quantity)
   {
     $this->image->blurImage($quantity, $quantity / 2);
@@ -54,7 +60,7 @@ class Image
 
   public function squarifyBlur($size)
   {
-    $this->createBlurredBackground($this->image);
+    $this->createBlurredBackground($this->image, $squareSize = 600);
   }
 
   public function save($path = null)

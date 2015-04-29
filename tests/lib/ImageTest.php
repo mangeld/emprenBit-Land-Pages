@@ -13,22 +13,27 @@ class ImageTest extends PHPUnit_Framework_TestCase
 
   public function testImage()
   {
-    $image = mangeld\lib\Image::fromFile(\mangeld\lib\filesystem\File::openFile('/vagrant/photo.png'));
-    $image->blur(1);
-    $image->save('/vagrant/photo_blur.png');
+    $image = $this->image;
+    $image->blur(5);
+    $image->save('/vagrant/photo_blur.jpg');
+  }
+
+  public function testGetFormat()
+  {
+    var_dump($this->image->getFormat());
   }
 
   public function testResize()
   {
-    $image = mangeld\lib\Image::fromFile(\mangeld\lib\filesystem\File::openFile('/vagrant/photo.png'));
+    $image = $this->image;
     $image->resize(400, 400);
-    $image->save('/vagrant/photo_resize.png');
+    $image->save('/vagrant/photo_resize.jpg');
   }
 
   public function testSquarifyBlur()
   {
     $this->image->squarifyBlur(600);
-    $this->image->save('/vagrant/photo_squarify.png');
+    $this->image->save('/vagrant/photo_squarify.jpg');
   }
 
 }
