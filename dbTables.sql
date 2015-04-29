@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `Pages` (
   CONSTRAINT `fk_Pages_1`
     FOREIGN KEY (`owner`)
     REFERENCES `Users` (`userId`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `PageCards` (
   CONSTRAINT `fk_PagesCards_1`
     FOREIGN KEY (`idPage`)
     REFERENCES `Pages` (`idPages`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_PageCards_1`
     FOREIGN KEY (`cardTypeId`)
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `CardContent` (
   CONSTRAINT `fk_CardContent_1`
     FOREIGN KEY (`idCard`)
     REFERENCES `PageCards` (`idCard`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_CardContent_2`
     FOREIGN KEY (`typeId`)
