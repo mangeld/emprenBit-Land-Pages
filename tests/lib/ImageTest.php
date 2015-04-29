@@ -14,6 +14,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
   public function testImage()
   {
     $image = $this->image;
+    $image->resize(600, 600);
     $image->blur(5);
     $image->save('/vagrant/photo_blur.jpg');
   }
@@ -26,7 +27,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
   public function testResize()
   {
     $image = $this->image;
-    $image->resize(400, 400);
+    $image->resize(600, 600);
     $image->save('/vagrant/photo_resize.jpg');
   }
 

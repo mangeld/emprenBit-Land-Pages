@@ -63,13 +63,12 @@ class Image
     $this->createBlurredBackground($this->image, $squareSize = 600);
   }
 
-  public function save($path = null)
+  public function save($path = null, $compressionQ = 70)
   {
-    $file = $path == null ? $this->file : File::newFile($path, true);
-
-    $file->open();
-    $this->image->writeImageFile( $file->getHandle() );
-    $file->close();
+    $img = $this->image;
+    $img->setImageFormat('JPEG');
+    $img->setImageCompressionQuality($compressionQ);
+    $img->writeImage( $path );
   }
 
 }
