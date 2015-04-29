@@ -56,7 +56,10 @@ class App
 
   public function addCard($cardData, $pageId)
   {
-    @$page = $this->getPagesAsObj()[$pageId];
+    @$pages = $this->getPagesAsObj();
+    @$page = $pages[$pageId];
+    unset($pages);
+
     if( $page != null )
     {
       $jsonObj = json_decode($cardData);
