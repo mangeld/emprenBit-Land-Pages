@@ -29,7 +29,7 @@ $slimApp->get('/passHash/:pasw', function($pasw) use ($slimApp){
 
 $slimApp->get('/:pageName', function($pageName) use ($slimApp){
   $app = \mangeld\App::createApp();
-  $loader = new Twig_Loader_Filesystem('../templates/landing1');
+  $loader = new Twig_Loader_Filesystem('../templates/landing2');
   $twig = new Twig_Environment($loader);
 
   $pages = $app->getPagesAsObj();
@@ -42,10 +42,10 @@ $slimApp->get('/:pageName', function($pageName) use ($slimApp){
     if( $page->getName() == $pageName )
     {
       $slimApp->response->setBody( $twig->loadTemplate('index.twig')->render([ 'page' => $page ]) );
+      return;
     }
-    else
-      $slimApp->notFound();
   }
+  $slimApp->notFound();
 });
 
 $slimApp->group('/v1', function() use ($slimApp, $app){

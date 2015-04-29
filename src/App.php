@@ -82,9 +82,7 @@ class App
       }
       $page->addCard($card);
       $result = $this->db->savePage($page);
-      var_dump($result);
-      echo '</br>';
-      var_dump($page);
+
       return true;
     }
     else return false;
