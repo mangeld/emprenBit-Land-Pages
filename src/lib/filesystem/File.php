@@ -133,8 +133,10 @@ class File
     $moved = true;
     $movedUploaded = true;
 
-    if( $this->path != pathinfo($newPath, PATHINFO_DIRNAME) )
-      $folderCreation = mkdir(pathinfo($newPath, PATHINFO_DIRNAME), Config::storage_permission, true);
+    $newPathDir = pathinfo($newPath, PATHINFO_DIRNAME);
+
+    if( $this->path != $newPathDir && !is_dir($newPathDir) )
+      $folderCreation = mkdir($newPathDir, Config::storage_permission, true);
 
     if( $this->uploadedFile )
       $movedUploaded = move_uploaded_file( $currPath, $newPath );

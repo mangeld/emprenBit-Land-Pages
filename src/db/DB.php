@@ -29,6 +29,14 @@ SQL;
   private static $sql_select_card_content = <<<SQL
   SELECT `idCardContent`, `idCard`, `typeId`, `text`, `index` FROM `CardContent` WHERE `idCard` = ?
 SQL;
+  private static $sql_update_page = <<<SQL
+  UPDATE `Pages` SET `name` = ?, `owner` = ?, `creationDate` = ?, `title` = ?, `description` = ?, `logoId` = ? WHERE `idPages` = ?
+SQL;
+  private static $sql_update_user = <<<SQL
+  UPDATE `Users` SET `registrationDate` = ?, `isAdmin` = ?, `email` = ?, `passwordHash` = ? WHERE `userId` = ?
+SQL;
+
+
 
   public function __construct()
   {
@@ -57,7 +65,52 @@ SQL;
    */
   public function savePage(\mangeld\obj\Page $page)
   {
+    $status = true;
+
+    if( !$this->insertPage($page) )
+      $status = $this->updatePage($page);
+
+    return $status;
+  }
+
+  private function updatePage(\mangeld\obj\Page $page, $recursive = true)
+  {
+    $prep = $this->pdo->prepare(self::$sql_update_page);
+
+    $prep->bindValue( 1, $page->getName() );
+    $prep->bindValue( 2, $page->getOwner()->getUuid() );
+    $prep->bindValue( 3, $page->getCreationTimestamp() );
+    $prep->bindValue( 4, $page->getTitle() );
+    $prep->bindValue( 5, $page->getDescription() );
+    $prep->bindValue( 6, $page->getLogoId() );
+    $prep->bindValue( 7, $page->getId() );
+
+    $statPage = $prep->execute();
+
+    if( $recursive && $page->getOwner() )
+      $statUser = $this->updateUser($page->getOwner());
+
+    return $statPage && $statUser;
+  }
+
+  private function updateUser(\mangeld\obj\User $user)
+  {
+    $prep = $this->pdo->prepare(self::$sql_update_user);
+
+    $prep->bindValue( 1, $user->getResitrationDateTimestamp() );
+    $prep->bindValue( 2, $user->isAdmin() );
+    $prep->bindValue( 3, $user->getEmail() );
+    $prep->bindValue( 4, null ); //TODO: Change this when authentication is implemented
+    $prep->bindValue( 5, $user->getUuid() );
+
+    return $prep->execute();
+  }
+
+  private function insertPage(\mangeld\obj\Page $page)
+  {
     $userSaved = true;
+    $cardsSaved = true;
+
     if( $page->getOwner() != null )
       $userSaved = $this->saveUser( $page->getOwner() );
 
@@ -83,9 +136,9 @@ SQL;
     $prepared = null;
 
     if( $page->countCards() > 0 )
-      $this->saveCards( $page->getCards() );
+      $cardsSaved = $this->saveCards( $page->getCards() );
 
-    return $result && $userSaved;
+    return $result && $userSaved && $cardsSaved;
   }
 
   /**
@@ -93,21 +146,27 @@ SQL;
    */
   private function saveCards($cards)
   {
+    $result = true;
+    $fieldStatus = true;
     foreach( $cards as $id => $card )
     {
       $prepared = $this->pdo->prepare( self::$sql_insert_card );
       $prepared->bindValue( 1, $card->getPage()->getId() );
       $prepared->bindValue( 2, $card->getId() );
       $prepared->bindValue( 3, $card->getType() );
-      $prepared->execute();
+      $status = $prepared->execute();
 
       if( $card->countFields() > 0 )
-        $this->saveCardFields($card);
+        $fieldStatus = $this->saveCardFields($card);
+
+      $result = $status && $fieldStatus && $result;
     }
+    return $result;
   }
 
   private function saveCardFields(\mangeld\obj\Card $card)
   {
+    $result = true;
     foreach( $card->getFields() as $id => $field )
     {
       $prepared = $this->pdo->prepare( self::$sql_insert_card_content );
@@ -116,8 +175,10 @@ SQL;
       $prepared->bindValue( 3, $field->getType() );
       $prepared->bindValue( 4, $field->getText() );
       $prepared->bindValue( 5, $field->getIndex() );
-      $prepared->execute();
+      $status = $prepared->execute();
+      $result = $status && $result;
     }
+    return $result;
   }
 
   /**

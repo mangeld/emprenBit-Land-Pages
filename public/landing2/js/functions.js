@@ -1,0 +1,4 @@
+$(function() {
+	//Custom functions here
+
+});

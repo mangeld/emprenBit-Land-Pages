@@ -187,4 +187,39 @@ class DBTest extends PHPUnit_Framework_TestCase
 
     $this->assertEquals($page, $result, '', 0.0001);
   }
+
+  public function testPageIsUpdated()
+  {
+    $originalPage = Page::createPageWithNewUser('testPageIsUpdated@update.io');
+    $originalPage->setName('coolname');
+    $originalPage->setTitle('coolTitle');
+    $originalPage->setDescription('coolDesc');
+    $this->db->savePage($originalPage);
+    $modifiedPage = $this->db->fetchPage($originalPage->getId());
+    $modifiedPage->setTitle('newTitle');
+    $this->db->savePage($modifiedPage);
+
+    $result = $this->db->fetchPage($originalPage->getId());
+
+    $this->assertNotEquals($originalPage, $result, '', 0.0001);
+    $this->assertEquals($modifiedPage, $result, '', 0.0001);
+  }
+
+  public function testUserOfPageIsUpdated()
+  {
+    $origPage = Page::createPageWithNewUser('testPageUserUpdated@update.io');
+    $origPage->setName('name');
+    $savedOriginal = $this->db->savePage($origPage);
+    $modPage = $this->db->fetchPage($origPage->getId());
+    $modPage->getOwner()->setEmail('userUpdated@changed.io');
+    $savedMod = $this->db->savePage($modPage);
+
+    $result = $this->db->fetchPage($origPage->getId());
+
+    $this->assertTrue($savedMod);
+    $this->assertTrue($savedOriginal);
+
+    $this->assertNotEquals($origPage, $result, '', 0.0001);
+    $this->assertEquals($modPage, $result, '', 0.0001);
+  }
 }

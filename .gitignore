@@ -16,3 +16,7 @@ composer.phar
 #storage folder for the app
 public/storage
 storage
+
+#Compiled files
+public/css
+public/js

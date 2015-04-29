@@ -4,7 +4,9 @@ namespace mangeld;
 
 use mangeld\exceptions\FileUploadException;
 use mangeld\lib\filesystem\File;
+use mangeld\obj\Card;
 use mangeld\obj\DataTypes;
+use Rhumsaa\Uuid\Console\Exception;
 
 class App
 {
@@ -50,6 +52,40 @@ class App
   public function deletePage($pageId)
   {
     $this->db->deletePage($pageId);
+  }
+
+  public function addCard($cardData, $pageId)
+  {
+    @$pages = $this->getPagesAsObj();
+    @$page = $pages[$pageId];
+    unset($pages);
+
+    if( $page != null )
+    {
+      $jsonObj = json_decode($cardData);
+      $card = Card::createCard(DataTypes::cardThreeColumns);
+
+      for($i = 1; $i < 4; $i++)
+        $card->setTitle($jsonObj->fieldTitle[$i], $i);
+
+      for($i = 1; $i < 4; $i++)
+        $card->setBody($jsonObj->fieldText[$i], $i);
+
+      for($i = 1; $i < 4; $i++)
+      {
+        try
+        {
+          $img = File::fromUploadedFile('image'.($i-1));
+          $img->saveToStorage($page);
+        } catch (Exception $e) {}
+        $card->setImage("{$img->getId()}", $i);
+      }
+      $page->addCard($card);
+      $result = $this->db->savePage($page);
+
+      return true;
+    }
+    else return false;
   }
 
   public function getPages()
