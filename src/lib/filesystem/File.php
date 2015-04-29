@@ -5,6 +5,7 @@ namespace mangeld\lib\filesystem;
 use mangeld\Config;
 use mangeld\exceptions\FileSystemException;
 use mangeld\exceptions\FileUploadException;
+use mangeld\lib\Image;
 
 class File
 {
@@ -113,13 +114,34 @@ class File
     $this->id = $id->toString();
     $this->ownerId = $page->getId();
 
-    $this->move(
+    $newPath =
       Config::storage_folder .
       DIRECTORY_SEPARATOR .
       $page->getId() .
       DIRECTORY_SEPARATOR .
-      $id . '.jpg'
-    );
+      $id . '.jpg';
+
+    $this->move($newPath);
+  }
+
+  private function makeImageVersions($newPath)
+  {
+    $im = null;
+    try
+    {
+      $im = Image::fromFile($this);
+    }catch( \ImagickException $e){}
+
+    if( $im != null )
+    {
+      $folder = pathinfo($newPath, PATHINFO_DIRNAME);
+      $file = pathinfo($newPath, PATHINFO_FILENAME);
+
+      $im->resize(250, 250);
+      $im->save(
+        $folder . DIRECTORY_SEPARATOR .
+        'small_' . $file . '.jpg');
+    }
   }
 
   public function move($newPath)
@@ -138,7 +160,9 @@ class File
     if( $this->path != $newPathDir && !is_dir($newPathDir) )
       $folderCreation = mkdir($newPathDir, Config::storage_permission, true);
 
-    if( $this->uploadedFile )
+    if( $this->isImage() )
+      $this->makeImageVersions($newPath);
+    elseif( $this->uploadedFile )
       $movedUploaded = move_uploaded_file( $currPath, $newPath );
     else
       $moved = rename( $currPath, $newPath );
@@ -166,7 +190,11 @@ class File
 
   public function isImage()
   {
-    $image = new \Imagick();
-    $test = array( _('test') );
+    $itIs = true;
+    try
+      { Image::fromFile($this); }
+    catch ( \ImagickException $e)
+      { $itIs = false; }
+    return $itIs;
   }
 }

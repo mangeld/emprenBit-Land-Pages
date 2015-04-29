@@ -28,17 +28,17 @@
                 {% for card in page.get3ColCards() %}
                     <div class="blocked">
                         <div class="block centered">
-                            <img style="width: 200px" src="storage/{{ page.getId() }}/{{ card.getImage(1).getText() }}.jpg" />
+                            <img style="width: 200px" src="storage/{{ page.getId() }}/small_{{ card.getImage(1).getText() }}.jpg" />
                             <h3 class="accent">{{ card.getTitle(1).getText() }}</h3>
                             <p>{{ card.getBody(1).getText() }}</p>
                         </div>
                         <div class="block centered">
-                            <img style="width: 200px" src="storage/{{ page.getId() }}/{{ card.getImage(2).getText() }}.jpg" />
+                            <img style="width: 200px" src="storage/{{ page.getId() }}/small_{{ card.getImage(2).getText() }}.jpg" />
                             <h3 class="accent">{{ card.getTitle(2).getText() }}</h3>
                             <p>{{ card.getBody(2).getText() }}</p>
                         </div>
                         <div class="block centered">
-                            <img style="width: 200px" src="storage/{{ page.getId() }}/{{ card.getImage(3).getText() }}.jpg" />
+                            <img style="width: 200px" src="storage/{{ page.getId() }}/small_{{ card.getImage(3).getText() }}.jpg" />
                             <h3 class="accent">{{ card.getTitle(3).getText() }}</h3>
                             <p>{{ card.getBody(3).getText() }}</p>
                         </div>
