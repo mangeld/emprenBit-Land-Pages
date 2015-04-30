@@ -3,6 +3,7 @@
 $app = \mangeld\App::createApp();
 $slimApp = new \Slim\Slim();
 $slimApp->config('debug', true);
+$slimApp->add( new \mangeld\PostCheckMiddleware($app) );
 
 $slimApp->get('/login', function() use ($slimApp){
 
@@ -95,12 +96,7 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
 
       if( $app->maxPostSizeExceeded( (int) $slimApp->request->headers->get('Content-Length') ) )
       {
-        $slimApp->response->status( 413 );
-        $slimApp->response->headers->set('Content-Type', 'application/json');
-        $maxPost = $app->getMaxPostSize();
-        $message = "The image provided is too large, max size is $maxPost ";
-        $json = \mangeld\obj\JsonResponse::postTooLargeFactory($message)->jsonSerialize();
-        $slimApp->response->setBody($json);
+
       }
       else
       {
@@ -132,6 +128,7 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
       });
 
       $slimApp->post('/', function($pageId) use ($slimApp, $app){
+        //var_dump($slimApp->request->params('data'));
         $app->addCard($slimApp->request->params('data'), $pageId);
       });
 
