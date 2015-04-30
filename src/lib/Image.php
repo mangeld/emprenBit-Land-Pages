@@ -65,10 +65,9 @@ class Image
 
   public function save($path = null, $compressionQ = 70)
   {
-    $img = $this->image;
-    $img->setImageFormat('JPEG');
-    $img->setImageCompressionQuality($compressionQ);
-    $img->writeImage( $path );
+    $this->image->setImageFormat('JPEG');
+    $this->image->setImageCompressionQuality($compressionQ);
+    $this->image->writeImage( $path );
   }
 
 }

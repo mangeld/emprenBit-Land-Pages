@@ -126,22 +126,27 @@ class File
 
   private function makeImageVersions($newPath)
   {
+    set_time_limit(40);
     $im = null;
-    try
+    foreach (Config::$image_sizes as $name => $size)
     {
-      $im = Image::fromFile($this);
-    }catch( \ImagickException $e){}
+      try
+        { $im = Image::fromFile($this); }
+      catch( \ImagickException $e){}
 
-    if( $im != null )
-    {
-      $folder = pathinfo($newPath, PATHINFO_DIRNAME);
-      $file = pathinfo($newPath, PATHINFO_FILENAME);
+      if( $im != null )
+      {
+        $folder = pathinfo($newPath, PATHINFO_DIRNAME);
+        $file = pathinfo($newPath, PATHINFO_FILENAME);
 
-      $im->resize(250, 250);
-      $im->save(
-        $folder . DIRECTORY_SEPARATOR .
-        'small_' . $file . '.jpg');
+        $im->resize($size, $size);
+        $im->save(
+          $folder . DIRECTORY_SEPARATOR .
+          $name . '_' . $file . '.jpg');
+      }
+      $im = null;
     }
+
   }
 
   public function move($newPath)
