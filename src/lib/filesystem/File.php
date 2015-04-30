@@ -124,9 +124,8 @@ class File
     $this->move($newPath);
   }
 
-  private function makeImageVersions($newPath)
+  public function makeImageVersions($newPath)
   {
-    set_time_limit(40);
     $im = null;
     foreach (Config::$image_sizes as $name => $size)
     {
@@ -149,7 +148,24 @@ class File
 
   }
 
-  public function move($newPath)
+  public function makeImageVersionsAsync($newPath)
+  {
+    //TODO: Move to pool
+    $poolFile =
+      Config::storage_folder . DIRECTORY_SEPARATOR .
+      'imagePool' . DIRECTORY_SEPARATOR .
+      \Rhumsaa\Uuid\Uuid::uuid4();
+
+    $this->move(
+      $poolFile,
+      true
+    );
+
+    $command = Config::script_mk_image_versions . " $poolFile $newPath > /dev/null &";
+    exec($command);
+  }
+
+  public function move($newPath, $force = false)
   {
     $currPath = $this->fullPath();
 
@@ -165,8 +181,8 @@ class File
     if( $this->path != $newPathDir && !is_dir($newPathDir) )
       $folderCreation = mkdir($newPathDir, Config::storage_permission, true);
 
-    if( class_exists('Imagick') && $this->uploadedFile && $this->isImage() )
-      $this->makeImageVersions($newPath);
+    if( !$force && class_exists('Imagick') && $this->uploadedFile && $this->isImage() )
+      $this->makeImageVersionsAsync($newPath);
     elseif( $this->uploadedFile )
       $movedUploaded = move_uploaded_file( $currPath, $newPath );
     else
@@ -189,6 +205,9 @@ class File
   {
     return $this->path . DIRECTORY_SEPARATOR . $this->filename;
   }
+
+  public function delete()
+    { unlink($this->fullPath()); }
 
   public function getId()
     { return $this->id; }

@@ -2,6 +2,7 @@
 
 namespace mangeld\lib;
 
+use mangeld\Config;
 use mangeld\lib\filesystem\File;
 
 class Image
@@ -63,7 +64,7 @@ class Image
     $this->createBlurredBackground($this->image, $squareSize = 600);
   }
 
-  public function save($path = null, $compressionQ = 70)
+  public function save($path = null, $compressionQ = Config::image_quality)
   {
     $this->image->setImageFormat('JPEG');
     $this->image->setImageCompressionQuality($compressionQ);
