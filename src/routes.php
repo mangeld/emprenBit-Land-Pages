@@ -132,6 +132,10 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
         $app->addCard($slimApp->request->params('data'), $pageId);
       });
 
+      $slimApp->delete('/:cardId', function($pageId, $cardId) use ($app){
+        $app->deleteCard($cardId);
+      });
+
     });
 
   });

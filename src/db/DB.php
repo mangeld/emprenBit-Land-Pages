@@ -35,6 +35,10 @@ SQL;
   private static $sql_update_user = <<<SQL
   UPDATE `Users` SET `registrationDate` = ?, `isAdmin` = ?, `email` = ?, `passwordHash` = ? WHERE `userId` = ?
 SQL;
+  private static $sql_delete_card = <<<SQL
+  DELETE FROM `PageCards` WHERE `idCard` = ?
+SQL;
+
 
 
 
@@ -71,6 +75,15 @@ SQL;
       $status = $this->updatePage($page);
 
     return $status;
+  }
+
+  public function deleteCard($cardId)
+  {
+    $prep = $this->pdo->prepare(self::$sql_delete_card);
+
+    $prep->bindValue( 1, $cardId );
+
+    return $prep->execute();
   }
 
   private function updatePage(\mangeld\obj\Page $page, $recursive = true)

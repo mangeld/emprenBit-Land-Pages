@@ -25,6 +25,15 @@ admin.factory('api', ['$http', function($http){
     return fdata;
   };
 
+  api.deleteCard = function(landingId, cardId){
+
+    return $http({
+      method: 'DELETE',
+      url: 'v1/pages/'+landingId+'/cards/'+cardId
+    });
+
+  };
+
   api.uploadCard = function(landingId, jsonData, images){
 
     return $http({

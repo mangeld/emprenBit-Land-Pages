@@ -49,6 +49,11 @@ class App
     return $this->name;
   }
 
+  public function deleteCard($cardId)
+  {
+    $this->db->deleteCard($cardId);
+  }
+
   public function deletePage($pageId)
   {
     $this->db->deletePage($pageId);

@@ -25,6 +25,7 @@
 		</div>
 		<div class="body">
 			<div class="content">
+                {% if page.get3ColCards() %}
                 {% for card in page.get3ColCards() %}
                     <div class="blocked">
                         <div class="block centered">
@@ -44,6 +45,7 @@
                         </div>
                     </div>
                 {% endfor %}
+                {% endif %}
 			</div>
 		</div>
 		<div class="footer">

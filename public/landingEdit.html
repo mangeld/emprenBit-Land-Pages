@@ -46,7 +46,7 @@
       </div>
     </form>
 
-    <form ng-submit="updateCard(card3col, $event)" ng-repeat="card3col in landing.cards.cardThreeColumns track by $index" ng-if="landing.cards.cardThreeColumns" action="" class="padding">
+    <form ng-repeat="card3col in landing.cards.cardThreeColumns track by $index" ng-if="landing.cards.cardThreeColumns" action="" class="padding">
       <div class="container">
         <h3>Columna 1</h3>
         <div class="column_input column-3">
@@ -92,7 +92,8 @@
           <input type="file" />
         </div>
       </div>
-      <button><span>Actualizar</span></button>
+      <button ng-click="updateCard(card3col, $event)"><span>Actualizar</span></button>
+      <button class="red" ng-click='deleteCard($event, card3col)'><span class="fa fa-trash"></span></button>
     </form>
   </div>
 
