@@ -49,8 +49,23 @@ class App
     return $this->name;
   }
 
-  public function deleteCard($cardId)
+  public function deleteCard($pageId, $cardId)
   {
+    $page = $this->db->fetchPage($pageId);
+    $card = $page->getCard($cardId);
+    foreach( $card->getFields() as $id => $field )
+    {
+      if( $field->getType() != DataTypes::fieldImage ) continue;
+
+      $folder =
+        Config::storage_folder . DIRECTORY_SEPARATOR .
+        $page->getId() . DIRECTORY_SEPARATOR;
+      $file = $field->getText() . '.jpg';
+      foreach( Config::$image_sizes as $name => $value )
+        File::openFile( $folder . $name . '_' . $file )->delete();
+
+    }
+
     $this->db->deleteCard($cardId);
   }
 

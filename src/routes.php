@@ -133,7 +133,7 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
       });
 
       $slimApp->delete('/:cardId', function($pageId, $cardId) use ($app){
-        $app->deleteCard($cardId);
+        $app->deleteCard($pageId, $cardId);
       });
 
     });
