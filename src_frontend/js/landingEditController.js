@@ -57,9 +57,7 @@ admin.controller('LandingEditController', function($scope, $route, api){
   $scope.updateCard = function(data, event)
   {
     var inputs = $(event.target).parents('form').find('input');
-    var insn = angular.element(event.target).find('input');
     var files = [];
-
 
     for(i=0; i<inputs.length;i++)
       if( inputs[i].files )

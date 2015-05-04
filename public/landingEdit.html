@@ -46,7 +46,7 @@
       </div>
     </form>
 
-    <form ng-repeat="card3col in landing.cards.cardThreeColumns track by $index" ng-if="landing.cards.cardThreeColumns" action="" class="padding">
+    <form ng-repeat="card3col in landing.cards.cardThreeColumns track by card3col.id" ng-if="landing.cards.cardThreeColumns" action="" class="padding">
       <div class="container">
         <h3>Columna 1</h3>
         <div class="column_input column-3">
@@ -59,6 +59,7 @@
         </div>
         <div class="column_input column-3">
           <span>Imagen...</span>
+          <img ng-if="card3col.fieldImage[1]" src="storage/{{landing.id}}/small_{{card3col.fieldImage[1]}}.jpg" alt=""/>
           <input ng-model="card3col.fieldImage[1]" type="file"/>
         </div>
       </div>
@@ -74,6 +75,7 @@
         </div>
         <div class="column_input column-3">
           <span>Imagen...</span>
+          <img ng-if="card3col.fieldImage[2]" src="storage/{{landing.id}}/small_{{card3col.fieldImage[2]}}.jpg" alt=""/>
           <input type="file"/>
         </div>
       </div>
@@ -89,6 +91,7 @@
         </div>
         <div class="column_input column-3">
           <span>Imagen...</span>
+          <img ng-if="card3col.fieldImage[3]" src="storage/{{landing.id}}/small_{{card3col.fieldImage[3]}}.jpg" alt=""/>
           <input type="file" />
         </div>
       </div>
