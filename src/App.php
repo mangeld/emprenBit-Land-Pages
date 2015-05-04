@@ -2,6 +2,7 @@
 
 namespace mangeld;
 
+use mangeld\exceptions\FileSystemException;
 use mangeld\exceptions\FileUploadException;
 use mangeld\lib\filesystem\File;
 use mangeld\obj\Card;
@@ -53,24 +54,41 @@ class App
   {
     $page = $this->db->fetchPage($pageId);
     $card = $page->getCard($cardId);
+
     foreach( $card->getFields() as $id => $field )
-    {
-      if( $field->getType() != DataTypes::fieldImage ) continue;
-
-      $folder =
-        Config::storage_folder . DIRECTORY_SEPARATOR .
-        $page->getId() . DIRECTORY_SEPARATOR;
-      $file = $field->getText() . '.jpg';
-      foreach( Config::$image_sizes as $name => $value )
-        File::openFile( $folder . $name . '_' . $file )->delete();
-
-    }
+      if( $field->getType() == DataTypes::fieldImage )
+        $this->deleteImageResource( $page->getId(), $field->getText() );
 
     $this->db->deleteCard($cardId);
   }
 
+  private function deleteImageResource($pageId, $fileId)
+  {
+    $folder =
+      Config::storage_folder . DIRECTORY_SEPARATOR .
+      $pageId . DIRECTORY_SEPARATOR;
+    $file = $fileId . '.jpg';
+
+    foreach( Config::$image_sizes as $name => $value )
+      try{ File::openFile( $folder . $name . '_' . $file )->delete(); }
+      catch( FileSystemException $e ) {}
+  }
+
   public function deletePage($pageId)
   {
+    $page = $this->db->fetchPage($pageId);
+    if( !$page ) return;
+    if( $page->getLogoId() )
+      $this->deleteImageResource($page->getId(), $page->getLogoId());
+
+    if( $page->getCards() )
+      foreach( $page->getCards() as $cardK => $card )
+        foreach( $card->getFields() as $fieldId => $field )
+          if( $field->getType() == DataTypes::fieldImage )
+            $this->deleteImageResource( $page->getId(), $field->getText() );
+
+    @rmdir(Config::storage_folder . DIRECTORY_SEPARATOR . $page->getId());
+
     $this->db->deletePage($pageId);
   }
 
@@ -128,7 +146,7 @@ class App
       $obj->id = $page->getId();
       $obj->title = $page->getTitle();
       $obj->description = $page->getDescription();
-      $obj->logo = ($page->getLogoId() ? "storage/{$page->getId()}/{$page->getLogoId()}.jpg" : '');
+      $obj->logo = ($page->getLogoId() ? "storage/{$page->getId()}/small_{$page->getLogoId()}.jpg" : '');
 
       if( $page->getOwner() )
         $obj->owner = $page->getOwner()->getEmail();

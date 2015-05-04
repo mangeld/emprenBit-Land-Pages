@@ -29,15 +29,15 @@
       </li>
     </ul>
     <button class="block-button" ng-show="show_button_new_page" ng-click="toggleShowFormNewPage()"><span class="fa fa-plus"></span></button>
-    <form name="newPageFormObj" ng-show="show_form_new_page" ng-submit="newPage()">
+    <form name="newPageFormObj" ng-model="newPageFormObj" ng-show="show_form_new_page" ng-submit="newPage()">
       <div class="column-5 center_content font_size_08">
-        <input ng-model="newPageForm.name" ng-required="true" ng-minlength="4" type="text" name="name" id="form_name" placeholder="Name of Landing Page">
+        <input ng-model="newPageForm.name" ng-minlength=4 ng-required="true" type="text" name="name" id="form_name" placeholder="Name of Landing Page">
         <input ng-model="newPageForm.email" ng-required="true" type="email" name="email" id="form_owner" placeholder="Email of the owner">
         <input ng-model="newPageForm.title" type="text" placeholder="Title of the landing">
         <div ng-if="showFileUpload" ng-file-upload ></div>
         <span>{{ imgName }}</span>
         <div class="inline-buttons">
-          <button class="inline-button"><span>Add</span></button>
+          <button class="inline-button" ng-disabled="!newPageFormObj.$valid"><span>Add</span></button>
           <button class="inline-button red" ng-click="cancelNewPage()" form=""><span>Cancel</span></button>
         </div>
       </div>
