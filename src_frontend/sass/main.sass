@@ -24,7 +24,7 @@ button:active
   display: inline-block
   float: right
   position: absolute
-  right: 5rem
+  right: 7rem
   color: #999
   font-size: .6rem
   vertical-align: top
@@ -38,7 +38,7 @@ body
 
 [ng-file-upload]
   text-align: center
-  
+
   div
     position: relative
     overflow: hidden
@@ -135,6 +135,10 @@ body
   textarea
     display: block
     margin: .4rem auto
+  img
+    display: block
+    margin: 0 auto
+    height: 150px
 
 .column-3
   width: 29%
@@ -205,7 +209,7 @@ button, .button
   transition: background-color $time, color $time
 
 button.margin, .button.margin
-  
+
   span
     margin: .3rem
 
@@ -219,6 +223,11 @@ button.red, .button.red
 button.red:hover, .button.red:hover
   color: $white
   background: $red
+
+button[disabled], button[disabled]:hover
+  color: #666
+  background: none
+  border-color: #666
 
 .block-button
   display: block
@@ -298,7 +307,7 @@ main
 
 .blocklist img
   height: 4rem
-  
+
 form
   overflow: visible
   margin: .5rem auto

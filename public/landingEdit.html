@@ -9,9 +9,9 @@
           <button ng-click="closeOverlay()"><span class="fa fa-close"></span></button>
         </div>
         <div class="content">
-          <button class="block-button">
+<!--          <button class="block-button">
             <span>Formulario</span>
-          </button>
+          </button>-->
           <button class="block-button" ng-click="addThreeColumns()">
             <span>Triptico</span>
           </button>
@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <form action="">
+    <form >
       <div class="inline_input">
         <span>Landing Name</span>
         <input type="text" ng-model="landing.name"/>
@@ -44,9 +44,13 @@
         <span>Logo: </span>
         <img src="{{ landing.logo }}" alt=""/>
       </div>
+      <div class="inline_input">
+        <button ng-click="updateLanding($event)"><span>Actualizar</span></button>
+        <span><a target="_blank" href="{{ landing.name }}">Visitar Landing</a></span>
+      </div>
     </form>
 
-    <form ng-submit="updateCard(card3col, $event)" ng-repeat="card3col in landing.cards.cardThreeColumns track by $index" ng-if="landing.cards.cardThreeColumns" action="" class="padding">
+    <form ng-repeat="card3col in landing.cards.cardThreeColumns track by card3col.id" ng-if="landing.cards.cardThreeColumns" class="padding">
       <div class="container">
         <h3>Columna 1</h3>
         <div class="column_input column-3">
@@ -59,6 +63,7 @@
         </div>
         <div class="column_input column-3">
           <span>Imagen...</span>
+          <img ng-if="card3col.fieldImage[1]" src="storage/{{landing.id}}/small_{{card3col.fieldImage[1]}}.jpg" alt=""/>
           <input ng-model="card3col.fieldImage[1]" type="file"/>
         </div>
       </div>
@@ -74,6 +79,7 @@
         </div>
         <div class="column_input column-3">
           <span>Imagen...</span>
+          <img ng-if="card3col.fieldImage[2]" src="storage/{{landing.id}}/small_{{card3col.fieldImage[2]}}.jpg" alt=""/>
           <input type="file"/>
         </div>
       </div>
@@ -89,26 +95,14 @@
         </div>
         <div class="column_input column-3">
           <span>Imagen...</span>
+          <img ng-if="card3col.fieldImage[3]" src="storage/{{landing.id}}/small_{{card3col.fieldImage[3]}}.jpg" alt=""/>
           <input type="file" />
         </div>
       </div>
-      <button><span>Actualizar</span></button>
+      <button ng-click="updateCard(card3col, $event)"><span>Actualizar</span></button>
+      <button class="red" ng-click='deleteCard($event, card3col)'><span class="fa fa-trash"></span></button>
     </form>
   </div>
-
-  <form action="">
-    <div class="container">
-      <div class="inline_input">
-        <span>Campo1</span>
-        <input type="text"/>
-        <select name="" id="" title="Tipo de dato">
-          <option value="">Texto</option>
-          <option value="">Email</option>
-        </select>
-      </div>
-      <button class="block-button"><span>Añadir campo...</span></button>
-    </div>
-  </form>
 
   <div class="container">
       <button class="block-button" ng-click="addBlock()">

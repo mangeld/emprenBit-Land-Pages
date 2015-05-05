@@ -104,6 +104,7 @@ class Page extends DataStore
 
   public function get3ColCards()
   {
+    if( $this->countCards() == 0 ) return array();
     $result = array();
     foreach( $this->getCards() as $id => $card )
     {

@@ -222,4 +222,23 @@ class DBTest extends PHPUnit_Framework_TestCase
     $this->assertNotEquals($origPage, $result, '', 0.0001);
     $this->assertEquals($modPage, $result, '', 0.0001);
   }
+
+  public function testCardIsDeleted()
+  {
+    $page = Page::createPageWithNewUser('testCardIsDeleted@delete.this');
+    $page->setName('Delete a card');
+    $page->addCard(Card::createCard(DataTypes::cardThreeColumns));
+    $cardToDelete = Card::createCard(DataTypes::cardThreeColumns);
+    $cardToDelete->setTitle('adsfasdf',2);
+    $cardToDelete->setBody('HOLA HOLA HOLA HOLA HOLA', 2);
+    $cardToDelete->setImage('298347928374', 3);
+    $cardId = $cardToDelete->getId();
+
+    $this->db->savePage($page);
+    $this->db->deleteCard($cardId);
+
+    @$shouldBeEmpty = $this->db->fetchPage($page->getId())->getCard($cardId);
+
+    $this->assertNull($shouldBeEmpty);
+  }
 }
