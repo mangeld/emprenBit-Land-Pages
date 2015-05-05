@@ -102,6 +102,18 @@ class Page extends DataStore
     return $this->cards;
   }
 
+  public function get3ColCards()
+  {
+    if( $this->countCards() == 0 ) return array();
+    $result = array();
+    foreach( $this->getCards() as $id => $card )
+    {
+      $type = DataTypes::cardThreeColumns;
+      if( $card->getType() == $type ) $result[$id] = $card;
+    }
+    return $result;
+  }
+
   public function countCards() { return count( $this->cards ); }
 
   public function setLogoId($id)

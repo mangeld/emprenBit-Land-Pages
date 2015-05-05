@@ -2,6 +2,7 @@
 
 namespace mangeld;
 
+use mangeld\exceptions\FileSystemException;
 use mangeld\exceptions\FileUploadException;
 use mangeld\lib\filesystem\File;
 use mangeld\obj\Card;
@@ -49,14 +50,55 @@ class App
     return $this->name;
   }
 
+  public function deleteCard($pageId, $cardId)
+  {
+    $page = $this->db->fetchPage($pageId);
+    $card = $page->getCard($cardId);
+
+    foreach( $card->getFields() as $id => $field )
+      if( $field->getType() == DataTypes::fieldImage )
+        $this->deleteImageResource( $page->getId(), $field->getText() );
+
+    $this->db->deleteCard($cardId);
+  }
+
+  private function deleteImageResource($pageId, $fileId)
+  {
+    $folder =
+      Config::storage_folder . DIRECTORY_SEPARATOR .
+      $pageId . DIRECTORY_SEPARATOR;
+    $file = $fileId . '.jpg';
+
+    foreach( Config::$image_sizes as $name => $value )
+      try{ File::openFile( $folder . $name . '_' . $file )->delete(); }
+      catch( FileSystemException $e ) {}
+  }
+
   public function deletePage($pageId)
   {
+    $page = $this->db->fetchPage($pageId);
+    if( !$page ) return;
+    if( $page->getLogoId() )
+      $this->deleteImageResource($page->getId(), $page->getLogoId());
+
+    if( $page->getCards() )
+      foreach( $page->getCards() as $cardK => $card )
+        foreach( $card->getFields() as $fieldId => $field )
+          if( $field->getType() == DataTypes::fieldImage )
+            $this->deleteImageResource( $page->getId(), $field->getText() );
+
+    //TODO: Not so clean...
+    @rmdir(Config::storage_folder . DIRECTORY_SEPARATOR . $page->getId());
+
     $this->db->deletePage($pageId);
   }
 
   public function addCard($cardData, $pageId)
   {
-    @$page = $this->getPagesAsObj()[$pageId];
+    @$pages = $this->getPagesAsObj();
+    @$page = $pages[$pageId];
+    unset($pages);
+
     if( $page != null )
     {
       $jsonObj = json_decode($cardData);
@@ -79,9 +121,7 @@ class App
       }
       $page->addCard($card);
       $result = $this->db->savePage($page);
-      var_dump($result);
-      echo '</br>';
-      var_dump($page);
+
       return true;
     }
     else return false;
@@ -107,7 +147,7 @@ class App
       $obj->id = $page->getId();
       $obj->title = $page->getTitle();
       $obj->description = $page->getDescription();
-      $obj->logo = ($page->getLogoId() ? "storage/{$page->getId()}/{$page->getLogoId()}.jpg" : '');
+      $obj->logo = ($page->getLogoId() ? "storage/{$page->getId()}/small_{$page->getLogoId()}.jpg" : '');
 
       if( $page->getOwner() )
         $obj->owner = $page->getOwner()->getEmail();
@@ -169,6 +209,27 @@ class App
     } catch ( FileUploadException $e ) {}
     $this->db->savePage($page);
     return $page;
+  }
+
+  public function updatePage($pageId, $data)
+  {
+    $page = $this->db->fetchPage($pageId);
+    if( $page == null ) return false;
+    $obj = json_decode($data);
+
+    $page->setTitle( $obj->title );
+    $page->setName( $obj->name );
+    $page->setDescription( $obj->description );
+    $page->getOwner()->setEmail( $obj->email );
+
+    try{
+      $logo = File::fromUploadedFile('logo');
+      $logo->saveToStorage($page);
+      $this->deleteImageResource($page->getId(), $page->getLogoId());
+      $page->setLogoId( $logo->getId() );
+    } catch ( FileUploadException $e ) {}
+
+    $this->db->savePage($page);
   }
 
   /**

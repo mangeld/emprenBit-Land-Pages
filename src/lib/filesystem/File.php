@@ -5,6 +5,7 @@ namespace mangeld\lib\filesystem;
 use mangeld\Config;
 use mangeld\exceptions\FileSystemException;
 use mangeld\exceptions\FileUploadException;
+use mangeld\lib\Image;
 
 class File
 {
@@ -113,16 +114,58 @@ class File
     $this->id = $id->toString();
     $this->ownerId = $page->getId();
 
-    $this->move(
+    $newPath =
       Config::storage_folder .
       DIRECTORY_SEPARATOR .
       $page->getId() .
       DIRECTORY_SEPARATOR .
-      $id . '.jpg'
-    );
+      $id . '.jpg';
+
+    $this->move($newPath);
   }
 
-  public function move($newPath)
+  public function makeImageVersions($newPath)
+  {
+    $im = null;
+    foreach (Config::$image_sizes as $name => $size)
+    {
+      try
+        { $im = Image::fromFile($this); }
+      catch( \ImagickException $e){}
+
+      if( $im != null )
+      {
+        $folder = pathinfo($newPath, PATHINFO_DIRNAME);
+        $file = pathinfo($newPath, PATHINFO_FILENAME);
+
+        $im->resize($size, $size);
+        $im->save(
+          $folder . DIRECTORY_SEPARATOR .
+          $name . '_' . $file . '.jpg');
+      }
+      $im = null;
+    }
+
+  }
+
+  public function makeImageVersionsAsync($newPath)
+  {
+    //TODO: Move to pool
+    $poolFile =
+      Config::storage_folder . DIRECTORY_SEPARATOR .
+      'imagePool' . DIRECTORY_SEPARATOR .
+      \Rhumsaa\Uuid\Uuid::uuid4();
+
+    $this->move(
+      $poolFile,
+      true
+    );
+
+    $command = Config::script_mk_image_versions . " $poolFile $newPath > /dev/null &";
+    exec($command);
+  }
+
+  public function move($newPath, $force = false)
   {
     $currPath = $this->fullPath();
 
@@ -138,7 +181,9 @@ class File
     if( $this->path != $newPathDir && !is_dir($newPathDir) )
       $folderCreation = mkdir($newPathDir, Config::storage_permission, true);
 
-    if( $this->uploadedFile )
+    if( !$force && class_exists('Imagick') && $this->uploadedFile && $this->isImage() )
+      $this->makeImageVersionsAsync($newPath);
+    elseif( $this->uploadedFile )
       $movedUploaded = move_uploaded_file( $currPath, $newPath );
     else
       $moved = rename( $currPath, $newPath );
@@ -161,12 +206,19 @@ class File
     return $this->path . DIRECTORY_SEPARATOR . $this->filename;
   }
 
+  public function delete()
+    { unlink($this->fullPath()); }
+
   public function getId()
     { return $this->id; }
 
   public function isImage()
   {
-    $image = new \Imagick();
-    $test = array( _('test') );
+    $itIs = true;
+    try
+      { Image::fromFile($this); }
+    catch ( \ImagickException $e)
+      { $itIs = false; }
+    return $itIs;
   }
 }

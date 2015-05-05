@@ -29,6 +29,18 @@ SQL;
   private static $sql_select_card_content = <<<SQL
   SELECT `idCardContent`, `idCard`, `typeId`, `text`, `index` FROM `CardContent` WHERE `idCard` = ?
 SQL;
+  private static $sql_update_page = <<<SQL
+  UPDATE `Pages` SET `name` = ?, `owner` = ?, `creationDate` = ?, `title` = ?, `description` = ?, `logoId` = ? WHERE `idPages` = ?
+SQL;
+  private static $sql_update_user = <<<SQL
+  UPDATE `Users` SET `registrationDate` = ?, `isAdmin` = ?, `email` = ?, `passwordHash` = ? WHERE `userId` = ?
+SQL;
+  private static $sql_delete_card = <<<SQL
+  DELETE FROM `PageCards` WHERE `idCard` = ?
+SQL;
+
+
+
 
   public function __construct()
   {
@@ -56,6 +68,58 @@ SQL;
    * @TODO: Make this a controller & split in save_page, save_cards, save_owner
    */
   public function savePage(\mangeld\obj\Page $page)
+  {
+    $status = true;
+
+    if( !$this->insertPage($page) )
+      $status = $this->updatePage($page);
+
+    return $status;
+  }
+
+  public function deleteCard($cardId)
+  {
+    $prep = $this->pdo->prepare(self::$sql_delete_card);
+
+    $prep->bindValue( 1, $cardId );
+
+    return $prep->execute();
+  }
+
+  private function updatePage(\mangeld\obj\Page $page, $recursive = true)
+  {
+    $prep = $this->pdo->prepare(self::$sql_update_page);
+
+    $prep->bindValue( 1, $page->getName() );
+    $prep->bindValue( 2, $page->getOwner()->getUuid() );
+    $prep->bindValue( 3, $page->getCreationTimestamp() );
+    $prep->bindValue( 4, $page->getTitle() );
+    $prep->bindValue( 5, $page->getDescription() );
+    $prep->bindValue( 6, $page->getLogoId() );
+    $prep->bindValue( 7, $page->getId() );
+
+    $statPage = $prep->execute();
+
+    if( $recursive && $page->getOwner() )
+      $statUser = $this->updateUser($page->getOwner());
+
+    return $statPage && $statUser;
+  }
+
+  private function updateUser(\mangeld\obj\User $user)
+  {
+    $prep = $this->pdo->prepare(self::$sql_update_user);
+
+    $prep->bindValue( 1, $user->getResitrationDateTimestamp() );
+    $prep->bindValue( 2, $user->isAdmin() );
+    $prep->bindValue( 3, $user->getEmail() );
+    $prep->bindValue( 4, null ); //TODO: Change this when authentication is implemented
+    $prep->bindValue( 5, $user->getUuid() );
+
+    return $prep->execute();
+  }
+
+  private function insertPage(\mangeld\obj\Page $page)
   {
     $userSaved = true;
     if( $page->getOwner() != null )

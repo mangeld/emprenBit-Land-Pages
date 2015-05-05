@@ -25,6 +25,15 @@ admin.factory('api', ['$http', function($http){
     return fdata;
   };
 
+  api.deleteCard = function(landingId, cardId){
+
+    return $http({
+      method: 'DELETE',
+      url: 'v1/pages/'+landingId+'/cards/'+cardId
+    });
+
+  };
+
   api.uploadCard = function(landingId, jsonData, images){
 
     return $http({
@@ -54,6 +63,34 @@ admin.factory('api', ['$http', function($http){
       }
     });
   };
+
+  api.updatePage = function(landing, image) {
+
+    var cleanLanding =
+    {
+      "title": landing.title,
+      "name": landing.name,
+      "description": landing.description,
+      "email": landing.owner
+    };
+
+    return $http({
+      method: 'POST',
+      url: 'v1/pages/' + landing.id,
+      headers: {
+        "X-HTTP-Method-Override": "PUT",
+        "Content-Type": undefined
+      },
+      data: { landingData: cleanLanding, image: image },
+      transformRequest: function(data) {
+        var fdata = new FormData();
+        fdata.append( 'data', angular.toJson(data.landingData) );
+        fdata.append( 'logo', image );
+        return fdata;
+      }
+    });
+
+  }
 
   api.uploadPage = function(jsonData, images){
     return $http({

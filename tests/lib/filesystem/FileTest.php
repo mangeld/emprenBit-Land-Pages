@@ -47,5 +47,17 @@ class FileTest extends PHPUnit_Framework_TestCase
     vfsStreamWrapper::getRoot()->addChild(vfsStream::newFile('test.img'));
     File::fromUploadedFile(vfsStream::url('test/test.img'));
   }
+//
+//  public function testFileRegexIsLoaded()
+//  {
+//    vfsStreamWrapper::getRoot()->addChild(vfsStream::newDirectory('09123'));
+//    vfsStreamWrapper::getRoot()->addChild(vfsStream::newFile('09123/small_3334.jpg'));
+//    vfsStreamWrapper::getRoot()->addChild(vfsStream::newFile('09123/large_3334.jpg'));
+//    vfsStreamWrapper::getRoot()->addChild(vfsStream::newFile('09123/medium_3334.jpg'));
+//    File::openFile(vfsStream::url('test/09123/small_3334.jpg'));
+//    $this->assertFalse(vfsStreamWrapper::getRoot()->hasChild('09123/large_3334.jpg'));
+//    $this->assertFalse(vfsStreamWrapper::getRoot()->hasChild('09123/medium_3334.jpg'));
+//    $this->assertFalse(vfsStreamWrapper::getRoot()->hasChild('09123/small_3334.jpg'));
+//  }
 
 }

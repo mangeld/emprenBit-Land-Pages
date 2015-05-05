@@ -182,4 +182,25 @@ class PageTest extends PHPUnit_Framework_TestCase
 
     $this->assertEquals( $card, $result );
   }
+
+  public function testOnly3ColCardAreRetrieved()
+  {
+    $page = \mangeld\obj\Page::createPageWithNewUser('test@test.com');
+    $page->addCard( \mangeld\obj\Card::createCard(\mangeld\obj\DataTypes::cardThreeColumns) );
+    $page->addCard( \mangeld\obj\Card::createCard(\mangeld\obj\DataTypes::cardThreeColumns) );
+    $page->addCard( \mangeld\obj\Card::createCard(\mangeld\obj\DataTypes::cardForm) );
+
+    $cards = $page->get3ColCards();
+
+    /**
+     * @var  $key
+     * @var \mangeld\obj\Card $card
+     */
+    foreach ($cards as $key => $card)
+    {
+      $this->assertEquals(\mangeld\obj\DataTypes::cardThreeColumns, $card->getType());
+    }
+
+    $this->assertEquals(2, count($cards));
+  }
 }
