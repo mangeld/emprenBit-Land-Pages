@@ -15,6 +15,17 @@ admin.controller('LandingEditController', function($scope, $route, api){
     });
   };
 
+  $scope.updateLanding = function(event)
+  {
+    var logoInput = $(event.target).parents('form').find('input[type="file"]');
+    var logoFile = logoInput[0].files.item(0);
+
+    api.updatePage($scope.landing, logoFile)
+      .success(function(){
+        $scope.fetchLanding();
+      });
+  };
+
   $scope.addBlock = function()
   {
     $scope.showAddBlockOverlay = true;
@@ -25,14 +36,25 @@ admin.controller('LandingEditController', function($scope, $route, api){
     $scope.showAddBlockOverlay = false;
   };
 
-  $scope.addThreeColumns = function()
+  $scope.initCardsIfEmpty = function()
   {
-    $scope.closeOverlay();
     if( typeof $scope.landing.cards == 'undefined' )
     {
       $scope.landing.cards = {};
       $scope.landing.cards.cardThreeColumns = [];
+      $scope.landing.cards.cardForm = {};
     }
+  };
+
+  $scope.addFormCard = function()
+  {
+    $scope.initCardsIfEmpty();
+  };
+
+  $scope.addThreeColumns = function()
+  {
+    $scope.closeOverlay();
+    $scope.initCardsIfEmpty();
 
     $scope.landing.cards.cardThreeColumns.push(
       {

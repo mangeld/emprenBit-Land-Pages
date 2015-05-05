@@ -87,26 +87,24 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
       $app->closeDB();
     });
 
+    //TODO: If page exists update it
+    $slimApp->put('/:id', function($id) use ($slimApp, $app){
+      $app->updatePage($id, $slimApp->request->params('data'));
+      //$slimApp->response->setBody( $slimApp->request->post('data') );
+    });
+
     /**
      * Add a page by it's name.
      *
      * Returns: A json object with the page created.
      */
     $slimApp->post('/', function() use ($slimApp, $app){
-
-      if( $app->maxPostSizeExceeded( (int) $slimApp->request->headers->get('Content-Length') ) )
-      {
-
-      }
-      else
-      {
-        $json = $slimApp->request->post('data');
-        $jsonObj = json_decode($json);
-        //TODO: CREAR PAGINA Y DEVOLVER DATOS DE LA PAGINA CREADA, GUARDAR IMAGEN
-        //TODO: Usar parametros y no un objeto json para mas compatibilidad
-        //move_uploaded_file($_FILES['image']['tmp_name'], '../public/storage/'.$_FILES['image']['name']);
-        $app->createPage($jsonObj);
-      }
+      $json = $slimApp->request->post('data');
+      $jsonObj = json_decode($json);
+      //TODO: CREAR PAGINA Y DEVOLVER DATOS DE LA PAGINA CREADA, GUARDAR IMAGEN
+      //TODO: Usar parametros y no un objeto json para mas compatibilidad
+      //move_uploaded_file($_FILES['image']['tmp_name'], '../public/storage/'.$_FILES['image']['name']);
+      $app->createPage($jsonObj);
     });
 
     /**

@@ -64,6 +64,34 @@ admin.factory('api', ['$http', function($http){
     });
   };
 
+  api.updatePage = function(landing, image) {
+
+    var cleanLanding =
+    {
+      "title": landing.title,
+      "name": landing.name,
+      "description": landing.description,
+      "email": landing.owner
+    };
+
+    return $http({
+      method: 'POST',
+      url: 'v1/pages/' + landing.id,
+      headers: {
+        "X-HTTP-Method-Override": "PUT",
+        "Content-Type": undefined
+      },
+      data: { landingData: cleanLanding, image: image },
+      transformRequest: function(data) {
+        var fdata = new FormData();
+        fdata.append( 'data', angular.toJson(data.landingData) );
+        fdata.append( 'logo', image );
+        return fdata;
+      }
+    });
+
+  }
+
   api.uploadPage = function(jsonData, images){
     return $http({
       method: 'POST',

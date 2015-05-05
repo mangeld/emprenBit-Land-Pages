@@ -9,9 +9,9 @@
           <button ng-click="closeOverlay()"><span class="fa fa-close"></span></button>
         </div>
         <div class="content">
-          <button class="block-button">
+<!--          <button class="block-button">
             <span>Formulario</span>
-          </button>
+          </button>-->
           <button class="block-button" ng-click="addThreeColumns()">
             <span>Triptico</span>
           </button>
@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <form action="">
+    <form >
       <div class="inline_input">
         <span>Landing Name</span>
         <input type="text" ng-model="landing.name"/>
@@ -43,6 +43,9 @@
       <div class="inline_input">
         <span>Logo: </span>
         <img src="{{ landing.logo }}" alt=""/>
+      </div>
+      <div class="inline_input">
+        <button ng-click="updateLanding($event)"><span>Actualizar</span></button>
       </div>
     </form>
 
@@ -99,20 +102,6 @@
       <button class="red" ng-click='deleteCard($event, card3col)'><span class="fa fa-trash"></span></button>
     </form>
   </div>
-
-  <form action="" ng-submit="">
-    <div class="container">
-      <div class="inline_input">
-        <span>Campo1</span>
-        <input type="text"/>
-        <select name="" id="" title="Tipo de dato">
-          <option value="">Texto</option>
-          <option value="">Email</option>
-        </select>
-      </div>
-      <button class="block-button"><span>Añadir campo...</span></button>
-    </div>
-  </form>
 
   <div class="container">
       <button class="block-button" ng-click="addBlock()">

@@ -87,6 +87,7 @@ class App
           if( $field->getType() == DataTypes::fieldImage )
             $this->deleteImageResource( $page->getId(), $field->getText() );
 
+    //TODO: Not so clean...
     @rmdir(Config::storage_folder . DIRECTORY_SEPARATOR . $page->getId());
 
     $this->db->deletePage($pageId);
@@ -208,6 +209,27 @@ class App
     } catch ( FileUploadException $e ) {}
     $this->db->savePage($page);
     return $page;
+  }
+
+  public function updatePage($pageId, $data)
+  {
+    $page = $this->db->fetchPage($pageId);
+    if( $page == null ) return false;
+    $obj = json_decode($data);
+
+    $page->setTitle( $obj->title );
+    $page->setName( $obj->name );
+    $page->setDescription( $obj->description );
+    $page->getOwner()->setEmail( $obj->email );
+
+    try{
+      $logo = File::fromUploadedFile('logo');
+      $logo->saveToStorage($page);
+      $this->deleteImageResource($page->getId(), $page->getLogoId());
+      $page->setLogoId( $logo->getId() );
+    } catch ( FileUploadException $e ) {}
+
+    $this->db->savePage($page);
   }
 
   /**
