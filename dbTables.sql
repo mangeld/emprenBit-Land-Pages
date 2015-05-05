@@ -148,44 +148,18 @@ CREATE TABLE IF NOT EXISTS `CompletedForms` (
   `formId` VARCHAR(36) NOT NULL,
   `completionDate` DECIMAL(17,4) NULL,
   `sourceIp` VARCHAR(45) NULL,
-  `owner` VARCHAR(36) NULL,
+  `pageId` VARCHAR(36) NULL,
+  `field_name` VARCHAR(45) NULL,
+  `field_email` VARCHAR(45) NULL,
   PRIMARY KEY (`formId`),
   CONSTRAINT `fk_CompletedForms_2`
-    FOREIGN KEY (`owner`)
-    REFERENCES `Users` (`userId`)
+    FOREIGN KEY (`pageId`)
+    REFERENCES `Pages` (`idPages`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_CompletedForms_2_idx` ON `CompletedForms` (`owner` ASC);
-
-
--- -----------------------------------------------------
--- Table `FormFields`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `FormFields` ;
-
-CREATE TABLE IF NOT EXISTS `FormFields` (
-  `fieldId` VARCHAR(36) NOT NULL,
-  `formId` VARCHAR(36) NOT NULL,
-  `contentType` VARCHAR(36) NULL,
-  `content` TEXT NULL,
-  PRIMARY KEY (`fieldId`, `formId`),
-  CONSTRAINT `fk_FormData_1`
-    FOREIGN KEY (`formId`)
-    REFERENCES `CompletedForms` (`formId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_FormData_2`
-    FOREIGN KEY (`contentType`)
-    REFERENCES `Types` (`typeId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-CREATE INDEX `fk_FormData_1_idx` ON `FormFields` (`formId` ASC);
-
-CREATE INDEX `fk_FormData_2_idx` ON `FormFields` (`contentType` ASC);
+CREATE INDEX `fk_CompletedForms_2_idx` ON `CompletedForms` (`pageId` ASC);
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
