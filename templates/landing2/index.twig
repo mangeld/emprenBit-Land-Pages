@@ -47,6 +47,12 @@
                 {% endfor %}
                 {% endif %}
 			</div>
+            <form action="/v1/forms/{{ page.getId() }}" method="POST">
+                <input type="text" name="name" id=""/>
+                <input type="email" name="email"/>
+                <input type="text" name="_METHOD" value="PUT" hidden/>
+                <button><span>Enviar</span></button>
+            </form>
 		</div>
 		<div class="footer">
 			<div class="content page-footer">

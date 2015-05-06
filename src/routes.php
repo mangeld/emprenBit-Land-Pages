@@ -74,7 +74,19 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
       //TODO: Retrieve a list of forms
     });
 
-    $slimApp->put(':pageId', function($pageId) use ($slimApp, $app){
+    $slimApp->put('/:pageId', function($pageId) use ($slimApp, $app){
+      $params = $slimApp->request->params();
+
+      if( isset($params['name']) && isset($params['email']) )
+      {
+        $app->addForm($pageId, $params);
+        $slimApp->response->setBody('OK');
+      }
+      else
+      {
+        $slimApp->response->setStatus(400);
+        $slimApp->response->setBody('BAD REQUEST');
+      }
 
     });
 

@@ -7,6 +7,7 @@ use mangeld\exceptions\FileUploadException;
 use mangeld\lib\filesystem\File;
 use mangeld\obj\Card;
 use mangeld\obj\DataTypes;
+use mangeld\obj\Form;
 use Rhumsaa\Uuid\Console\Exception;
 
 class App
@@ -125,6 +126,16 @@ class App
       return true;
     }
     else return false;
+  }
+
+  public function addForm($pageId, $params)
+  {
+    $page = $this->db->fetchPage($pageId);
+    $form = Form::createForm();
+    $form->setName( $params['name'] );
+    $form->setEmail( $params['email'] );
+    $page->addForm( $form );
+    $this->db->savePage( $page );
   }
 
   public function getPages()
