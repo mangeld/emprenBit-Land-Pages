@@ -70,8 +70,8 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
 
   $slimApp->group('/forms', function() use ($slimApp, $app){
 
-    $slimApp->get('/:pageId', function($pageId) use ($app){
-      //TODO: Retrieve a list of forms
+    $slimApp->get('/:pageId', function($pageId) use ($slimApp, $app){
+      $slimApp->response->setBody( $app->getForms($pageId) );
     });
 
     $slimApp->put('/:pageId', function($pageId) use ($slimApp, $app){

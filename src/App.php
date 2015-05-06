@@ -8,6 +8,7 @@ use mangeld\lib\filesystem\File;
 use mangeld\obj\Card;
 use mangeld\obj\DataTypes;
 use mangeld\obj\Form;
+use mangeld\obj\Page;
 use Rhumsaa\Uuid\Console\Exception;
 
 class App
@@ -128,6 +129,16 @@ class App
     else return false;
   }
 
+  public function getForms($pageId)
+  {
+    $page = $this->db->fetchPage($pageId);
+    $forms = array();
+    $this->buildFormsObj($page, $forms);
+    $obj = new \StdClass();
+    $obj->forms = $forms;
+    return json_encode($obj);
+  }
+
   public function addForm($pageId, $params)
   {
     $page = $this->db->fetchPage($pageId);
@@ -184,24 +195,27 @@ class App
             $obj->cards = new \StdClass();
         }
 
-      $objForms = array();
       if( $page->countForms() > 0)
-        foreach( $page->getForms() as $id => $form )
-        {
-          $objForm = new \StdClass();
-          $objForm->name = $form->getName();
-          $objForm->email = $form->getEmail();
-          $objForm->sourceIp = $form->getSourceIp();
-          $objForm->completionDate = $form->getCompletionDate();
-
-          $obj->forms[] = $objForm;
-        }
-
+        $this->buildFormsObj($page, $obj->forms);
 
       $jsonArr['body'][] = $obj;
     }
 
     return json_encode($jsonArr);
+  }
+
+  private function buildFormsObj(Page $page, &$forms)
+  {
+    foreach( $page->getForms() as $id => $form )
+    {
+      $objForm = new \StdClass();
+      $objForm->name = $form->getName();
+      $objForm->email = $form->getEmail();
+      $objForm->sourceIp = $form->getSourceIp();
+      $objForm->completionDate = $form->getCompletionDate();
+
+      $forms[] = $objForm;
+    }
   }
 
   public function getPagesAsObj()
