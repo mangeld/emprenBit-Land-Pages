@@ -21,4 +21,14 @@ class FormTest extends PHPUnit_Framework_TestCase
     $this->assertInstanceOf('\mangeld\obj\Form', $form);
   }
 
+  public function testSanitize()
+  {
+    $form = Form::createForm();
+    $name = 'asdfáeèáòó@sdf4_-rw<br><p>cacacaca</p>';
+    $form->setName($name);
+
+    $this->assertNotEquals($name, $form->getName());
+
+  }
+
 }

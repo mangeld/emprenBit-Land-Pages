@@ -19,8 +19,7 @@ class Form extends DataStore
     $form = new Form();
     $form->validator = new StringValidator();
     $form->id = Uuid::uuid4()->toString();
-    if( isset($_SERVER['REMOTE_ADDR']) )
-      $form->sourceIp = htmlspecialchars($_SERVER['REMOTE_ADDR']);
+    $form->sourceIp = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP);
     $form->completionDate = microtime(true);
     return $form;
   }
@@ -42,7 +41,16 @@ class Form extends DataStore
     { $this->page = $page; }
 
   public function setName($name)
-    { $this->f_Name = $name; }
+  {
+    $this->f_Name = $this->sanitizeName($name);
+  }
+
+  private function sanitizeName($name)
+  {
+    $filtered = filter_var($name, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
+    $filtered = filter_var($filtered, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_AMP);
+    return $filtered;
+  }
 
   public function setEmail($email)
   {
