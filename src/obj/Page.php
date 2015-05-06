@@ -152,7 +152,10 @@ class Page extends DataStore
   public function countCards() { return count( $this->cards ); }
 
   public function countForms()
-    { return count( $this->forms ); }
+  {
+    $this->checkForms();
+    return count( $this->forms );
+  }
 
   public function setLogoId($id)
   {

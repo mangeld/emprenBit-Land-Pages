@@ -281,15 +281,23 @@ class DBTest extends PHPUnit_Framework_TestCase
     $page->addForm(\mangeld\obj\Form::createForm());
     $page->addForm(\mangeld\obj\Form::createForm());
     $thisAswell = \mangeld\obj\Form::createForm();
+    $thisAswell->setName('testName');
+    $thisAswell->setEmail('some@email.com');
     $page->addForm($thisAswell);
     $page->addForm(\mangeld\obj\Form::createForm());
     $this->db->savePage($page);
     $thisShoulExist = \mangeld\obj\Form::createForm();
     $thisShoulExist->setName('Hiiii');
+    $thisShoulExist->setEmail('hooo@hooo.com');
     $page->addForm($thisShoulExist);
     $page->getForms();
 
     $this->assertEquals($thisShoulExist, $page->getForm($thisShoulExist->getId()));
     $this->assertEquals($thisAswell, $page->getForm($thisAswell->getId()));
+
+    $this->db->savePage($page);
+    $pageShouldHaveIt = $this->db->fetchPage($page->getId());
+    $this->assertEquals($thisShoulExist, $pageShouldHaveIt->getForm($thisShoulExist->getId()), '', 0.0001);
+    $this->assertEquals($thisAswell, $pageShouldHaveIt->getForm($thisAswell->getId()), '', 0.0001);
   }
 }

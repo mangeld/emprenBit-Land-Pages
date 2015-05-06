@@ -173,6 +173,19 @@ class App
             $obj->cards = new \StdClass();
         }
 
+      $objForms = array();
+      if( $page->countForms() > 0)
+        foreach( $page->getForms() as $id => $form )
+        {
+          $objForm = new \StdClass();
+          $objForm->name = $form->getName();
+          $objForm->email = $form->getEmail();
+          $objForm->sourceIp = $form->getSourceIp();
+          $objForm->completionDate = $form->getCompletionDate();
+
+          $obj->forms[] = $objForm;
+        }
+
 
       $jsonArr['body'][] = $obj;
     }

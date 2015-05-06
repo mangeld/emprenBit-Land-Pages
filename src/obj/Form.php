@@ -19,6 +19,8 @@ class Form extends DataStore
     $form = new Form();
     $form->validator = new StringValidator();
     $form->id = Uuid::uuid4()->toString();
+    if( isset($_SERVER['REMOTE_ADDR']) )
+      $form->sourceIp = htmlspecialchars($_SERVER['REMOTE_ADDR']);
     $form->completionDate = microtime(true);
     return $form;
   }
