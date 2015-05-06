@@ -1,5 +1,8 @@
 <?php
 
+use mangeld\obj\Page;
+use mangeld\obj\Form;
+
 class PageTest extends PHPUnit_Framework_TestCase
 {
   public function setUp()
@@ -202,5 +205,26 @@ class PageTest extends PHPUnit_Framework_TestCase
     }
 
     $this->assertEquals(2, count($cards));
+  }
+
+  public function testFormIsAdded()
+  {
+    $page = Page::createPageWithNewUser('testFormIsAddded@addit.it');
+    $form = \mangeld\obj\Form::createForm();
+    $page->addForm( $form );
+    $result = $page->getForm($form->getId());
+
+    $this->assertEquals($form, $result, '', 0.0001);
+  }
+
+  public function testFormReference()
+  {
+    $page = Page::createPageWithNewUser('testFormReference@test.it');
+    $form = Form::createForm();
+
+    $page->addForm($form);
+    $result = $page->getForm($form->getId());
+
+    $this->assertEquals($result->getPage(), $page, '', 0.0001 );
   }
 }

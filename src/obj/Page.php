@@ -2,6 +2,9 @@
 
 namespace mangeld\obj;
 
+use mangeld\db\DB;
+use mangeld\obj\Form;
+
 class Page extends DataStore
 {
   /**
@@ -42,6 +45,8 @@ class Page extends DataStore
   private $owner = null; //TODO: Load here the user object that represents the owner
   /** @var Card[] */
   private $cards;
+  /** @var Form[] */
+  private $forms;
 
   public function __construct(
     \mangeld\lib\StringValidator $validator = null)
@@ -89,6 +94,36 @@ class Page extends DataStore
     $this->cards[ $card->getId() ] = $card;
   }
 
+  public function addForm(Form $form)
+  {
+    $form->setPage( $this );
+    $this->forms[ $form->getId() ] = $form;
+  }
+
+  public function getForm($formId)
+  {
+    $this->checkForms();
+    return $this->forms[ $formId ];
+  }
+
+  public function getForms()
+  {
+    $this->checkForms();
+    return $this->forms;
+  }
+
+  private function checkForms()
+  {
+    if( $this->forms == null )
+    {
+      $db = new DB();
+      /** @var Form[] $forms */
+      $forms = $db->fetchForms( $this->getId() );
+      foreach( $forms as $id => $form )
+        $this->addForm($form);
+    }
+  }
+
   public function getCard($cardId)
   {
     return $this->cards[ $cardId ];
@@ -115,6 +150,9 @@ class Page extends DataStore
   }
 
   public function countCards() { return count( $this->cards ); }
+
+  public function countForms()
+    { return count( $this->forms ); }
 
   public function setLogoId($id)
   {

@@ -2,6 +2,9 @@
 
 namespace mangeld\db;
 
+use mangeld\obj\Form;
+use mangeld\obj\Page;
+
 class DB implements DBInterface
 {
   private $pdo;
@@ -38,8 +41,15 @@ SQL;
   private static $sql_delete_card = <<<SQL
   DELETE FROM `PageCards` WHERE `idCard` = ?
 SQL;
-
-
+  private static $sql_insert_form = <<<SQL
+  INSERT INTO `CompletedForms`
+    (`formId`, `completionDate`, `sourceIp`, `pageId`, `field_name`, `field_email`)
+  VALUES (?, ?, ?, ?, ?, ?);
+SQL;
+  private static $sql_select_form = <<<SQL
+SELECT `formId`, `completionDate`, `sourceIp`, `pageId`, `field_name`, `field_email`
+FROM `CompletedForms` WHERE `pageId` = ?;
+SQL;
 
 
   public function __construct()
@@ -123,6 +133,7 @@ SQL;
   {
     $userSaved = true;
     $cardsSaved = true;
+    $formsSaved = true;
 
     if( $page->getOwner() != null )
       $userSaved = $this->saveUser( $page->getOwner() );
@@ -151,7 +162,10 @@ SQL;
     if( $page->countCards() > 0 )
       $cardsSaved = $this->saveCards( $page->getCards() );
 
-    return $result && $userSaved && $cardsSaved;
+    if( $page->countForms() > 0 )
+      $formsSaved = $this->saveForms( $page->getForms() );
+
+    return $result && $userSaved && $cardsSaved && $formsSaved;
   }
 
   /**
@@ -411,5 +425,46 @@ SQL;
 
     $prepared = null;
     return $user;
+  }
+
+  public function saveForms($forms)
+  {
+    $formsSaved = true;
+
+    foreach( $forms as $id => $form )
+      $formsSaved = $this->saveForm($form) && $formsSaved;
+
+    return $formsSaved;
+  }
+
+  public function saveForm(Form $form)
+  {
+    $prep = $this->pdo->prepare(self::$sql_insert_form);
+    $prep->bindValue( 1, $form->getId() );
+    $prep->bindValue( 2, $form->getCompletionDate() );
+    $prep->bindValue( 3, $form->getSourceIp() );
+    $prep->bindValue( 4, $form->getPage()->getId() );
+    $prep->bindValue( 5, $form->getName() );
+    $prep->bindValue( 6, $form->getEmail() );
+    $status = $prep->execute();
+
+    return $status;
+  }
+
+  public function fetchForms($pageID)
+  {
+    $prep = $this->pdo->prepare(self::$sql_select_form);
+    $prep->bindValue( 1, $pageID );
+    $status = $prep->execute();
+
+    $forms = array();
+
+    while( $row = $prep->fetchObject() )
+    {
+      $form = Form::buildForm($row);
+      $forms[ $form->getId() ] = $form;
+    }
+
+    return $forms;
   }
 }

@@ -241,4 +241,55 @@ class DBTest extends PHPUnit_Framework_TestCase
 
     $this->assertNull($shouldBeEmpty);
   }
+
+  public function testFormIsAddedAndRetrieved()
+  {
+    $page = Page::createPageWithNewUser('testFormIsAddedAndRetrieved@additmuthafucka.add');
+    $page->setName('sometest');
+    $form = \mangeld\obj\Form::createForm();
+    $form->setName('Some name');
+    $page->addForm($form);
+    $this->db->savePage( $page );
+    //$this->db->saveForm($form);
+
+    $res = $this->db->fetchPage($page->getId())->getForm($form->getId());
+
+    $this->assertEquals($form, $res, '', 0.0001);
+  }
+
+  public function testLonelyFormIsSaved()
+  {
+    $page = Page::createPageWithNewUser('testLonelyform@soooLooonely.alo');
+    $page->setName('Some lonely name');
+    $this->db->savePage( $page );
+
+    $pageRetrieved = $this->db->fetchPage($page->getId());
+    $lonelyForm = \mangeld\obj\Form::createForm();
+    $lonelyForm->setName('lonely form');
+    $lonelyForm->setEmail('test@test.lon');
+    $pageRetrieved->addForm($lonelyForm);
+    $this->db->savePage( $pageRetrieved );
+    $pageShouldHaveForm = $this->db->fetchPage( $page->getId() );
+
+    $this->assertEquals($lonelyForm, $pageShouldHaveForm->getForm($lonelyForm->getId()), '', 0.0001);
+  }
+
+  public function testNewFormIsAddedToExistingOnes()
+  {
+    $page = Page::createPageWithNewUser('testFormsAndNewAreAdded@forms.form');
+    $page->setName('Tha forms');
+    $page->addForm(\mangeld\obj\Form::createForm());
+    $page->addForm(\mangeld\obj\Form::createForm());
+    $thisAswell = \mangeld\obj\Form::createForm();
+    $page->addForm($thisAswell);
+    $page->addForm(\mangeld\obj\Form::createForm());
+    $this->db->savePage($page);
+    $thisShoulExist = \mangeld\obj\Form::createForm();
+    $thisShoulExist->setName('Hiiii');
+    $page->addForm($thisShoulExist);
+    $page->getForms();
+
+    $this->assertEquals($thisShoulExist, $page->getForm($thisShoulExist->getId()));
+    $this->assertEquals($thisAswell, $page->getForm($thisAswell->getId()));
+  }
 }

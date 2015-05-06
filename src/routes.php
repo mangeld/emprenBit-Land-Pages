@@ -68,6 +68,18 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
 
   });
 
+  $slimApp->group('/forms', function() use ($slimApp, $app){
+
+    $slimApp->get('/:pageId', function($pageId) use ($app){
+      //TODO: Retrieve a list of forms
+    });
+
+    $slimApp->put(':pageId', function($pageId) use ($slimApp, $app){
+
+    });
+
+  });
+
   /**
    * Here we define the routes for the 'pages' resource, wich lets
    * us list all the pages, add, remove, or get an specific Page data.
