@@ -12,6 +12,20 @@ admin.config(['$routeProvider', function($routeProvider){
     });
 }]);
 
+admin.directive('ngEnsureIsLoaded', function(){
+
+  return {
+    link: function(scope, elmnt, attrs){
+      elmnt.bind('error', function(){
+        //TODO Finish this
+      });
+    },
+    scope: true,
+    restrict: 'A'
+  }
+
+});
+
 admin.directive('ngFileUpload', function(){
   return {
     link: function(scope, ele){
