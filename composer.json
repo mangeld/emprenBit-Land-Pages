@@ -1,9 +1,13 @@
 {
+  "name": "mangeld/emprenbit-land-pages",
+  "description": "A small cms for generating simple landing pages",
+  "license": "MPL-2.0",
   "require":
   {
     "slim/slim": "2.6.2",
     "twig/twig": "1.18.0",
-    "rhumsaa/uuid": "2.8.0"
+    "rhumsaa/uuid": "2.8.0",
+    "goodby/csv": "1.2.0"
   },
   "require-dev":
   {
