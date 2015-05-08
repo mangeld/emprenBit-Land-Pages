@@ -74,6 +74,12 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
       $slimApp->response->setBody( $app->getForms($pageId) );
     });
 
+    $slimApp->get('/:pageId/csv', function($pageId) use ($slimApp, $app){
+      $slimApp->response->headers()->set('Content-Type', 'text/csv');
+      $slimApp->response->headers()->set('Content-Disposition', 'attachment; filename="fname.csv"');
+      $app->getFormsAsCsv($pageId);
+    });
+
     $slimApp->put('/:pageId', function($pageId) use ($slimApp, $app){
       $params = $slimApp->request->params();
 

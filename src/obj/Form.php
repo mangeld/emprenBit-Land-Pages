@@ -58,6 +58,15 @@ class Form extends DataStore
     $this->f_email = $email;
   }
 
+  public function asArray()
+  {
+    $out = get_object_vars( $this );
+    unset( $out['id'] );
+    unset( $out['validator'] );
+    unset( $out['page'] );
+    return $out;
+  }
+
   public function getSourceIp()
     { return $this->sourceIp; }
 

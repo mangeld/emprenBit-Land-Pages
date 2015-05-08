@@ -2,6 +2,8 @@
 
 namespace mangeld;
 
+use Goodby\CSV\Export\Standard\Exporter;
+use Goodby\CSV\Export\Standard\ExporterConfig;
 use mangeld\exceptions\FileSystemException;
 use mangeld\exceptions\FileUploadException;
 use mangeld\lib\filesystem\File;
@@ -147,6 +149,24 @@ class App
     $form->setEmail( $params['email'] );
     $page->addForm( $form );
     $this->db->savePage( $page );
+  }
+
+  public function getFormsAsCsv($pageId)
+  {
+    $page = $this->db->fetchPage($pageId);
+    $formsArray = array_map(function($elemnt){
+      return $elemnt->asArray();
+    }, $page->getForms());
+
+    $exampleForm = new Form();
+
+    $config = new ExporterConfig();
+    $config
+      ->setDelimiter(';')
+      ->setColumnHeaders( array_keys( $exampleForm->asArray() ) );
+
+    $exporter = new Exporter($config);
+    $exporter->export('php://output', $formsArray);
   }
 
   public function getPages()
