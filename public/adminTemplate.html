@@ -7,7 +7,7 @@
             <span>{{ landing.name }}</span>
             <span class="superscript">{{ landing.creation_timestamp * 1000 | date:"dd/MM/yyyy HH:mm:ss" }}</span>
             <a target="_blank" href="{{ landing.name }}"><button><span class="fa fa-external-link"></span></button></a>
-            <a href="/v1/forms/{{ landing.id }}/csv" title="Descargar formularios como csv"><button><span class="fa fa-download"></span></button></a>
+            <a target="_blank" href="/v1/forms/{{ landing.id }}/csv" title="Descargar formularios como csv"><button><span class="fa fa-download"></span></button></a>
             <button ng-click="show_edit_page = !show_edit_page"><span class="fa fa-pencil"></span></button>
             <button class="red" ng-click='removeItem($event, $index)'><span class="fa fa-trash"></span></button>
           </span>

@@ -75,8 +75,6 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
     });
 
     $slimApp->get('/:pageId/csv', function($pageId) use ($slimApp, $app){
-      $slimApp->response->headers()->set('Content-Type', 'text/csv');
-      $slimApp->response->headers()->set('Content-Disposition', 'attachment; filename="fname.csv"');
       $app->getFormsAsCsv($pageId);
     });
 

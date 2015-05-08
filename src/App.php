@@ -12,6 +12,7 @@ use mangeld\obj\DataTypes;
 use mangeld\obj\Form;
 use mangeld\obj\Page;
 use Rhumsaa\Uuid\Console\Exception;
+use Slim\Slim;
 
 class App
 {
@@ -154,6 +155,14 @@ class App
   public function getFormsAsCsv($pageId)
   {
     $page = $this->db->fetchPage($pageId);
+    $slim = Slim::getInstance();
+
+    if( $page == null || $page->countForms() == 0 )
+      $slim->notFound();
+
+    $slim->response->headers()->set('Content-Type', 'text/csv');
+    $slim->response->headers()->set('Content-Disposition', 'attachment; filename="'.$page->getName().'.csv"');
+
     $formsArray = array_map(function($elemnt){
       return $elemnt->asArray();
     }, $page->getForms());
