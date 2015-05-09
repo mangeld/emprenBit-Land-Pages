@@ -1,6 +1,7 @@
 .vagrant/
 node_modules
 *.css
+!public/**/css/*.css
 
 #Sublime Text Files
 proj.*
