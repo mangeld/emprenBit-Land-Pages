@@ -18,6 +18,6 @@ try
   File::openFile($source)->delete();
 }
 catch (FileSystemException $e)
-{ error_log('Error opening image $source'); }
+{ error_log('Error opening image $source', 3, \mangeld\Config::error_log_file); }
 
 exit(0);

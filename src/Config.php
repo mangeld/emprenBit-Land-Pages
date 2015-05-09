@@ -6,6 +6,7 @@ class Config
 {
   const storage_folder = '/vagrant/public/storage';
   const script_mk_image_versions = 'php /vagrant/scripts/mk_image_versions.php';
+  const error_log_file = '/vagrant/errors.log';
   const storage_permission = 0700;
   const image_quality = 80;
   public static $image_sizes = array(

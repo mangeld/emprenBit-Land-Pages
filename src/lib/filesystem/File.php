@@ -131,7 +131,8 @@ class File
     {
       try
         { $im = Image::fromFile($this); }
-      catch( \ImagickException $e){}
+      catch( \ImagickException $e)
+       { error_log('Error making image versions; '.$e->getMessage(), 3, Config::error_log_file); }
 
       if( $im != null )
       {
