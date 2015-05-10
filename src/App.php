@@ -29,7 +29,7 @@ class App
     $this->uuidGen = $idgen;
 
     if( !class_exists('Imagick') )
-      error_log('ALERT: Class Imagick not found', 3, Config::error_log_file);
+      error_log('ALERT: Class Imagick not found \n', 3, Config::error_log_file);
   }
 
   public static function createApp()
