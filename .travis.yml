@@ -18,3 +18,5 @@ services:
 
 install:
   - composer install
+
+script: phpunit --testsuite travis_tests

@@ -10,5 +10,9 @@
     <testsuite name="testing">
       <directory>tests</directory>
     </testsuite>
+    <testsuite name="travis_tests">
+      <directory>tests</directory>
+      <exclude>tests/lib/LoggerTest.php</exclude>
+    </testsuite>
   </testsuites>
 </phpunit>
