@@ -19,15 +19,16 @@ class Logger
       try
       { $this->logFile = File::openFile(Config::log_file); }
       catch( FileSystemException $e )
-      { $this->logFile = File::newFile(Config::log_file); }
+      { $this->logFile = @File::newFile(Config::log_file); }
 
-      $this->logFile->open('a');
+      if( $this->logFile != null )
+        $this->logFile->open('a');
     }
   }
 
   function __destruct()
   {
-    if( Config::log_enabled )
+    if( Config::log_enabled && $this->logFile != null )
       $this->logFile->close();
   }
 
@@ -46,7 +47,7 @@ class Logger
 
   public function write($message, $level)
   {
-    if( !Config::log_enabled ) return;
+    if( !Config::log_enabled || $this->logFile == null ) return;
 
     $handle = $this->logFile->getHandle();
 
