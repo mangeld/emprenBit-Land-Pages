@@ -50,7 +50,7 @@ class Config
 
   public function logEnabled()
   {
-    return $this->varOrEnv('log_enabled') == true;
+    return $this->varOrEnv('log_enabled') === true;
   }
 
   public function logDebug()
