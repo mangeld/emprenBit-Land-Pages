@@ -7,6 +7,7 @@ use Goodby\CSV\Export\Standard\ExporterConfig;
 use mangeld\exceptions\FileSystemException;
 use mangeld\exceptions\FileUploadException;
 use mangeld\lib\filesystem\File;
+use mangeld\lib\Logger;
 use mangeld\obj\Card;
 use mangeld\obj\DataTypes;
 use mangeld\obj\Form;
@@ -22,15 +23,20 @@ class App
    */
   private $db = null;
   private $uuidGen = null;
+  private $log = null;
 
   public function __construct($db = null, $idgen = null)
   {
     $this->db = $db;
     $this->uuidGen = $idgen;
+    $this->log = Logger::instance();
 
     if( !class_exists('Imagick') )
-      error_log('ALERT: Class Imagick not found \n', 3, Config::error_log_file);
+      $this->log->critical('Class Imagick not found');
   }
+
+  public function __destruct()
+    { Logger::close(); }
 
   public static function createApp()
   {

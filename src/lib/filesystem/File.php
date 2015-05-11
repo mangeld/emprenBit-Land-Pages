@@ -6,6 +6,7 @@ use mangeld\Config;
 use mangeld\exceptions\FileSystemException;
 use mangeld\exceptions\FileUploadException;
 use mangeld\lib\Image;
+use mangeld\lib\Logger;
 
 class File
 {
@@ -94,9 +95,9 @@ class File
     return $file;
   }
 
-  public function open()
+  public function open($mode = 'r+')
   {
-    $this->handle = fopen($this->fullPath(), 'r+');
+    $this->handle = fopen($this->fullPath(), $mode);
   }
 
   public function close()
@@ -121,7 +122,10 @@ class File
       DIRECTORY_SEPARATOR .
       $id . '.jpg';
 
-    $this->move($newPath);
+    try
+      { $this->move($newPath); }
+    catch ( FileSystemException $e )
+      { Logger::instance()->error( $e ); }
   }
 
   public function makeImageVersions($newPath)
@@ -132,7 +136,7 @@ class File
       try
         { $im = Image::fromFile($this); }
       catch( \ImagickException $e)
-       { error_log('Error making image versions; '.$e->getMessage(), 3, Config::error_log_file); }
+       { Logger::instance()->error('Error making image versions; '.$e->getMessage()); }
 
       if( $im != null )
       {
