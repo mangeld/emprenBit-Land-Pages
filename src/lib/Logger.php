@@ -11,10 +11,13 @@ class Logger
   private static $loggerInstance = null;
   /** @var File */
   private $logFile = null;
+  private $config;
 
   private function __construct()
   {
-    if( Config::log_enabled )
+    $this->config = new Config();
+
+    if( $this->config->logEnabled() )
     {
       try
       { $this->logFile = File::openFile(Config::log_file); }
@@ -28,7 +31,7 @@ class Logger
 
   function __destruct()
   {
-    if( Config::log_enabled && $this->logFile != null )
+    if( $this->config->logEnabled() && $this->logFile != null )
       $this->logFile->close();
   }
 
@@ -47,7 +50,7 @@ class Logger
 
   public function write($message, $level)
   {
-    if( !Config::log_enabled || $this->logFile == null ) return;
+    if( !$this->config->logEnabled() || $this->logFile == null ) return;
 
     $handle = $this->logFile->getHandle();
 

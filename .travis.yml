@@ -9,6 +9,7 @@ php:
 env:
   global:
     - MYSQLPASSWD=''
+    - log_enabled='false'git stat
 
 before_script:
   - mysql < dbTables.sql -uroot
