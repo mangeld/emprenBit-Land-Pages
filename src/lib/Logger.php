@@ -21,7 +21,7 @@ class Logger
       catch( FileSystemException $e )
       { $this->logFile = @File::newFile(Config::log_file); }
 
-      if( $this->logFile != null )
+      if( $this->logFile )
         $this->logFile->open('a');
     }
   }
