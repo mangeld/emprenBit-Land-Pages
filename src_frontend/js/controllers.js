@@ -12,12 +12,15 @@ admin.config(['$routeProvider', function($routeProvider){
     });
 }]);
 
-admin.directive('ngEnsureIsLoaded', function(){
+admin.directive('ngEnsureIsLoaded', function($timeout){
 
   return {
     link: function(scope, elmnt, attrs){
       elmnt.bind('error', function(){
-        //TODO Finish this
+        $timeout(function(){
+          console.log('Error loading :', attrs.src);
+          $(elmnt).attr("src", attrs.src);
+        }, 2000);
       });
     },
     scope: true,
