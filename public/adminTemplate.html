@@ -5,6 +5,11 @@
       <li class="fade" ng-repeat="landing in landingPages track by landing.id" ng-hide='landing.hidden'>
           <span class="page_overview" ng-hide="show_page_overview">
             <span>{{ landing.name }}</span>
+            <a href="#/edit/{{landing.owner}}">
+              <button>
+                <span class="fa fa-pencil"></span>
+              </button>
+            </a>
             <span class="superscript">{{ landing.creation_timestamp * 1000 | date:"dd/MM/yyyy HH:mm:ss" }}</span>
             <a target="_blank" href="{{ landing.name }}"><button><span class="fa fa-external-link"></span></button></a>
             <a ng-Check-Res-Available href="/v1/forms/{{ landing.id }}/csv" title="Descargar formularios como csv">
@@ -30,7 +35,7 @@
               <textarea cols="10" rows="3" ng-model="landing.description"></textarea>
             </div>
           </form>
-          <a href="#/edit/{{landing.owner}}">Editar landing...</a> <img ng-Ensure-Is-Loaded src="{{ landing.logo }}" alt=""/>
+          <img ng-Ensure-Is-Loaded src="{{ landing.logo }}" alt=""/>
         </div>
       </li>
     </ul>

@@ -45,8 +45,10 @@
         <img ng-Ensure-Is-Loaded src="{{ landing.logo }}" alt=""/>
       </div>
       <div class="inline_input">
-        <button ng-click="updateLanding($event)"><span>Actualizar</span></button>
-        <span><a target="_blank" href="{{ landing.name }}">Visitar Landing</a></span>
+        <button ng-click="updateLanding($event)"><span class="fa fa-save"></span></button>
+        <a target="_blank" href="{{ landing.name }}">
+          <button><span class="fa fa-external-link"></span></button>
+        </a>
       </div>
     </form>
 
