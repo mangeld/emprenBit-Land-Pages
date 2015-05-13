@@ -6,9 +6,6 @@ use \mangeld\exceptions\FileSystemException;
 
 if( !isset( $argv[1] ) && !isset($argv[2]) ) exit(1);
 
-ini_set("log_errors", 1);
-ini_set("error_log", "error.log");
-
 $source = $argv[1];
 $destination = $argv[2];
 try
@@ -18,6 +15,6 @@ try
   File::openFile($source)->delete();
 }
 catch (FileSystemException $e)
-{ error_log('Error opening image $source', 3, \mangeld\Config::error_log_file); }
+{ \mangeld\lib\Logger::instance()->error("Error opening image $source"); }
 
 exit(0);
