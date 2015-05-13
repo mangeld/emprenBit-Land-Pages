@@ -37,6 +37,20 @@ admin.directive('ngEnsureIsLoaded', function($timeout){
 
 });
 
+admin.directive('ngCheckResAvailable', function($http){
+  return{
+    link: function(scope, element, attrs){
+      $http.head(attrs.href)
+        .error( function(){
+          $(element).find('button').attr('disabled', 'disabled');
+          $(element).click(function(event){ event.preventDefault(); });
+        } );
+    },
+    scope: true,
+    restrict: 'A'
+  }
+});
+
 admin.directive('ngFileUpload', function(){
   return {
     link: function(scope, ele){
