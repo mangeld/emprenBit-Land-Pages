@@ -20,7 +20,7 @@ cat <<CONF > '/etc/apache2/sites-available/landPage.conf'
 	CustomLog ${APACHE_LOG_DIR}/access.log combined
 
 	<Directory /vagrant/public>
-		Options Indexes FollowSymLinks		
+		Options Indexes FollowSymLinks
 		AllowOverride All
 		Require all granted
 	</Directory>
@@ -41,4 +41,4 @@ sudo mv composer.phar /usr/bin/composer
 cd /vagrant
 composer install
 
-npm install --save-dev gulp gulp-livereload gulp-sass
+npm install --save-dev gulp gulp-livereload gulp-sass gulp-concat gulp-uglify 

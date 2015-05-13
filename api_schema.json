@@ -27,7 +27,12 @@
             "fieldImage" : [] //Array of image url columns (3)
           },
           { /* ... */ }
-        ]
+        ],
+        "cardForm":
+        {
+          "fieldEmail": { "enabled": true, "text": "test@test.com" },
+          "fieldName": { "enabled": true, "text": "Some random name"}
+        }
       }
     },
     {
