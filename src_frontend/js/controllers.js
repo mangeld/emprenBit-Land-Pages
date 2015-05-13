@@ -19,6 +19,14 @@ admin.directive('ngEnsureIsLoaded', function($timeout){
       elmnt.bind('error', function(){
         $timeout(function(){
           console.log('Error loading :', attrs.src);
+
+          if( !elmnt.imgRetry )
+            elmnt.imgRetry = 1;
+          else if( elmnt.imgRetry == 3 )
+            return;
+          else
+            elmnt.imgRetry++;
+
           $(elmnt).attr("src", attrs.src);
         }, 2000);
       });
