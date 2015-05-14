@@ -47,11 +47,11 @@
                 {% endfor %}
                 {% endif %}
 			</div>
-            <form action="/v1/forms/{{ page.getId() }}" method="POST">
+            <form class="optin" action="/v1/forms/{{ page.getId() }}" method="POST">
                 <input type="text" name="name" id=""/>
                 <input type="email" name="email"/>
                 <input type="text" name="_METHOD" value="PUT" hidden/>
-                <button><span>Enviar</span></button>
+                <input type="submit" value="Apuntame!"/>
             </form>
 		</div>
 		<div class="footer">

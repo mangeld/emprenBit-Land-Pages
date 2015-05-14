@@ -1,6 +1,7 @@
 <?php
 namespace mangeld\obj;
 
+use mangeld\Config;
 use mangeld\lib\StringValidator;
 use Rhumsaa\Uuid\Uuid;
 
@@ -58,13 +59,21 @@ class Form extends DataStore
     $this->f_email = $email;
   }
 
-  public function asArray()
+  public function asArray($prettyDate = true)
   {
     $out = get_object_vars( $this );
     unset( $out['id'] );
     unset( $out['validator'] );
     unset( $out['page'] );
     unset( $out['sourceIp'] );
+
+    if( $prettyDate )
+    {
+      $c = new Config();
+      date_default_timezone_set('Europe/Madrid');
+      $out['completionDate'] = date( $c->dateFormat(), $out['completionDate'] );
+    }
+
     return $out;
   }
 

@@ -356,7 +356,7 @@ h3, h4 {
 	width: 278px;
 	font-size: 16px;
 	border: 1px solid #AAA;
-	border-radius: 5px; 
+	border-radius: 5px;
 	margin: 10px auto;
 	color: #888;
 }
@@ -370,7 +370,7 @@ h3, h4 {
 	font-size: 20px;
 	width: 300px;
 	border: 1px solid #87A50B;
-	border-radius: 5px; 
+	border-radius: 5px;
 	margin: 10px auto;
 	text-align: center;
 	cursor: pointer;
@@ -502,7 +502,7 @@ h3, h4 {
 	.header li {
 		padding-left: 40px;
 	}
-	
+
 
 	#modal {
 		width: 90%;

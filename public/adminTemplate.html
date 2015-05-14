@@ -6,19 +6,19 @@
           <span class="page_overview" ng-hide="show_page_overview">
             <span>{{ landing.name }}</span>
             <a href="#/edit/{{landing.owner}}">
-              <button>
+              <button class="lf-padding-3">
                 <span class="fa fa-pencil"></span>
               </button>
             </a>
-            <span class="superscript">{{ landing.creation_timestamp * 1000 | date:"dd/MM/yyyy HH:mm:ss" }}</span>
-            <a target="_blank" href="{{ landing.name }}"><button><span class="fa fa-external-link"></span></button></a>
+            <a target="_blank" href="{{ landing.name }}"><button class="lf-padding-3"><span class="fa fa-external-link"></span></button></a>
             <a ng-Check-Res-Available href="/v1/forms/{{ landing.id }}/csv" title="Descargar formularios como csv">
-              <button>
+              <button class="lf-padding-3">
                 <span class="fa fa-download"></span>
               </button>
             </a>
-            <button ng-click="show_edit_page = !show_edit_page"><span class="fa fa-eye"></span></button>
-            <button class="red" ng-click='removeItem($event, $index)'><span class="fa fa-trash"></span></button>
+            <button class="lf-padding-3" ng-click="show_edit_page = !show_edit_page"><span class="fa fa-eye"></span></button>
+            <button class="red lf-padding-3" ng-click='removeItem($event, $index)'><span class="fa fa-trash"></span></button>
+            <span class="superscript">{{ landing.creation_timestamp * 1000 | date:"dd/MM/yyyy HH:mm:ss" }}</span>
           </span>
         <div class="container inline_inputs" ng-show="show_edit_page" ng-controller="PageEditController">
           <form action="" ng-submit="">

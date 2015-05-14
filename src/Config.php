@@ -25,6 +25,7 @@ class Config
     'log_file' => '/vagrant/landing.log',
     'storage_permission' => 0700,
     'image_quality' => 80,
+    'date_format' => 'd/m/Y H:i:s O',
     'image_sizes' => array(
       'small' => 250,
       'medium' => 600,
@@ -71,6 +72,11 @@ class Config
   public function imgQ()
   {
     return $this->varOrEnv('image_quality');
+  }
+
+  public function dateFormat()
+  {
+    return $this->varOrEnv('date_format');
   }
 
   public function imgSizes()
