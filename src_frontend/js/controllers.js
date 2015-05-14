@@ -22,7 +22,7 @@ admin.directive('ngEnsureIsLoaded', function($timeout){
 
           if( !elmnt.imgRetry )
             elmnt.imgRetry = 1;
-          else if( elmnt.imgRetry == 3 )
+          else if( elmnt.imgRetry == 5 )
             return;
           else
             elmnt.imgRetry++;

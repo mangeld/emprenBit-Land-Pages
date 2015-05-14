@@ -20,6 +20,9 @@ button:active
 .red
   color: $red
 
+.fa-external-link
+  transform: translateY(.1rem) scale(.95)
+
 .superscript
   display: inline-block
   float: right
@@ -142,7 +145,9 @@ body
 
 .column-3
   width: 29%
+  margin: 1% .5%
 .column-4
+  margin: 1% .5%
   width: 39%
 
 .overlay
@@ -199,19 +204,34 @@ button, .button
   background: none
   color: $baseColor
   width: auto
+  line-height: 1rem
   vertical-align: middle
   font-size: 1rem
-  padding-bottom: .1rem
+  padding: .1rem 0
   margin: 0 .2rem
   border: 1px solid $baseColor
   border-radius: .2rem
   cursor: pointer
   transition: background-color $time, color $time
 
-button.margin, .button.margin
+  span.button-text
+    font-weight: bold
+    margin-left: .2rem
 
+button.margin, .button.margin
   span
     margin: .3rem
+
+.lf-padding-1
+  padding-left: .1rem
+  padding-right: .1rem
+
+.lf-padding-3
+  padding-left: .3rem
+  padding-right: .3rem
+
+.no-margin
+  margin: 0
 
 button:hover, .button:hover
   background: $baseColor

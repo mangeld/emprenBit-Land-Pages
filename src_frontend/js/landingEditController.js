@@ -36,6 +36,11 @@ admin.controller('LandingEditController', function($scope, $route, api){
     $scope.showAddBlockOverlay = false;
   };
 
+  $scope.toggleUploadingHint = function()
+  {
+    $scope.uploadingLanding = !$scope.uploadingLanding;
+  }
+
   $scope.initCardsIfEmpty = function()
   {
     if( typeof $scope.landing.cards == 'undefined' )
@@ -81,28 +86,28 @@ admin.controller('LandingEditController', function($scope, $route, api){
     var inputs = $(event.target).parents('form').find('input');
     var files = [];
 
+    $scope.toggleUploadingHint();
+
     for(i=0; i<inputs.length;i++)
       if( inputs[i].files )
         files.push(inputs[i].files[0]);
 
+    var result = {};
     if( typeof data.id == 'undefined' )
-    {
-      api.uploadCard($scope.landing.id, data, files)
-        .success( function(responseData){
-          console.log("CARD SUBIDO");
-          console.log(files);
-          console.log(responseData);
-          $scope.fetchLanding();
-        });
-    }
+      result = api.uploadCard($scope.landing.id, data, files);
     else
-    {
-      api.updateCard(data.id, data, files)
-        .success(function(responseData){
-          console.log(responseData);
-          $scope.fetchLanding();
-        });
-    }
+      result = api.updateCard(data.id, data, files);
+
+    result
+      .success( function(responseData){
+      console.log("CARD SUBIDO");
+      console.log(files);
+      console.log(responseData);
+      $scope.fetchLanding();
+      $scope.toggleUploadingHint();
+    })
+      .error( function(){ $scope.toggleUploadingHint(); } );
+
   };
 
   $scope.fetchLanding();

@@ -30,7 +30,7 @@
       </div>
       <div class="inline_input">
         <span>Description</span>
-        <textarea name="" id="" cols="10" rows="3" ng-model="landing.description"></textarea>
+        <textarea name="" cols="10" rows="3" ng-model="landing.description"></textarea>
       </div>
       <div class="inline_input">
         <span>Email</span>
@@ -45,9 +45,15 @@
         <img ng-Ensure-Is-Loaded src="{{ landing.logo }}" alt=""/>
       </div>
       <div class="inline_input">
-        <button ng-click="updateLanding($event)"><span class="fa fa-save"></span></button>
+        <button ng-click="updateLanding($event)">
+          <span class="fa fa-save"></span>
+          <span class="button-text">Guardar cambios</span>
+        </button>
         <a target="_blank" href="{{ landing.name }}">
-          <button><span class="fa fa-external-link"></span></button>
+          <div class="button">
+            <span class="fa fa-external-link"></span>
+            <span class="button-text">Ver landing...</span>
+          </div>
         </a>
       </div>
     </form>
@@ -61,7 +67,7 @@
         </div>
         <div class="column_input column-4">
           <span>Texto</span>
-          <textarea ng-model="card3col.fieldText[1]" name="" id="" cols="15" rows="3"></textarea>
+          <textarea ng-model="card3col.fieldText[1]" name="" cols="15" rows="3"></textarea>
         </div>
         <div class="column_input column-3">
           <span>Imagen...</span>
@@ -77,7 +83,7 @@
         </div>
         <div class="column_input column-4">
           <span>Texto</span>
-          <textarea ng-model="card3col.fieldText[2]" name="" id="" cols="15" rows="3"></textarea>
+          <textarea ng-model="card3col.fieldText[2]" name="" cols="15" rows="3"></textarea>
         </div>
         <div class="column_input column-3">
           <span>Imagen...</span>
@@ -93,7 +99,7 @@
         </div>
         <div class="column_input column-4">
           <span>Texto</span>
-          <textarea ng-model="card3col.fieldText[3]" name="" id="" cols="15" rows="3"></textarea>
+          <textarea ng-model="card3col.fieldText[3]" name="" cols="15" rows="3"></textarea>
         </div>
         <div class="column_input column-3">
           <span>Imagen...</span>
@@ -101,8 +107,8 @@
           <input type="file" />
         </div>
       </div>
-      <button ng-click="updateCard(card3col, $event)"><span>Actualizar</span></button>
-      <button class="red" ng-click='deleteCard($event, card3col)'><span class="fa fa-trash"></span></button>
+      <button class="lf-padding-3" ng-click="updateCard(card3col, $event)" ng-disabled="uploadingLanding"><span>Actualizar</span></button>
+      <button class="red lf-padding-3" ng-click='deleteCard($event, card3col)' ng-disabled="uploadingLanding"><span class="fa fa-trash"></span></button>
     </form>
   </div>
 
