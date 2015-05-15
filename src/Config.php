@@ -26,6 +26,7 @@ class Config
     'storage_permission' => 0700,
     'image_quality' => 80,
     'date_format' => 'd/m/Y H:i:s O',
+    'save_original_media' => false,
     'image_sizes' => array(
       'small' => 250,
       'medium' => 600,
@@ -72,6 +73,11 @@ class Config
   public function imgQ()
   {
     return $this->varOrEnv('image_quality');
+  }
+
+  public function saveOriginalMedia()
+  {
+    return $this->varOrEnv('save_original_media');
   }
 
   public function dateFormat()
