@@ -33,9 +33,24 @@ $slimApp->get('/:pageName', function($pageName) use ($slimApp){
 $slimApp->group('/v1', function() use ($slimApp, $app){
 
   $slimApp->post('/upload', function() use($slimApp, $app){
-    //TODO: Delete this endpoint
-    $file = \mangeld\lib\filesystem\File::fromUploadedFile('image');
-    $file->saveToStorage(\mangeld\obj\User::createUser());
+    $page_id = $slimApp->request->params('page_id');
+
+    if( $app->getPage( $page_id ) )
+    {
+      $file = \mangeld\lib\filesystem\File::fromUploadedFile('data');
+      $file->saveToStorage( $slimApp->request->params('page_id') );
+
+      $response = new \StdClass();
+      $response->owner = $file->getOwnerId();
+      $response->id = $file->getId();
+
+      $slimApp->response->setBody( json_encode( $response ) );
+    }
+    else
+    {
+      $slimApp->response->setStatus(404);
+    }
+
 
   });
 
