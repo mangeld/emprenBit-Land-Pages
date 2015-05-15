@@ -109,36 +109,66 @@ class App
 
   public function addCard($cardData, $pageId)
   {
-    @$pages = $this->getPagesAsObj();
-    @$page = $pages[$pageId];
-    unset($pages);
+    @$page = $this->db->fetchPage($pageId);
 
     if( $page != null )
     {
-      $jsonObj = json_decode($cardData);
-      $card = Card::createCard(DataTypes::cardThreeColumns);
-
-      for($i = 1; $i < 4; $i++)
-        $card->setTitle($jsonObj->fieldTitle[$i], $i);
-
-      for($i = 1; $i < 4; $i++)
-        $card->setBody($jsonObj->fieldText[$i], $i);
-
-      for($i = 1; $i < 4; $i++)
-      {
-        try
-        {
-          $img = File::fromUploadedFile('image'.($i-1));
-          $img->saveToStorage($page);
-        } catch (Exception $e) {}
-        $card->setImage("{$img->getId()}", $i);
-      }
+      $card = $this->buildCardFromJson($cardData, $page->getId());
       $page->addCard($card);
       $result = $this->db->savePage($page);
-
       return true;
     }
     else return false;
+  }
+
+  public function updateCard($cardData, $pageId, $cardId)
+  {
+    $newCard = $this->buildCardFromJson($cardData, $pageId, $cardId);
+    $this->deleteCard($pageId, $cardId);
+    $page = $this->db->fetchPage($pageId);
+    $page->addCard($newCard);
+    $this->db->savePage($page);
+  }
+
+  private function buildCardFromJson($cardData, $pageID, $cardId = null)
+  {
+    $jsonObj = json_decode($cardData, false);
+    $card = $cardId == null ? Card::createCard(DataTypes::cardThreeColumns) : Card::createCard(DataTypes::cardThreeColumns, $cardId);
+
+    var_dump($cardData);
+    echo '<br/><br/>';
+    var_dump($jsonObj);
+
+    for($i = 1; $i < 4; $i++)
+      $card->setTitle(
+        isset($jsonObj->fieldTitle->$i) ? $jsonObj->fieldTitle->$i : $jsonObj->fieldTitle[$i],
+        $i
+      );
+
+    for($i = 1; $i < 4; $i++)
+      $card->setBody(
+        isset($jsonObj->fieldText->$i) ? $jsonObj->fieldText->$i : $jsonObj->fieldText[$i],
+        $i
+      );
+
+    for($i = 1; $i < 4; $i++)
+    {
+      try
+      {
+        $img = File::fromUploadedFile('image'.($i-1));
+        $img->saveToStorage($pageID);
+        $card->setImage("{$img->getId()}", $i);
+      } catch (\Exception $e) {}
+    }
+
+    return $card;
+  }
+
+  private function getPage($pageId)
+  {
+    @$pages = $this->getPagesAsObj();
+    @$page = $pages[$pageId];
+    unset($pages);
   }
 
   public function getForms($pageId)
@@ -225,7 +255,7 @@ class App
             {
               $typeName = DataTypes::typeName($field->getType());
               $index = $field->getIndex();
-              $cardJson->{$typeName}[(integer) $index] = $field->getText();
+              $cardJson->{$typeName}[ (integer) $index] = $field->getText();
             }
             $obj->cards[DataTypes::typeName($card->getType())][] = $cardJson;
           }

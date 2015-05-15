@@ -21,7 +21,7 @@ admin.factory('api', ['$http', function($http){
     data.images.forEach(function(image, index, array){
       fdata.append("image" + index, image);
     });
-    console.log(data);
+    console.log(data.jsonData);
     return fdata;
   };
 
@@ -46,11 +46,14 @@ admin.factory('api', ['$http', function($http){
 
   };
 
-  api.updateCard = function(cardId, jsonData, images){
+  api.updateCard = function(landingId, jsonData, images){
     return $http({
       method: 'POST',
-      url: 'v1/cards/' + cardId,
-      headers: { 'Content-Type': undefined },
+      url: 'v1/pages/' + landingId + '/cards/' + jsonData.id,
+      headers: {
+        "X-HTTP-Method-Override": "PUT",
+        'Content-Type': undefined
+      },
       data: { jsonData: jsonData, images: images },
       transformRequest: function(data){
         var fdata = new FormData();
@@ -58,8 +61,7 @@ admin.factory('api', ['$http', function($http){
         data.images.forEach(function(image, index, array){
           fdata.append("image" + index, image);
         });
-        console.log(fdata);
-        return fdata;
+        return api.requestTransform(data);
       }
     });
   };

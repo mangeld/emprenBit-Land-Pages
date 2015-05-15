@@ -88,7 +88,7 @@ admin.controller('LandingEditController', function($scope, $route, api){
 
     $scope.toggleUploadingHint();
 
-    for(i=0; i<inputs.length;i++)
+    for(var i=0; i<inputs.length;i++)
       if( inputs[i].files )
         files.push(inputs[i].files[0]);
 
@@ -96,7 +96,7 @@ admin.controller('LandingEditController', function($scope, $route, api){
     if( typeof data.id == 'undefined' )
       result = api.uploadCard($scope.landing.id, data, files);
     else
-      result = api.updateCard(data.id, data, files);
+      result = api.updateCard($scope.landing.id, data, files);
 
     result
       .success( function(responseData){

@@ -7,6 +7,7 @@ use mangeld\exceptions\FileSystemException;
 use mangeld\exceptions\FileUploadException;
 use mangeld\lib\Image;
 use mangeld\lib\Logger;
+use mangeld\obj\Page;
 
 class File
 {
@@ -109,16 +110,16 @@ class File
   public function getHandle()
     { return $this->handle; }
 
-  public function saveToStorage(\mangeld\obj\Page $page, \mangeld\App $app = null)
+  public function saveToStorage($page, \mangeld\App $app = null)
   {
     $id = \Rhumsaa\Uuid\Uuid::uuid4();
     $this->id = $id->toString();
-    $this->ownerId = $page->getId();
+    $this->ownerId = $page instanceof Page ? $page->getId() : $page ;
 
     $newPath =
       Config::storage_folder .
       DIRECTORY_SEPARATOR .
-      $page->getId() .
+      $this->ownerId .
       DIRECTORY_SEPARATOR .
       $id . '.jpg';
 

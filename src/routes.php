@@ -39,16 +39,6 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
 
   });
 
-  $slimApp->group('/cards', function() use ($slimApp, $app){
-
-    $slimApp->post('/:id', function($id) use ($slimApp, $app){
-
-      $da = var_export($slimApp->request->params('data'), true);
-      $slimApp->response->setBody( $da );
-    });
-
-  });
-
   $slimApp->group('/forms', function() use ($slimApp, $app){
 
     $slimApp->get('/:pageId', function($pageId) use ($slimApp, $app){
@@ -137,6 +127,10 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
       $slimApp->post('/', function($pageId) use ($slimApp, $app){
         //var_dump($slimApp->request->params('data'));
         $app->addCard($slimApp->request->params('data'), $pageId);
+      });
+
+      $slimApp->put('/:cardId', function($pageId, $cardId) use ($slimApp, $app){
+        $app->updateCard($slimApp->request->params('data'), $pageId, $cardId);
       });
 
       $slimApp->delete('/:cardId', function($pageId, $cardId) use ($app){
