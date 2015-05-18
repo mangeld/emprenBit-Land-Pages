@@ -135,10 +135,6 @@ class App
     $jsonObj = json_decode($cardData, false);
     $card = $cardId == null ? Card::createCard(DataTypes::cardThreeColumns) : Card::createCard(DataTypes::cardThreeColumns, $cardId);
 
-    var_dump($cardData);
-    echo '<br/><br/>';
-    var_dump($jsonObj);
-
     for($i = 1; $i < 4; $i++)
       $card->setTitle(
         isset($jsonObj->fieldTitle->$i) ? $jsonObj->fieldTitle->$i : $jsonObj->fieldTitle[$i],
@@ -164,11 +160,12 @@ class App
     return $card;
   }
 
-  private function getPage($pageId)
+  public function getPage($pageId)
   {
     @$pages = $this->getPagesAsObj();
     @$page = $pages[$pageId];
     unset($pages);
+    return $page;
   }
 
   public function getForms($pageId)

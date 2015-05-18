@@ -110,6 +110,10 @@ class File
   public function getHandle()
     { return $this->handle; }
 
+  /**
+   * @param \mangeld\obj\Page | String $page An instance of a page or it's id
+   * @param \mangeld\App $app
+   */
   public function saveToStorage($page, \mangeld\App $app = null)
   {
     $id = \Rhumsaa\Uuid\Uuid::uuid4();
@@ -217,6 +221,9 @@ class File
 
   public function getId()
     { return $this->id; }
+
+  public function getOwnerId()
+    { return $this->ownerId; }
 
   public function isImage()
   {
