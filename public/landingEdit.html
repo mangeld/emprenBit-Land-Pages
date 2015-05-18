@@ -15,6 +15,9 @@
           <button class="block-button" ng-click="addThreeColumns()">
             <span>Triptico</span>
           </button>
+          <button class="block-button" ng-click="addCarousel()">
+            <span>Carousel</span>
+          </button>
         </div>
       </div>
     </div>
@@ -58,7 +61,10 @@
       </div>
     </form>
 
-    <form ng-repeat="card3col in landing.cards.cardThreeColumns track by card3col.id" ng-if="landing.cards.cardThreeColumns" class="padding">
+    <form
+      ng-repeat="card3col in landing.cards.cardThreeColumns track by card3col.id"
+      ng-if="landing.cards.cardThreeColumns"
+      class="padding">
       <div class="container">
         <h3>Columna 1</h3>
         <div class="column_input column-3">
@@ -109,6 +115,22 @@
       </div>
       <button class="lf-padding-3" ng-click="updateCard(card3col, $event)" ng-disabled="uploadingLanding"><span>Actualizar</span></button>
       <button class="red lf-padding-3" ng-click='deleteCard($event, card3col)' ng-disabled="uploadingLanding"><span class="fa fa-trash"></span></button>
+    </form>
+    <form
+      ng-repeat="carousel in landing.cards.carousels track by carousel.id"
+      ng-if="landing.cards.carousels"
+      >
+      <div class="inline_input" ng-repeat="img in carousel.images">
+        <div class="container">
+          <span>Texto</span>
+          <input type="text" ng-model="carousel.text"/>
+        </div>
+        <div class="container padding">
+          <span>Imagen</span>
+          <input type="file" ng-model="carousel.image"/>
+        </div>
+      </div>
+    <button class="block-button" ng-click="pushCarouselImage(carousel)"><span class="fa fa-plus"></span></button>
     </form>
   </div>
 

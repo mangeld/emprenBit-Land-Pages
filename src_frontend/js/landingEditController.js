@@ -48,6 +48,7 @@ admin.controller('LandingEditController', function($scope, $route, api){
       $scope.landing.cards = {};
       $scope.landing.cards.cardThreeColumns = [];
       $scope.landing.cards.cardForm = {};
+      $scope.landing.cards.carousels = [];
     }
   };
 
@@ -71,6 +72,26 @@ admin.controller('LandingEditController', function($scope, $route, api){
     );
     console.log($scope.landing.cards.cardThreeColumns);
   };
+
+  $scope.pushCarouselImage = function(carousel)
+  {
+    carousel.images.push(
+      { src: "", text: "" }
+    );
+  }
+
+  $scope.addCarousel = function()
+  {
+    $scope.closeOverlay();
+    $scope.initCardsIfEmpty();
+
+    $scope.landing.cards.carousels.push(
+      {
+        images: [ { src: "", text: ""} ]
+        //id
+      }
+    );
+  }
 
   $scope.deleteCard = function(event, card)
   {
