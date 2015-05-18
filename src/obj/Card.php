@@ -30,6 +30,9 @@ class Card extends DataStore
         //TODO: Create class cardForm
         $card = new Card();
         break;
+      case DataTypes::cardCarousel:
+        $card = new CardCarousel();
+        break;
       default:
         $card = new Card();
         break;

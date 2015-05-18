@@ -6,6 +6,7 @@ class DataTypes
 {
   const cardThreeColumns = '683b5e06-9ba1-425f-88bd-d3667b4cdc13';
   const cardForm = 'a8620342-f3e2-4b90-9f01-eb3b412db22d';
+  const cardCarousel = '1cc22fdb-4367-4d17-a1e3-9ddafcc60a97';
   const fieldEmail = 'd082a408-e024-4998-8484-3f0b3d4902af';
   const fieldText = '48fa0dfc-ecce-4adf-ab22-4dacb307e452';
   const fieldTitle = '2b870b7c-7d25-4366-a948-49b0b0fb512b';
@@ -20,6 +21,9 @@ class DataTypes
         break;
       case DataTypes::cardThreeColumns:
         return 'cardThreeColumns';
+        break;
+      case DataTypes::cardCarousel:
+        return 'cardCarousel';
         break;
       case DataTypes::fieldEmail:
         return 'fieldEmail';

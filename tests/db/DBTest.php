@@ -300,4 +300,18 @@ class DBTest extends PHPUnit_Framework_TestCase
     $this->assertEquals($thisShoulExist, $pageShouldHaveIt->getForm($thisShoulExist->getId()), '', 0.0001);
     $this->assertEquals($thisAswell, $pageShouldHaveIt->getForm($thisAswell->getId()), '', 0.0001);
   }
+
+  public function testPageWithCardCarouselIsSaved()
+  {
+    $page = Page::createPageWithNewUser('pageWithCarousel@cool.pho');
+    $page->setName('Test carousel');
+    $carousel = Card::createCard(DataTypes::cardCarousel);
+    $carousel->addImage(\Rhumsaa\Uuid\Uuid::uuid4()->toString(), "SOME TEXT", 3);
+    $page->addCard($carousel);
+
+    $this->db->savePage($page);
+    $fetched = $this->db->fetchPage($page->getId());
+
+    $this->assertEquals($page, $fetched, '', 0.0001);
+  }
 }

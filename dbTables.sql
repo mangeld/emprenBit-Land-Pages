@@ -178,6 +178,7 @@ INSERT INTO `Types` (`typeId`, `name`) VALUES ('d082a408-e024-4998-8484-3f0b3d49
 INSERT INTO `Types` (`typeId`, `name`) VALUES ('48fa0dfc-ecce-4adf-ab22-4dacb307e452', 'fieldText');
 INSERT INTO `Types` (`typeId`, `name`) VALUES ('2b870b7c-7d25-4366-a948-49b0b0fb512b', 'fieldTitle');
 INSERT INTO `Types` (`typeId`, `name`) VALUES ('c48f1022-60d3-4b51-9290-6605152b8a90', 'fieldImage');
+INSERT INTO `Types` (`typeId`, `name`) VALUES ('1cc22fdb-4367-4d17-a1e3-9ddafcc60a97', 'cardCarousel');
 
 COMMIT;
 
