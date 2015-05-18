@@ -130,7 +130,11 @@
           <input type="file" ng-model="carousel.image"/>
         </div>
       </div>
-    <button class="block-button" ng-click="pushCarouselImage(carousel)"><span class="fa fa-plus"></span></button>
+    <div class="block-center">
+      <button class="block-button" ng-click="pushCarouselImage(carousel)"><span class="fa fa-plus"></span></button>
+      <button class="block-button"><span>Actualizar</span></button>
+      <button class="block-button red" ng-click="deleteCard($event, carousel)"><span class="fa fa-trash"></span></button>
+    </div>
     </form>
   </div>
 
