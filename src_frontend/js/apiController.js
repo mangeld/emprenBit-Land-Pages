@@ -34,16 +34,77 @@ admin.factory('api', ['$http', function($http){
 
   };
 
-  api.uploadCard = function(landingId, jsonData, images){
+  api.uploadMedia = function(files, landingId, callback)
+  {
+    var media_count = files.length;
+    var media_ids = [];
+    var success_count = 0;
+    var loop = true
 
-    return $http({
-      method: 'POST',
-      url: 'v1/pages/'+landingId+"/cards",
-      headers: { 'Content-Type': undefined },
-      data: { jsonData: jsonData, images: images},
-      transformRequest: function(data){ return api.requestTransform(data); }
+    var should_continue = function()
+    {
+      if( media_count == success_count ){
+        loop = false;
+        callback(media_ids);
+      } else {
+        do_http(files[success_count])
+        success_count++;
+      }
+    }
+
+    var do_http = function(file)
+    {
+      console.log("doing http");
+      $http({
+        method: 'POST',
+        url: 'v1/upload',
+        headers: { 'Content-Type': undefined },
+        transformRequest: function(data){
+          var f = new FormData();
+          f.append("data", file);
+          f.append("page_id", landingId);
+          return f;
+        }
+      }).success(function(data){
+        media_ids.push( data.id );
+        should_continue();
+      });
+    }
+
+    should_continue();
+  }
+
+  api.uploadCard = function(landingId, jsonData, images, callback){
+
+    console.log(images);
+    api.uploadMedia(images, landingId, function(ids){
+      $http({
+        method: 'POST',
+        url: 'v1/pages/'+landingId+"/cards",
+        headers: { 'Content-Type': undefined },
+        data: { jsonData: jsonData, images: images},
+        transformRequest: function(data)
+        {
+          var f = new FormData();
+          console.log(ids)
+          //f.append("title1", data.);
+          f.append("medias[]", ids);
+          f.append("title1", jsonData.fieldTitle[1]);
+          f.append("title2", jsonData.fieldTitle[2]);
+          f.append("title3", jsonData.fieldTitle[3]);
+          f.append("body1", jsonData.fieldText[1]);
+          f.append("body2", jsonData.fieldText[2]);
+          f.append("body3", jsonData.fieldText[3]);
+          f.append("image1", ids[0]);
+          f.append("image2", ids[1]);
+          f.append("image3", ids[2]);
+          f.append("type", "cardThreeColumns");
+          return f;
+        }
+      }).then(function(data){
+        callback(data);
+      });
     });
-
   };
 
   api.updateCard = function(landingId, jsonData, images){

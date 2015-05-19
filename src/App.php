@@ -107,18 +107,40 @@ class App
     $this->db->deletePage($pageId);
   }
 
-  public function addCard($cardData, $pageId)
+  public function addCard($pageId)
   {
     @$page = $this->db->fetchPage($pageId);
+    $slim = Slim::getInstance();
 
     if( $page != null )
     {
-      $card = $this->buildCardFromJson($cardData, $page->getId());
+      $card = null;
+      switch( $slim->request->params('type') )
+      {
+        case DataTypes::typeName( DataTypes::cardThreeColumns ):
+          $card = $this->buildCard3Col($slim);
+          break;
+      }
       $page->addCard($card);
       $result = $this->db->savePage($page);
-      return true;
+      return $result;
     }
     else return false;
+  }
+
+  private function buildCard3Col(Slim $slim)
+  {
+    $card = Card::createCard(DataTypes::cardThreeColumns);
+    $card->setBody($slim->request->params('body1'), 1);
+    $card->setBody($slim->request->params('body2'), 2);
+    $card->setBody($slim->request->params('body3'), 3);
+    $card->setTitle($slim->request->params('title1'), 1);
+    $card->setTitle($slim->request->params('title2'), 2);
+    $card->setTitle($slim->request->params('title3'), 3);
+    $card->setImage($slim->request->params('image1'), 1);
+    $card->setImage($slim->request->params('image2'), 2);
+    $card->setImage($slim->request->params('image3'), 3);
+    return $card;
   }
 
   public function updateCard($cardData, $pageId, $cardId)

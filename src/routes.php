@@ -141,7 +141,7 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
 
       $slimApp->post('/', function($pageId) use ($slimApp, $app){
         //var_dump($slimApp->request->params('data'));
-        $app->addCard($slimApp->request->params('data'), $pageId);
+        $app->addCard($pageId);
       });
 
       $slimApp->put('/:cardId', function($pageId, $cardId) use ($slimApp, $app){

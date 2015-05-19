@@ -113,21 +113,19 @@ admin.controller('LandingEditController', function($scope, $route, api){
       if( inputs[i].files )
         files.push(inputs[i].files[0]);
 
+    var completed = function(responseData){
+          console.log("CARD SUBIDO");
+          console.log(files);
+          console.log(responseData);
+          $scope.fetchLanding();
+          $scope.toggleUploadingHint();
+    };
+
     var result = {};
     if( typeof data.id == 'undefined' )
-      result = api.uploadCard($scope.landing.id, data, files);
+      api.uploadCard($scope.landing.id, data, files, completed);
     else
-      result = api.updateCard($scope.landing.id, data, files);
-
-    result
-      .success( function(responseData){
-      console.log("CARD SUBIDO");
-      console.log(files);
-      console.log(responseData);
-      $scope.fetchLanding();
-      $scope.toggleUploadingHint();
-    })
-      .error( function(){ $scope.toggleUploadingHint(); } );
+      api.updateCard($scope.landing.id, data, files, completed);
 
   };
 
