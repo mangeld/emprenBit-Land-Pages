@@ -36,6 +36,7 @@ admin.factory('api', ['$http', function($http){
 
   api.uploadMedia = function(files, landingId, callback)
   {
+    if( !$.isArray(files) ) files = [files];
     var media_count = files.length;
     var media_ids = [];
     var success_count = 0;
@@ -66,12 +67,31 @@ admin.factory('api', ['$http', function($http){
           return f;
         }
       }).success(function(data){
-        media_ids.push( data.id );
+        media_ids.push( { file: file, id: data.id } );
         should_continue();
       });
     }
 
     should_continue();
+  }
+
+  api.uploadCarousel = function(images, landingId)
+  {
+    $http({
+      method: 'POST',
+      url: 'v1/pages/'+landingId+'/cards',
+      headers: { 'Content-Type': undefined },
+      transformRequest: function(data){
+        var f = new FormData();
+        for(var i = 0; i < images.length; i++ )
+        {
+          f.append("images[]", images[i].id);
+          f.append("texts[]", images[i].text);
+        }
+        f.append("type", "cardCarousel");
+        return f;
+      }
+    });
   }
 
   api.uploadCard = function(landingId, jsonData, images, callback){
@@ -95,9 +115,9 @@ admin.factory('api', ['$http', function($http){
           f.append("body1", jsonData.fieldText[1]);
           f.append("body2", jsonData.fieldText[2]);
           f.append("body3", jsonData.fieldText[3]);
-          f.append("image1", ids[0]);
-          f.append("image2", ids[1]);
-          f.append("image3", ids[2]);
+          f.append("image1", ids[0].id);
+          f.append("image2", ids[1].id);
+          f.append("image3", ids[2].id);
           f.append("type", "cardThreeColumns");
           return f;
         }

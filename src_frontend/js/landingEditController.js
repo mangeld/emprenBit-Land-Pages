@@ -93,6 +93,50 @@ admin.controller('LandingEditController', function($scope, $route, api){
     );
   }
 
+  $scope.uploadCarousel = function(event, carousel)
+  {
+    var inputs = $(event.target).parents('form').find('.inline_input');
+    var images_count = inputs.length;
+    var upload_count = 0;
+    var images = new Array();
+
+    //console.log(carousel.images);
+    //console.log($(inputs).find('input[type="text"]'));
+
+    var notify = function() {
+      if (upload_count == images_count - 1) {
+        console.log("Uploading images", images, "IMAGES SIZE: " + images.length);
+        api.uploadCarousel(images, $scope.landing.id);
+      } else {
+        console.log("UPLOAD COUNT: " + upload_count, "IMAGES: " + images_count)
+        upload_count++;
+      }
+    }
+
+    for( var i = 0; i < images_count; i++ )
+    {
+      var inputFile = $(inputs).find('input[type="file"]')[i].files[0];
+      var inputText = $(inputs).find('input[type="text"]').get(i).value;
+      var callit = function(ids)
+      {
+        for( var e = 0; e < images.length; e++)
+        {
+          console.log("For loop: ", images);
+          if( images[e].id.name == ids[0].file.name ){
+            images[e].id = ids[0].id;
+            break;
+          }
+        }
+        notify();
+      }
+
+      images.push( { id: inputFile, text: inputText } );
+      console.log("ARCHIVOOOOOO", inputFile);
+      api.uploadMedia(inputFile, $scope.landing.id, callit);
+    }
+    console.log("Final de upload carousel ",images);
+  };
+
   $scope.deleteCard = function(event, card)
   {
     api.deleteCard($scope.landing.id, card.id)

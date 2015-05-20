@@ -123,16 +123,16 @@
       <div class="inline_input" ng-repeat="img in carousel.images">
         <div class="container">
           <span>Texto</span>
-          <input type="text" ng-model="carousel.text"/>
+          <input type="text" ng-model="img.text"/>
         </div>
         <div class="container padding">
           <span>Imagen</span>
-          <input type="file" ng-model="carousel.image"/>
+          <input type="file" ng-model="img.srcFile"/>
         </div>
       </div>
     <div class="block-center">
       <button class="block-button" ng-click="pushCarouselImage(carousel)"><span class="fa fa-plus"></span></button>
-      <button class="block-button"><span>Actualizar</span></button>
+      <button class="block-button" ng-click="uploadCarousel($event, carousel)"><span>Actualizar</span></button>
       <button class="block-button red" ng-click="deleteCard($event, carousel)"><span class="fa fa-trash"></span></button>
     </div>
     </form>

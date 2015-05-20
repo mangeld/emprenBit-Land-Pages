@@ -120,12 +120,35 @@ class App
         case DataTypes::typeName( DataTypes::cardThreeColumns ):
           $card = $this->buildCard3Col($slim);
           break;
+        case DataTypes::typeName( DataTypes::cardCarousel ):
+          $card = $this->buildCardCarousel($slim);
+          break;
       }
       $page->addCard($card);
       $result = $this->db->savePage($page);
       return $result;
     }
     else return false;
+  }
+
+  private function buildCardCarousel(Slim $slim)
+  {
+    $card = Card::createCard(DataTypes::cardCarousel);
+    $img = $slim->request->params('images');
+    $img_c = count( $img );
+    $txt = $slim->request->params('texts');
+    $txt_c = count( $txt );
+
+    for( $i = 0; $i < max($img_c, $txt_c); $i++ )
+    {
+      if( $img_c > $i && $txt_c > $i)
+        $card->addImage($img[$i], $txt[$i], $i);
+      else if( $img_c > $i && $txt_c < $i )
+        $card->addImage($img[$i], "", $i);
+      else
+        $card->addImage("", $txt[$i], $i);
+    }
+    return $card;
   }
 
   private function buildCard3Col(Slim $slim)
