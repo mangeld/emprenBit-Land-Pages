@@ -9,6 +9,7 @@ use mangeld\exceptions\FileUploadException;
 use mangeld\lib\filesystem\File;
 use mangeld\lib\Logger;
 use mangeld\obj\Card;
+use mangeld\obj\CardCarousel;
 use mangeld\obj\DataTypes;
 use mangeld\obj\Form;
 use mangeld\obj\Page;
@@ -293,16 +294,16 @@ class App
           {
             $cardJson = new \StdClass;
             $cardJson->id = $card->getId();
-            foreach( $card->getFields() as $key2 => $field )
+            switch( $card->getType() )
             {
-              $typeName = DataTypes::typeName($field->getType());
-              $index = $field->getIndex();
-              $cardJson->{$typeName}[ (integer) $index] = $field->getText();
+              case DataTypes::cardThreeColumns:
+                $this->fill3colCards($obj, $card, $cardJson);
+                break;
+              case DataTypes::cardCarousel:
+                $this->fillCarousel($obj, $card, $cardJson);
+                break;
             }
-            $obj->cards[DataTypes::typeName($card->getType())][] = $cardJson;
           }
-          else
-            $obj->cards = new \StdClass();
         }
 
       if( $page->countForms() > 0)
@@ -312,6 +313,38 @@ class App
     }
 
     return json_encode($jsonArr);
+  }
+
+  private function fillCarousel(&$obj, &$card, &$cardJson)
+  {
+    $imgCount = $card->countImages();
+    $images = array();
+
+    for( $i = 0; $i <= $imgCount; $i++ )
+      $images[$i] = new \StdClass();
+
+    foreach( $card->getFields() as $id => $field )
+    {
+      if( $field->getType() == DataTypes::fieldImage )
+        $images[$field->getIndex()]->src = $field->getText();
+      elseif( $field->getType() == DataTypes::fieldText )
+        $images[$field->getIndex()]->text = $field->getText();
+    }
+
+    $cardJson->images = $images;
+
+    $obj->cards{DataTypes::typeName($card->getType())}[] = $cardJson;
+  }
+
+  private function fill3colCards(&$obj, &$card, &$cardJson)
+  {
+    foreach( $card->getFields() as $key2 => $field )
+    {
+      $typeName = DataTypes::typeName($field->getType());
+      $index = $field->getIndex();
+      $cardJson->{$typeName}[ (integer) $index] = $field->getText();
+    }
+    $obj->cards{DataTypes::typeName($card->getType())}[] = $cardJson;
   }
 
   private function buildFormsObj(Page $page, &$forms)

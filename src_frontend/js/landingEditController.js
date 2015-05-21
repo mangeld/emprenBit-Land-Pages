@@ -48,8 +48,11 @@ admin.controller('LandingEditController', function($scope, $route, api){
       $scope.landing.cards = {};
       $scope.landing.cards.cardThreeColumns = [];
       $scope.landing.cards.cardForm = {};
-      $scope.landing.cards.carousels = [];
+      $scope.landing.cards.cardCarousel = [];
     }
+
+    if( typeof $scope.landing.cards.cardThreeColumns == 'undefined' )
+      $scope.landing.cards.cardThreeColumns = [];
   };
 
   $scope.addFormCard = function()
@@ -85,7 +88,7 @@ admin.controller('LandingEditController', function($scope, $route, api){
     $scope.closeOverlay();
     $scope.initCardsIfEmpty();
 
-    $scope.landing.cards.carousels.push(
+    $scope.landing.cards.cardCarousel.push(
       {
         images: [ { src: "", text: ""} ]
         //id

@@ -117,8 +117,8 @@
       <button class="red lf-padding-3" ng-click='deleteCard($event, card3col)' ng-disabled="uploadingLanding"><span class="fa fa-trash"></span></button>
     </form>
     <form
-      ng-repeat="carousel in landing.cards.carousels track by carousel.id"
-      ng-if="landing.cards.carousels"
+      ng-repeat="carousel in landing.cards.cardCarousel track by carousel.id"
+      ng-if="landing.cards.cardCarousel"
       >
       <div class="inline_input" ng-repeat="img in carousel.images">
         <div class="container">

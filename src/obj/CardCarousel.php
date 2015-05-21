@@ -26,6 +26,14 @@ class CardCarousel extends Card
         return $field;
   }
 
+  public function countImages()
+  {
+    $max = 0;
+    foreach( $this->fields as $field )
+      $max = max( $max, $field->getIndex() );
+    return $max;
+  }
+
   public function addImage($imageId, $text, $index)
   {
     $imageField = CardField::createField(DataTypes::fieldImage);
