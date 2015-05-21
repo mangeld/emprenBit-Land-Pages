@@ -101,43 +101,31 @@ admin.controller('LandingEditController', function($scope, $route, api){
     var inputs = $(event.target).parents('form').find('.inline_input');
     var images_count = inputs.length;
     var upload_count = 0;
-    var images = new Array();
+    var images = new Array(); // [ { id: file | string, text: string } ]
 
-    //console.log(carousel.images);
-    //console.log($(inputs).find('input[type="text"]'));
-
-    var notify = function() {
-      if (upload_count == images_count - 1) {
-        console.log("Uploading images", images, "IMAGES SIZE: " + images.length);
-        api.uploadCarousel(images, $scope.landing.id);
-      } else {
-        console.log("UPLOAD COUNT: " + upload_count, "IMAGES: " + images_count)
+    var callit = function(ids)
+    {
+      for( i = 0; i < ids.length; i++ )
+      {
+        images[i] = {};
+        images[i].id = ids[i].id;
+        images[i].text = ids[i].file.temporalText;
         upload_count++;
       }
+      api.uploadCarousel(images, $scope.landing.id)
+        .success(function(){ $scope.fetchLanding(); });
     }
+
+    var filesToUpload = [];
 
     for( var i = 0; i < images_count; i++ )
     {
       var inputFile = $(inputs).find('input[type="file"]')[i].files[0];
       var inputText = $(inputs).find('input[type="text"]').get(i).value;
-      var callit = function(ids)
-      {
-        for( var e = 0; e < images.length; e++)
-        {
-          console.log("For loop: ", images);
-          if( images[e].id.name == ids[0].file.name ){
-            images[e].id = ids[0].id;
-            break;
-          }
-        }
-        notify();
-      }
-
-      images.push( { id: inputFile, text: inputText } );
-      console.log("ARCHIVOOOOOO", inputFile);
-      api.uploadMedia(inputFile, $scope.landing.id, callit);
+      inputFile.temporalText = inputText;
+      filesToUpload.push( inputFile );
     }
-    console.log("Final de upload carousel ",images);
+    api.uploadMedia(filesToUpload, $scope.landing.id, callit);
   };
 
   $scope.deleteCard = function(event, card)

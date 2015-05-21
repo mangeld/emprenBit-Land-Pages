@@ -77,7 +77,7 @@ admin.factory('api', ['$http', function($http){
 
   api.uploadCarousel = function(images, landingId)
   {
-    $http({
+    return $http({
       method: 'POST',
       url: 'v1/pages/'+landingId+'/cards',
       headers: { 'Content-Type': undefined },

@@ -122,6 +122,7 @@
       >
       <div class="inline_input" ng-repeat="img in carousel.images">
         <div class="container">
+          <img ng-ensure-is-loaded ng-if="img.src" class="carousel-img" src="storage/{{landing.id}}/small_{{img.src}}.jpg" alt=""/>
           <span>Texto</span>
           <input type="text" ng-model="img.text"/>
         </div>
