@@ -35,12 +35,16 @@ gulp.task('sass', function(){
   gulp.src('src_frontend/sass/*.sass')
     .pipe(sass({indentedSyntax: true, errLogToConsole: true}))
     .pipe(gulp.dest('public/css/'));
+
+  gulp.src('public/landing2/css/*.sass')
+    .pipe(sass({indentedSyntax: true, errLogToConsole: true}))
+    .pipe(gulp.dest('public/landing2/css/'));
 });
 
 gulp.task('watch', function(){
   livereload.listen();
   gulp.watch(['templates/*.html', 'public/*.html', 'public/js/*.js'], ['livereload']);
-  gulp.watch('src_frontend/sass/*.sass', ['sass', 'livereload']);
+  gulp.watch(['src_frontend/sass/*.sass', 'public/**/*.sass'], ['sass', 'livereload']);
   gulp.watch('src_frontend/js/*.js', ['compressJs', 'livereload']);
 });
 

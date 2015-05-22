@@ -46,4 +46,22 @@ class CardCarousel extends Card
     $this->addField($imageField);
     $this->addField($textField);
   }
+
+  public function getImages()
+  {
+    $imageCount = $this->countImages();
+    $images = array();
+    for( $i = 0; $i <= $imageCount; $i++ )
+      $images[$i] = new \StdClass();
+
+    foreach ($this->getFields() as $id => $field)
+    {
+      if( $field->getType() == DataTypes::fieldImage )
+        $images[ $field->getIndex() ]->src = $field->getText();
+      elseif( $field->getType() == DataTypes::fieldText )
+        $images[ $field->getIndex() ]->text = $field->getText();
+    }
+
+    return $images;
+  }
 }

@@ -149,6 +149,23 @@ class Page extends DataStore
     return $result;
   }
 
+  public function getCarousels()
+  {
+    if( !$this->hasCarousels() ) return array();
+    $result = array();
+    foreach( $this->getCards() as $id => $card )
+      if( $card->getType() == DataTypes::cardCarousel ) $result[$id] = $card;
+    return $result;
+  }
+
+  public function hasCarousels()
+  {
+    if( $this->countCards() == 0 ) return false;
+    foreach( $this->getCards() as $card )
+      if( $card->getType() == DataTypes::cardCarousel ) return true;
+    return false;
+  }
+
   public function countCards() { return count( $this->cards ); }
 
   public function countForms()

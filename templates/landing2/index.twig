@@ -11,6 +11,24 @@
 	<!-- Styles -->
 	<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,500,600,700,800|Open+Sans+Condensed:300,700&amp;subset=latin,latin-ext" />
 	<link type="text/css" rel="stylesheet" media="all" href="landing2/css/style.css" />
+    <link rel="stylesheet" href="slick/slick.css"/>
+    <link rel="stylesheet" href="landing2/css/custom.css"/>
+    <title>{{ page.title }}</title>
+    <script src="slick/slick.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.slider').slick({
+                centerMode: true,
+                dots: false,
+                arrows: false,
+                autoplay: true,
+                mobileFirst: true,
+                variableWidth: true,
+                responsive: true,
+                infinite: true
+            });
+        });
+    </script>
 </head>
 <body>
 	<div id="wrapper">
@@ -24,6 +42,18 @@
 			</div>
 		</div>
 		<div class="body">
+        {% if page.hasCarousels() %}
+            {% for carousel in page.getCarousels() %}
+                <div class="slider">
+                    {% for image in carousel.getImages() %}
+                        <div class="slider_image">
+                            <img  src="storage/{{ page.getId() }}/large_{{ image.src }}.jpg" />
+                            <span>{{ image.text }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% endif %}
 			<div class="content">
                 {% if page.get3ColCards() %}
                 {% for card in page.get3ColCards() %}
