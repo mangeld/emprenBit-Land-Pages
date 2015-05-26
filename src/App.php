@@ -169,6 +169,57 @@ class App
 
   public function updateCard($cardData, $pageId, $cardId)
   {
+    $slim = Slim::getInstance();
+
+    switch( $slim->request->params('type') )
+    {
+      case DataTypes::typeName( DataTypes::cardCarousel ):
+        $this->updateCardCarousel($pageId, $cardId);
+        break;
+      default:
+        $this->updateCard3Col($cardData, $pageId, $cardId);
+        break;
+    }
+  }
+
+  private function updateCardCarousel($pageId, $cardId)
+  {
+    $slim = Slim::getInstance();
+
+    $page = $this->db->fetchPage($pageId);
+    /** @var CardCarousel $card */
+    $card = $page->getCard($cardId);
+
+    $img = $slim->request->params('images');
+    $img_c = count( $img );
+    $txt = $slim->request->params('texts');
+    $txt_c = count( $txt );
+
+    $cardImgCount = $card->countImages();
+
+    for( $i = 0; $i < max($img_c, $txt_c); $i++ )
+    {
+      if( $i > $cardImgCount )
+      {
+        $card->addImage($img[$i], $txt[$i], $i);
+      } else {
+        var_dump(isset($img[$i]) && $img[$i] != "null"  && $txt[$i]);
+        if( isset($img[$i]) && $img[$i] != "null"  && $txt[$i] )
+          $card->setImage($i, $img[$i], $txt[$i]);
+        else if( isset($img[$i]) && $img[$i] != "null" && !$txt[$i] )
+          $card->setImage($i, $img[$i], "");
+        else if( $txt[$i] )
+          $card->setImage($i, "", $txt[$i]);
+      }
+    }
+    $this->db->deleteCard($card->getId());
+    var_dump($card);
+    $this->db->savePage($page);
+    //$this->db->updateCard( $card );
+  }
+
+  private function updateCard3Col($cardData, $pageId, $cardId)
+  {
     $newCard = $this->buildCardFromJson($cardData, $pageId, $cardId);
     $this->deleteCard($pageId, $cardId);
     $page = $this->db->fetchPage($pageId);

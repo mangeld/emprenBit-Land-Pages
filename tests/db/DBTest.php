@@ -223,6 +223,33 @@ class DBTest extends PHPUnit_Framework_TestCase
     $this->assertEquals($modPage, $result, '', 0.0001);
   }
 
+/*  public function testCardIsUpdated()
+  {
+
+    $page = Page::createPageWithNewUser('testCardIsUpdated@update.me');
+    $page->setName("Test card is updated");
+
+    $testedCard = Card::createCard( DataTypes::cardCarousel );
+    $testedCard->addImage('thiisaid', 'testCardUpdated', 0);
+    $testedCard->addImage('thiisaid', 'testCardUpdated1', 1);
+    $testedCard->addImage('thiisaid', 'testCardUpdated2', 2);
+
+    $page->addCard($testedCard);
+    $this->db->savePage($page);
+
+    $updatedPage = $this->db->fetchPage($page->getId());
+    $updatedCard = $updatedPage->getCard($testedCard->getId());
+    $updatedCard->setImage(2, "thisisAchangedId", "testCardUpdatedddddd2");
+    $updatedPage->addCard($updatedCard);
+    $this->db->savePage($updatedPage);
+
+    $resultingPage = $this->db->fetchPage($page->getId());
+    $resultingCard = $resultingPage->getCard( $testedCard->getId() );
+
+    $this->assertNotEquals($testedCard, $resultingCard, "", 0.0001);
+
+  }*/
+
   public function testCardIsDeleted()
   {
     $page = Page::createPageWithNewUser('testCardIsDeleted@delete.this');

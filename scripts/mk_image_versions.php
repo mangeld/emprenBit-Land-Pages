@@ -16,7 +16,7 @@ try
 {
   $image = File::openFile($source);
   $image->makeImageVersions($destination);
-  
+
   if( $config->saveOriginalMedia() )
     File::openFile($source)->move($destination);
   else
@@ -24,5 +24,7 @@ try
 }
 catch (FileSystemException $e)
 { \mangeld\lib\Logger::instance()->error("Error opening image $source in mk_image_versions"); }
+catch(\Exception $m)
+{ \mangeld\lib\Logger::instance()->error($m); }
 
 exit(0);

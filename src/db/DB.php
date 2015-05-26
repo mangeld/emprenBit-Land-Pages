@@ -50,6 +50,12 @@ SQL;
 SELECT `formId`, `completionDate`, `sourceIp`, `pageId`, `field_name`, `field_email`
 FROM `CompletedForms` WHERE `pageId` = ?;
 SQL;
+  private static $sql_update_card_fields = <<<SQL
+UPDATE `landingPages`.`CardContent`
+SET `text` = ?, `index` = ?
+WHERE `idCardContent` = ? AND `idCard` = ?;
+SQL;
+
 
 
   public function __construct()
@@ -206,6 +212,24 @@ SQL;
       $result = $status && $result;
     }
     return $result;
+  }
+
+  public function updateCard(\mangeld\obj\Card $card)
+  {
+    $this->updateCardFields( $card );
+  }
+
+  private function updateCardFields(\mangeld\obj\Card $card)
+  {
+    foreach( $card->getFields() as $id => $field )
+    {
+      $prepared = $this->pdo->prepare( self::$sql_update_card_fields );
+      $prepared->bindValue( 1, $field->getText() );
+      $prepared->bindValue( 2, $field->getIndex() );
+      $prepared->bindValue( 3, $field->getId() );
+      $prepared->bindValue( 4, $card->getId() );
+      $prepared->execute();
+    }
   }
 
   /**

@@ -44,7 +44,7 @@ admin.factory('api', ['$http', function($http){
 
     var should_continue = function()
     {
-      if( media_count == success_count ){
+      if( media_count <= success_count ){
         loop = false;
         callback(media_ids);
       } else {
@@ -55,7 +55,13 @@ admin.factory('api', ['$http', function($http){
 
     var do_http = function(file)
     {
-      console.log("doing http");
+      console.log("INDIVIDUAL FILE", file);
+      console.log("MEDIA COUNT: ", media_count, "SUCCESS_COUNT: ", success_count);
+      if( typeof file == 'undefined' ){
+        success_count++;
+        should_continue();
+        return;
+      }
       $http({
         method: 'POST',
         url: 'v1/upload',
@@ -126,6 +132,7 @@ admin.factory('api', ['$http', function($http){
       });
     });
   };
+
 
   api.updateCard = function(landingId, jsonData, images){
     return $http({

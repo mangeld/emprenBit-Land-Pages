@@ -1,4 +1,4 @@
-admin.controller('LandingEditController', function($scope, $route, api){
+admin.controller('LandingEditController', function($scope, $route, $http, api){
 
   $scope.landing = {};
   $scope.showAddBlockOverlay = false;
@@ -96,12 +96,82 @@ admin.controller('LandingEditController', function($scope, $route, api){
     );
   }
 
+  $scope.updateCarousel = function(inputs, carousel)
+  {
+    var getIds = function(ids)
+    {
+      var images = [];
+      console.log("IDS: ", ids);
+      for( var e = 0; e < inputs.length; e++)
+      {
+        images[e] = {};
+        images[e].text = $(inputs).find('input[type="text"]').get(e).value;
+      }
+
+      ids.forEach(function(idObj){
+        images[ idObj.file.imageIndex ].src = idObj.id;
+      });
+
+      $http({
+        method: 'POST',
+        url: 'v1/pages/' + $scope.landing.id + '/cards/' + carousel.id,
+        headers: {
+          "X-HTTP-Method-Override": "PUT",
+          'Content-Type': undefined
+        },
+        transformRequest: function()
+        {
+          var f = new FormData();
+          for( var m = 0; m < images.length; m++ ){
+            f.append('texts[]', images[m].text);
+            if( images[m].src )
+              f.append('images[]', images[m].src);
+            else
+              f.append('images[]', null);
+          }
+          f.append('type', 'cardCarousel');
+          return f;
+        }
+      })
+        .success(function(){
+          $scope.fetchLanding();
+        });
+    }
+
+    var files = [];
+
+    for( var i = 0; i < inputs.length; i++ )
+    {
+      var fil = $(inputs).find('input[type="file"]')[i].files[0];
+      if( fil ){
+        fil.imageIndex = i;
+        files[i] = fil;
+      }
+    }
+
+    console.log("FILEES: ", files.length);
+
+    if( files.length > 0 )
+      api.uploadMedia(files, $scope.landing.id, getIds);
+    else
+    {
+      var fakeIds = [];
+      getIds(fakeIds);
+    }
+  };
+
   $scope.uploadCarousel = function(event, carousel)
   {
     var inputs = $(event.target).parents('form').find('.inline_input');
     var images_count = inputs.length;
     var upload_count = 0;
     var images = new Array(); // [ { id: file | string, text: string } ]
+
+    if( carousel.id )
+    {
+      $scope.updateCarousel(inputs, carousel);
+      return;
+    }
 
     var callit = function(ids)
     {
@@ -112,6 +182,7 @@ admin.controller('LandingEditController', function($scope, $route, api){
         images[i].text = ids[i].file.temporalText;
         upload_count++;
       }
+      console.log("IDS: ", ids, "CAROUSEEEL: ", carousel);
       api.uploadCarousel(images, $scope.landing.id)
         .success(function(){ $scope.fetchLanding(); });
     }
@@ -122,8 +193,11 @@ admin.controller('LandingEditController', function($scope, $route, api){
     {
       var inputFile = $(inputs).find('input[type="file"]')[i].files[0];
       var inputText = $(inputs).find('input[type="text"]').get(i).value;
-      inputFile.temporalText = inputText;
-      filesToUpload.push( inputFile );
+      if( inputFile )
+      {
+        filesToUpload.push( inputFile );
+        inputFile.temporalText = inputText;
+      }
     }
     api.uploadMedia(filesToUpload, $scope.landing.id, callit);
   };

@@ -34,6 +34,15 @@ class CardCarousel extends Card
     return $max;
   }
 
+  public function setImage($imageIndex, $imageId = null, $text = null)
+  {
+    if( $imageId )
+      $this->getFieldOfIndex($imageIndex, DataTypes::fieldImage)->setText($imageId);
+
+    if( $text )
+      $this->getFieldOfIndex($imageIndex, DataTypes::fieldText)->setText($text);
+  }
+
   public function addImage($imageId, $text, $index)
   {
     $imageField = CardField::createField(DataTypes::fieldImage);
