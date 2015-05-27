@@ -1,0 +1,21 @@
+{
+  "name": "bowerTest",
+  "version": "0.0.0",
+  "authors": [
+    "Miguel Ángel Durán González <contact@mangel.me>"
+  ],
+  "description": "A test for seeing how bower works",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4",
+    "jquery": "~2.1.4"
+  }
+}
