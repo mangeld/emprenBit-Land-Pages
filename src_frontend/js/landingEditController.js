@@ -234,7 +234,7 @@ admin.controller('LandingEditController', function($scope, $route, $http, api){
     if( typeof data.id == 'undefined' )
       api.uploadCard($scope.landing.id, data, files, completed);
     else
-      api.updateCard($scope.landing.id, data, files, completed);
+      api.updateCard($scope.landing.id, data, files).success(function(){completed();});
 
   };
 

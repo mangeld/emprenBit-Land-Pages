@@ -47,7 +47,7 @@
                 <div class="slider">
                     {% for image in carousel.getImages() %}
                         <div class="slider_image">
-                            <img  src="storage/{{ page.getId() }}/large_{{ image.src }}.jpg" />
+                            <img src="storage/{{ page.getId() }}/large_{{ image.src }}.jpg" />
                             <span>{{ image.text }}</span>
                         </div>
                     {% endfor %}

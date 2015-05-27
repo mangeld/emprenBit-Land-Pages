@@ -11,7 +11,7 @@ $slimApp->get('/admin', function() use ($slimApp) {
 
 $slimApp->get('/:pageName', function($pageName) use ($slimApp){
   $app = \mangeld\App::createApp();
-  $loader = new Twig_Loader_Filesystem('../templates/landing2');
+  $loader = new Twig_Loader_Filesystem('../templates/bootstrap');
   $twig = new Twig_Environment($loader);
 
   $pages = $app->getPagesAsObj();

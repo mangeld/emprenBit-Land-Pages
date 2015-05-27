@@ -149,6 +149,7 @@ admin.factory('api', ['$http', function($http){
         data.images.forEach(function(image, index, array){
           fdata.append("image" + index, image);
         });
+        fdata.append("type", "cardThreeColumns");
         return api.requestTransform(data);
       }
     });

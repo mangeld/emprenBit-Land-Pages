@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Bootstrap test</title>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="bower_components/slick.js/slick/slick.js"></script>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="bower_components/slick.js/slick/slick.css">
+  <script>
+      $(document).ready(function(){
+          $('.slider').slick({
+            centerMode: true,
+            dots: false,
+            arrows: false,
+            autoplay: true,
+            mobileFirst: true,
+            variableWidth: true,
+            responsive: true,
+            infinite: true
+          });
+          //$('.carousel-example-generic').carousel();
+      });
+  </script>
+</head>
+<body>
+
+  <main>
+
+    <div class="container">
+
+      <div class="row">
+        <h1>{{ page.getTitle() }}</h1>
+        <p>{{ page.getDescription() }}</p>
+      </div>
+{% if page.hasCarousels() %}
+    {% for carousel in page.getCarousels() %}
+        <div class="row">
+            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    {% for image in carousel.getImages() %}
+                        <div class="item {% if loop.first %}active{% endif %}">
+                            <img src="storage/{{ page.getId() }}/large_{{ image.src }}.jpg" alt="">
+                            <div class="carousel-caption">
+                                <p>{{ image.text }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+      {% if page.get3ColCards() %}
+        {% for card in page.get3ColCards() %}
+          <div class="row 3col">
+
+            <div class="col-md-4">
+              <img src="storage/{{ page.getId() }}/small_{{ card.getImage(1).getText() }}.jpg" alt="">
+              <h2>{{ card.getTitle(1).getText() }}</h2>
+              <p>{{ card.getBody(1).getText() }}</p>
+            </div>
+            <div class="col-md-4">
+              <img src="storage/{{ page.getId() }}/small_{{ card.getImage(2).getText() }}.jpg" alt="">
+              <h2>{{ card.getTitle(2).getText() }}</h2>
+              <p>{{ card.getBody(2).getText() }}</p>
+            </div>
+            <div class="col-md-4">
+              <img src="storage/{{ page.getId() }}/small_{{ card.getImage(3).getText() }}.jpg" alt="">
+              <h2>{{ card.getTitle(3).getText() }}</h2>
+              <p>{{ card.getBody(3).getText() }}</p>
+            </div>
+
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+  </main>
+
+</body>
+</html>
