@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.4",
-    "jquery": "~2.1.4"
+    "jquery": "~2.1.4",
+    "slick-carousel": "git://github.com/kenwheeler/slick/#~1.5.5"
   }
 }

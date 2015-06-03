@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `CompletedForms` (
   CONSTRAINT `fk_CompletedForms_2`
     FOREIGN KEY (`pageId`)
     REFERENCES `Pages` (`idPages`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 

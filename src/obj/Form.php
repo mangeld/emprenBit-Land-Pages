@@ -59,6 +59,13 @@ class Form extends DataStore
     $this->f_email = $email;
   }
 
+	/**
+	 * Get the form as an array.
+	 *
+	 * @var prettyDate Exports the date as human readable.
+	 * By default its true, to get a unix timestamp set it to 'false'
+   * @return array
+	 */
   public function asArray($prettyDate = true)
   {
     $out = get_object_vars( $this );

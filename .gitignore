@@ -2,9 +2,13 @@
 node_modules
 *.css
 !public/**/css/*.css
+bower_components
 
 #Sublime Text Files
 proj.*
+
+#Mysql Workbench files
+*bak
 
 #Composer Related Files
 vendor
