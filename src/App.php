@@ -344,6 +344,8 @@ class App
           if( $card->hasFields() )
           {
             $cardJson = new \StdClass;
+            $cardJson->color = $card->getColor();
+            $cardJson->backgroundColor = $card->getBackgroundColor();
             $cardJson->id = $card->getId();
             switch( $card->getType() )
             {

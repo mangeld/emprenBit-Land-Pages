@@ -312,6 +312,38 @@ class DBTest extends PHPUnit_Framework_TestCase
     $this->assertEquals($page, $retrievedPage, '', 0.001);
   }
 
+  public function testPageColorsAreUpdated()
+  {
+    $newColor = '#121212';
+    $newBColor = '#341232';
+    $page = Page::createPageWithNewUser('testColors@updat.ed');
+    $page->setName('Test Colors are updated from page');
+    $page->setColor('#349922');
+    $page->setBackgroundColor('#091239');
+    $this->db->savePage($page);
+    $modified = $this->db->fetchPage($page->getId());
+    $modified->setColor($newColor);
+    $modified->setBackgroundColor($newBColor);
+    $this->db->savePage($modified);
+
+    $testedPage = $this->db->fetchPage($page->getId());
+
+    $this->assertEquals($modified, $testedPage);
+  }
+
+  public function testPageColorsAreSaved()
+  {
+    $page = Page::createPageWithNewUser('testPageColorSaved@color.co');
+    $page->setName('Test page color saved');
+    $page->setColor('#555');
+    $page->setBackgroundColor('#888');
+
+    $this->db->savePage($page);
+    $result = $this->db->fetchPage( $page->getId() );
+
+    $this->assertEquals( $page, $result, '', 0.001 );
+  }
+
   public function testCardIsDeleted()
   {
     $page = Page::createPageWithNewUser('testCardIsDeleted@delete.this');

@@ -46,6 +46,8 @@ CREATE TABLE IF NOT EXISTS `Pages` (
   `title` TINYTEXT NULL,
   `description` MEDIUMTEXT NULL,
   `logoId` VARCHAR(36) NULL,
+  `color` VARCHAR(45) NULL,
+  `backgroundColor` VARCHAR(45) NULL,
   PRIMARY KEY (`idPages`),
   CONSTRAINT `fk_Pages_1`
     FOREIGN KEY (`owner`)

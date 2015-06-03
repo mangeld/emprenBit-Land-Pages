@@ -48,6 +48,9 @@ class Page extends DataStore
   /** @var Form[] */
   private $forms;
 
+  private $color;
+  private $backgroundColor;
+
   public function __construct(
     \mangeld\lib\StringValidator $validator = null)
   {
@@ -239,4 +242,16 @@ class Page extends DataStore
     $this->attrIsSet( $this->uuid );
     return $this->uuid;
   }
+
+  public function setColor($color)
+  { $this->color = $color; }
+
+  public function getColor()
+  { return $this->color; }
+
+  public function setBackgroundColor($color)
+  { $this->backgroundColor = $color; }
+
+  public function getBackgroundColor()
+  { return $this->backgroundColor; }
 }
