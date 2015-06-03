@@ -10,6 +10,7 @@ class Card extends DataStore
   protected $cardType;
   /** @var CardField[] */
   protected $fields = array();
+  protected $color;
 
   public static function createEmptyCard()
   {
@@ -62,6 +63,12 @@ class Card extends DataStore
   {
     return $this->fields[ $fieldId ];
   }
+
+  public function setColor($color)
+  { $this->color = $color; }
+
+  public function getColor()
+  { return $this->color; }
 
   /**
    * @return CardField[]

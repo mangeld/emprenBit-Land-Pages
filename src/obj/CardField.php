@@ -10,6 +10,7 @@ class CardField extends DataStore
   private $card;
   private $text;
   private $index;
+  private $color;
 
   public static function createEmptyField()
   {
@@ -33,6 +34,12 @@ class CardField extends DataStore
 
     return $field;
   }
+
+  public function setColor($color)
+    { $this->color = $color; }
+
+  public function getColor()
+    { return $this->color; }
 
   public function setText($text)
     { $this->text = $text; }

@@ -250,6 +250,37 @@ class DBTest extends PHPUnit_Framework_TestCase
 
   }*/
 
+  public function testCardColorIsUpdated()
+  {
+    $page = Page::createPageWithNewUser('testColorOfCard@updat.ed');
+    $page->setName('Test color is updated');
+    $card = Card::createCard(DataTypes::cardThreeColumns);
+    $card->setColor('#666');
+    $page->addCard($card);
+
+    $this->db->savePage($page);
+    $card->setColor('#999');
+    $updateStatus = $this->db->updateCard( $card );
+    $retrievedPage = $this->db->fetchPage( $page->getId() );
+
+    $this->assertEquals($page, $retrievedPage, '', 0.001);
+    $this->assertTrue( $updateStatus );
+  }
+
+  public function testCardColorIsSaved()
+  {
+    $page = Page::createPageWithNewUser('testColorOfCardIsSaved@save.me');
+    $page->setName('Test color is saved');
+    $card = Card::createCard(DataTypes::cardThreeColumns);
+    $card->setColor('#333');
+    $page->addCard($card);
+
+    $this->db->savePage($page);
+    $retrievedPage = $this->db->fetchPage($page->getId());
+
+    $this->assertEquals($page, $retrievedPage, '', 0.001);
+  }
+
   public function testCardIsDeleted()
   {
     $page = Page::createPageWithNewUser('testCardIsDeleted@delete.this');

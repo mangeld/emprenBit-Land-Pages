@@ -67,6 +67,7 @@ CREATE TABLE IF NOT EXISTS `PageCards` (
   `idCard` VARCHAR(36) NOT NULL,
   `cardTypeId` VARCHAR(36) NULL,
   `index` INT NULL,
+  `color` VARCHAR(45) NULL,
   PRIMARY KEY (`idPage`, `idCard`),
   CONSTRAINT `fk_PagesCards_1`
     FOREIGN KEY (`idPage`)
@@ -98,6 +99,7 @@ CREATE TABLE IF NOT EXISTS `CardContent` (
   `typeId` VARCHAR(36) NULL,
   `text` MEDIUMTEXT NULL,
   `index` INT NULL,
+  `color` VARCHAR(45) NULL,
   PRIMARY KEY (`idCardContent`, `idCard`),
   CONSTRAINT `fk_CardContent_1`
     FOREIGN KEY (`idCard`)

@@ -15,7 +15,7 @@ SQL;
     SELECT * FROM Pages WHERE owner = ( SELECT userId FROM Users WHERE email = ? )
 SQL;
   private static $sql_insert_card = <<<SQL
-  INSERT INTO `PageCards` (`idPage`, `idCard`, `cardTypeId`) VALUES ( ?, ?, ? )
+  INSERT INTO `PageCards` (`idPage`, `idCard`, `cardTypeId`, `color`) VALUES ( ?, ?, ?, ? )
 SQL;
   private static $sql_count_cards = <<<SQL
   SELECT count(`idCard`) count FROM `PageCards` WHERE `idPage` = ?
@@ -24,7 +24,7 @@ SQL;
   SELECT count(`idCardContent`) count FROM `CardContent` WHERE `idCard` = ?
 SQL;
   private static $sql_select_cards = <<<SQL
-  SELECT `idPage`, `idCard`, `cardTypeId` FROM `PageCards` WHERE `idPage` = ?
+  SELECT `idPage`, `idCard`, `cardTypeId`, `color` FROM `PageCards` WHERE `idPage` = ?
 SQL;
   private static $sql_insert_card_content = <<<SQL
   INSERT INTO `CardContent` (`idCardContent`, `idCard`, `typeId`, `text`, `index`) VALUES ( ?, ?, ?, ?, ? )
@@ -37,6 +37,9 @@ SQL;
 SQL;
   private static $sql_update_user = <<<SQL
   UPDATE `Users` SET `registrationDate` = ?, `isAdmin` = ?, `email` = ?, `passwordHash` = ? WHERE `userId` = ?
+SQL;
+  private static $sql_update_card = <<<SQL
+  UPDATE `PageCards` SET `index` = ?, `color` = ? WHERE `idCard` = ? AND `idPage` = ?
 SQL;
   private static $sql_delete_card = <<<SQL
   DELETE FROM `PageCards` WHERE `idCard` = ?
@@ -187,6 +190,7 @@ SQL;
       $prepared->bindValue( 1, $card->getPage()->getId() );
       $prepared->bindValue( 2, $card->getId() );
       $prepared->bindValue( 3, $card->getType() );
+      $prepared->bindValue( 4, $card->getColor() );
       $status = $prepared->execute();
 
       if( $card->countFields() > 0 )
@@ -216,11 +220,22 @@ SQL;
 
   public function updateCard(\mangeld\obj\Card $card)
   {
-    $this->updateCardFields( $card );
+    $cardUpdated = true;
+
+    $prepared = $this->pdo->prepare( self::$sql_update_card );
+    $prepared->bindValue( 1, 0 );
+    $prepared->bindValue( 2, $card->getColor() );
+    $prepared->bindValue( 3, $card->getId() );
+    $prepared->bindValue( 4, $card->getPage()->getId() );
+    $cardUpdated = $prepared->execute();
+
+    return $this->updateCardFields( $card ) && $cardUpdated;
   }
 
   private function updateCardFields(\mangeld\obj\Card $card)
   {
+    $allFieldsUpdated = true;
+
     foreach( $card->getFields() as $id => $field )
     {
       $prepared = $this->pdo->prepare( self::$sql_update_card_fields );
@@ -228,8 +243,10 @@ SQL;
       $prepared->bindValue( 2, $field->getIndex() );
       $prepared->bindValue( 3, $field->getId() );
       $prepared->bindValue( 4, $card->getId() );
-      $prepared->execute();
+      $allFieldsUpdated = $allFieldsUpdated && $prepared->execute();
     }
+
+    return $allFieldsUpdated;
   }
 
   /**
@@ -298,6 +315,7 @@ SQL;
   private function buildCard($row)
   {
     $card = \mangeld\obj\Card::createCard($row->cardTypeId, $row->idCard);
+    $card->setColor( $row->color );
     return $card;
   }
 
