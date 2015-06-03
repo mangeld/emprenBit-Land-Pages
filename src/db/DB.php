@@ -15,7 +15,7 @@ SQL;
     SELECT * FROM Pages WHERE owner = ( SELECT userId FROM Users WHERE email = ? )
 SQL;
   private static $sql_insert_card = <<<SQL
-  INSERT INTO `PageCards` (`idPage`, `idCard`, `cardTypeId`, `color`) VALUES ( ?, ?, ?, ? )
+  INSERT INTO `PageCards` (`idPage`, `idCard`, `cardTypeId`, `color`, `backgroundColor`) VALUES ( ?, ?, ?, ?, ? )
 SQL;
   private static $sql_count_cards = <<<SQL
   SELECT count(`idCard`) count FROM `PageCards` WHERE `idPage` = ?
@@ -24,7 +24,7 @@ SQL;
   SELECT count(`idCardContent`) count FROM `CardContent` WHERE `idCard` = ?
 SQL;
   private static $sql_select_cards = <<<SQL
-  SELECT `idPage`, `idCard`, `cardTypeId`, `color` FROM `PageCards` WHERE `idPage` = ?
+  SELECT `idPage`, `idCard`, `cardTypeId`, `color`, `backgroundColor` FROM `PageCards` WHERE `idPage` = ?
 SQL;
   private static $sql_insert_card_content = <<<SQL
   INSERT INTO `CardContent` (`idCardContent`, `idCard`, `typeId`, `text`, `index`) VALUES ( ?, ?, ?, ?, ? )
@@ -39,7 +39,7 @@ SQL;
   UPDATE `Users` SET `registrationDate` = ?, `isAdmin` = ?, `email` = ?, `passwordHash` = ? WHERE `userId` = ?
 SQL;
   private static $sql_update_card = <<<SQL
-  UPDATE `PageCards` SET `index` = ?, `color` = ? WHERE `idCard` = ? AND `idPage` = ?
+  UPDATE `PageCards` SET `index` = ?, `color` = ?, `backgroundColor` = ? WHERE `idCard` = ? AND `idPage` = ?
 SQL;
   private static $sql_delete_card = <<<SQL
   DELETE FROM `PageCards` WHERE `idCard` = ?
@@ -191,6 +191,7 @@ SQL;
       $prepared->bindValue( 2, $card->getId() );
       $prepared->bindValue( 3, $card->getType() );
       $prepared->bindValue( 4, $card->getColor() );
+      $prepared->bindValue( 5, $card->getBackgroundColor() );
       $status = $prepared->execute();
 
       if( $card->countFields() > 0 )
@@ -225,8 +226,9 @@ SQL;
     $prepared = $this->pdo->prepare( self::$sql_update_card );
     $prepared->bindValue( 1, 0 );
     $prepared->bindValue( 2, $card->getColor() );
-    $prepared->bindValue( 3, $card->getId() );
-    $prepared->bindValue( 4, $card->getPage()->getId() );
+    $prepared->bindValue( 3, $card->getBackgroundColor() );
+    $prepared->bindValue( 4, $card->getId() );
+    $prepared->bindValue( 5, $card->getPage()->getId() );
     $cardUpdated = $prepared->execute();
 
     return $this->updateCardFields( $card ) && $cardUpdated;
@@ -316,6 +318,7 @@ SQL;
   {
     $card = \mangeld\obj\Card::createCard($row->cardTypeId, $row->idCard);
     $card->setColor( $row->color );
+    $card->setBackgroundColor( $row->backgroundColor );
     return $card;
   }
 

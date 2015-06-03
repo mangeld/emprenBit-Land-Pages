@@ -250,6 +250,37 @@ class DBTest extends PHPUnit_Framework_TestCase
 
   }*/
 
+  public function testCardBackgroundColorIsSaved()
+  {
+    $page = Page::createPageWithNewUser('testBackgroundColorOfCardIsSaved@save.me');
+    $page->setName('Test background color is saved');
+    $card = Card::createCard(DataTypes::cardThreeColumns);
+    $card->setBackgroundColor('#121212');
+    $page->addCard($card);
+
+    $this->db->savePage($page);
+    $retrievedPage = $this->db->fetchPage($page->getId());
+
+    $this->assertEquals($page, $retrievedPage, '', 0.001);
+  }
+
+  public function testCardBackgroundColorIsUpdated()
+  {
+    $page = Page::createPageWithNewUser('testBackgroundColorOfCard@updat.ed');
+    $page->setName('Test background color is updated');
+    $card = Card::createCard(DataTypes::cardThreeColumns);
+    $card->setBackgroundColor('#453445');
+    $page->addCard($card);
+
+    $this->db->savePage($page);
+    $card->setBackgroundColor('#987856');
+    $updateStatus = $this->db->updateCard( $card );
+    $retrievedPage = $this->db->fetchPage( $page->getId() );
+
+    $this->assertEquals($page, $retrievedPage, '', 0.001);
+    $this->assertTrue( $updateStatus );
+  }
+
   public function testCardColorIsUpdated()
   {
     $page = Page::createPageWithNewUser('testColorOfCard@updat.ed');
