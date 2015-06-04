@@ -88,7 +88,7 @@
         {% endfor %}
       {% endif %}
 
-        <div class="row landing-form">
+        <div class="row landing-form" {{ attributes.colors_style( page.getColor(), page.getBackgroundColor() ) }}>
             <div class="col-md-6 col-md-push-3">
                 <form class="form-inline" action="v1/forms/{{ page.getId() }}" method="POST">
                     <input type="text" name="_METHOD" value="PUT" hidden/>
