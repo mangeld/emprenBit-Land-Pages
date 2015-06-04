@@ -86,10 +86,10 @@ body
     h3
       margin: .2rem .4rem
 
-.inline_input:not(:last-child)
+.inline_input:not(:last-child), .inline_color_input:not(:last-child)
   border-bottom: 1px solid #AAA
 
-.inline_input, .column_input
+.inline_input, .column_input, .inline_color_input
   input, textarea
     background-color: #eeeeee
     border-radius: .4rem
@@ -106,7 +106,7 @@ body
     background-color: #f3f3f3
     box-shadow: 0 0 3px rgba( 45, 45, 120, 0.1 )
 
-.inline_input
+.inline_input, .inline_color_input
   width: 100%
   padding: .5rem 0
   background-color: #e5e5e5
@@ -121,6 +121,14 @@ body
     float: right
     width: 50%
     margin: 0 .5rem
+
+  input[type="color"]
+    float: right
+    padding: 0
+    border-radius: 0
+    cursor: pointer
+    width: 2rem
+    height: 2rem
 
   textarea
     border: none

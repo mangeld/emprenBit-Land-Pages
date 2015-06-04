@@ -130,6 +130,8 @@ admin.controller('LandingEditController', function($scope, $route, $http, api){
               f.append('images[]', null);
           }
           f.append('type', 'cardCarousel');
+          f.append("color", carousel.color);
+          f.append("backgroundColor", carousel.backgroundColor);
           return f;
         }
       })
@@ -183,7 +185,7 @@ admin.controller('LandingEditController', function($scope, $route, $http, api){
         upload_count++;
       }
       console.log("IDS: ", ids, "CAROUSEEEL: ", carousel);
-      api.uploadCarousel(images, $scope.landing.id)
+      api.uploadCarousel(images, $scope.landing.id, carousel.color, carousel.backgroundColor)
         .success(function(){ $scope.fetchLanding(); });
     }
 

@@ -164,6 +164,8 @@ class App
     $card->setImage($slim->request->params('image1'), 1);
     $card->setImage($slim->request->params('image2'), 2);
     $card->setImage($slim->request->params('image3'), 3);
+    $card->setColor($slim->request->params('color'));
+    $card->setBackgroundColor($slim->request->params('backgroundColor'));
     return $card;
   }
 
@@ -194,7 +196,8 @@ class App
     $img_c = count( $img );
     $txt = $slim->request->params('texts');
     $txt_c = count( $txt );
-
+    $card->setColor( $slim->request->params('color') );
+    $card->setBackgroundColor( $slim->request->params('backgroundColor') );
     $cardImgCount = $card->countImages();
 
     for( $i = 0; $i < max($img_c, $txt_c); $i++ )
@@ -231,6 +234,9 @@ class App
   {
     $jsonObj = json_decode($cardData, false);
     $card = $cardId == null ? Card::createCard(DataTypes::cardThreeColumns) : Card::createCard(DataTypes::cardThreeColumns, $cardId);
+
+    $card->setColor($jsonObj->color);
+    $card->setBackgroundColor($jsonObj->backgroundColor);
 
     for($i = 1; $i < 4; $i++)
       $card->setTitle(
@@ -332,6 +338,8 @@ class App
       $obj->title = $page->getTitle();
       $obj->description = $page->getDescription();
       $obj->logo = ($page->getLogoId() ? "storage/{$page->getId()}/small_{$page->getLogoId()}.jpg" : '');
+      $obj->color = $page->getColor();
+      $obj->backgroundColor = $page->getBackgroundColor();
 
       if( $page->getOwner() )
         $obj->owner = $page->getOwner()->getEmail();
@@ -455,6 +463,8 @@ class App
     $page->setName( $obj->name );
     $page->setDescription( $obj->description );
     $page->getOwner()->setEmail( $obj->email );
+    $page->setColor( $obj->color );
+    $page->setBackgroundColor( $obj->backgroundColor );
 
     try{
       $logo = File::fromUploadedFile('logo');

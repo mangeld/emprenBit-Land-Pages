@@ -1,0 +1,11 @@
+{% macro colors_style(color, backgroundColor) %}
+    style="
+    {% if color %}
+        color:{{ color }};
+    {% endif %}
+    {% if backgroundColor %}
+        background: none;
+        background-color: {{ backgroundColor }};
+    {% endif %}
+    "
+{% endmacro %}

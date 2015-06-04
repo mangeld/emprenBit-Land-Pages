@@ -2,4 +2,4 @@
 export MYSQLPASSWD='toor'
 mysql < dbTables.sql -uroot --password=$MYSQLPASSWD
 php vendor/phpunit/phpunit/phpunit
-mysql < dbTables.sql -uroot --password=$MYSQLPASSWD
+#mysql < dbTables.sql -uroot --password=$MYSQLPASSWD

@@ -1,3 +1,4 @@
+{% import "attributes.twig" as attributes %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -37,7 +38,7 @@
 
     <div class="container-fluid">
 
-      <div class="row landing-header">
+      <div class="row landing-header" {{ attributes.colors_style( page.getColor(), page.getBackgroundColor() ) }}>
         <div class="row-fuid landing-title">
             <img src="storage/{{ page.getId() }}/small_{{ page.getLogoId() }}.jpg" alt=""/>
             <h1>{{ page.getTitle() }}</h1>
@@ -50,7 +51,7 @@
       </div>
 {% if page.hasCarousels() %}
     {% for carousel in page.getCarousels() %}
-        <div class="row carousel">
+        <div class="row carousel" {{ attributes.colors_style( carousel.getColor(), carousel.getBackgroundColor() ) }}>
             <div class="slider">
                     {% for image in carousel.getImages() %}
                         <div class="slider_image">
@@ -65,7 +66,7 @@
 {% endif %}
       {% if page.get3ColCards() %}
         {% for card in page.get3ColCards() %}
-          <div class="row triptic">
+          <div class="row triptic" {{ attributes.colors_style( card.getColor(), card.getBackgroundColor() ) }}>
 
             <div class="col-md-4">
               <img class="img-rounded center-block" src="storage/{{ page.getId() }}/small_{{ card.getImage(1).getText() }}.jpg" alt="">

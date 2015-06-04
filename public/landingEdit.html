@@ -47,6 +47,16 @@
         <span>Logo: </span>
         <img ng-Ensure-Is-Loaded src="{{ landing.logo }}" alt=""/>
       </div>
+			<div class="inline_input">
+				<span>Title header color</span>
+				<input type="color" ng-model="landing.color"/>
+        <input type="text" ng-model="landing.color"/>
+      </div>
+      <div class="inline_input">
+        <span>Background header color</span>
+        <input type="color" ng-model="landing.backgroundColor"/>
+        <input type="text" ng-model="landing.backgroundColor"/>
+      </div>
       <div class="inline_input">
         <button ng-click="updateLanding($event)">
           <span class="fa fa-save"></span>
@@ -65,6 +75,16 @@
       ng-repeat="card3col in landing.cards.cardThreeColumns track by card3col.id"
       ng-if="landing.cards.cardThreeColumns"
       class="padding">
+      <div class="inline_input">
+        <span>Background color</span>
+        <input type="color" ng-model="card3col.backgroundColor"/>
+        <input type="text" ng-model="card3col.backgroundColor"/>
+      </div>
+      <div class="inline_input">
+        <span>Text color</span>
+        <input type="color" ng-model="card3col.color"/>
+        <input type="text" ng-model="card3col.color"/>
+      </div>
       <div class="container">
         <h3>Columna 1</h3>
         <div class="column_input column-3">
@@ -120,6 +140,18 @@
       ng-repeat="carousel in landing.cards.cardCarousel track by carousel.id"
       ng-if="landing.cards.cardCarousel"
       >
+      <div class="inline_color_input">
+        <div class="container">
+          <span>Background color</span>
+          <input type="color" ng-model="carousel.backgroundColor"/>
+          <input type="text" ng-model="carousel.backgroundColor"/>
+        </div>
+        <div class="container">
+          <span>Text color</span>
+          <input type="color" ng-model="carousel.color"/>
+          <input type="text" ng-model="carousel.color"/>
+        </div>
+      </div>
       <div class="inline_input" ng-repeat="img in carousel.images">
         <div class="container">
           <img ng-ensure-is-loaded ng-if="img.src" class="carousel-img" src="storage/{{landing.id}}/small_{{img.src}}.jpg" alt=""/>

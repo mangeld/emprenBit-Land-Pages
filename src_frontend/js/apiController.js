@@ -81,7 +81,7 @@ admin.factory('api', ['$http', function($http){
     should_continue();
   }
 
-  api.uploadCarousel = function(images, landingId)
+  api.uploadCarousel = function(images, landingId, color, backgroundColor)
   {
     return $http({
       method: 'POST',
@@ -95,6 +95,8 @@ admin.factory('api', ['$http', function($http){
           f.append("texts[]", images[i].text);
         }
         f.append("type", "cardCarousel");
+        f.append("color", color);
+        f.append("backgroundColor", backgroundColor);
         return f;
       }
     });
@@ -124,6 +126,8 @@ admin.factory('api', ['$http', function($http){
           f.append("image1", ids[0].id);
           f.append("image2", ids[1].id);
           f.append("image3", ids[2].id);
+          f.append("color", jsonData.color);
+          f.append("backgroundColor", jsonData.backgroundColor);
           f.append("type", "cardThreeColumns");
           return f;
         }
@@ -162,7 +166,9 @@ admin.factory('api', ['$http', function($http){
       "title": landing.title,
       "name": landing.name,
       "description": landing.description,
-      "email": landing.owner
+      "email": landing.owner,
+      "color": landing.color,
+      "backgroundColor": landing.backgroundColor
     };
 
     return $http({
