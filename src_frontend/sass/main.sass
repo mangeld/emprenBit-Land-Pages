@@ -2,9 +2,18 @@
 @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
 @import url('http://fonts.googleapis.com/css?family=Slabo+13px')
 
-$baseColor: #559
+$baseColor: #0c8a2d
+$baseColorLight: #97bf0d
+$baseColorPastel: #7bbb6d
+$neutral: #656469
+$neutralLight: #888b90
+$neutralXLight: #b1b4b9
+$neutralDark: #535d55
 $red: #D33
-$white: #FFF
+$XWhite: #fafafa
+$white: #f4f4f4
+$darkWhite: #ededed
+$darkerWhite: #d7d7d7
 $time: .3s
 
 *
@@ -33,7 +42,7 @@ button:active
   display: inline-block
   float: right
   margin: 0 .2rem
-  color: #999
+  color: $neutralLight
   font-size: .6rem
   vertical-align: top
   text-align: right
@@ -41,7 +50,7 @@ button:active
 body
   font-family: 'Montserrat', sans-serif
   font-size: 18px
-  background-color: #F9F9F9
+  background-color: $XWhite
   color: #333
 
 [ng-file-upload]
@@ -79,7 +88,7 @@ body
 
   form
     margin: .5rem 1rem
-    border: 1px solid #AAA
+    border: 1px solid $neutralXLight
     border-radius: .2rem
     overflow: hidden
 
@@ -87,11 +96,11 @@ body
       margin: .2rem .4rem
 
 .inline_input:not(:last-child), .inline_color_input:not(:last-child)
-  border-bottom: 1px solid #AAA
+  border-bottom: 1px solid $neutralXLight
 
 .inline_input, .column_input, .inline_color_input
   input, textarea
-    background-color: #eeeeee
+    background-color: $neutralXLight
     border-radius: .4rem
     font-size: .8rem
     padding: .4rem
@@ -99,17 +108,17 @@ body
     text-align: center
 
   input:focus
-    background-color: #f4f4f4
+    background-color: $darkWhite
     border: none
 
   textarea:focus
-    background-color: #f3f3f3
+    background-color: $darkWhite
     box-shadow: 0 0 3px rgba( 45, 45, 120, 0.1 )
 
 .inline_input, .inline_color_input
   width: 100%
   padding: .5rem 0
-  background-color: #e5e5e5
+  background-color: $darkWhite
   overflow: auto
   font-size: .9rem
 
@@ -149,8 +158,8 @@ body
   float: left
   margin: .3rem
   font-size: 0.9rem
-  background-color: #e5e5e5
-  border: 1px solid #AAA
+  background-color: $darkWhite
+  border: 1px solid $neutralXLight
   border-radius: .3rem
   overflow: hidden
   span
@@ -205,9 +214,9 @@ body
       padding: .3rem .6rem
       padding-right: .3rem
       text-align: left
-      background-color: #50b6e8
+      background-color: $baseColorLight
       color: #f7f7f7
-      text-shadow: 1px 1px 1px #777
+      text-shadow: 1px 1px 1px #5d5d5d
       button
         float: right
         margin: 0
@@ -266,9 +275,9 @@ button.red:hover, .button.red:hover
   background: $red
 
 button[disabled], button[disabled]:hover
-  color: #666
+  color: $neutralLight
   background: none
-  border-color: #666
+  border-color: $neutralLight
 
 .block-button
   display: block
@@ -319,9 +328,9 @@ main
   width: 80%
   margin: 0 auto
   height: auto
-  background-color: #f3f3f3
+  background-color: $white
   border-radius: .4rem
-  border: 1px solid #bbb
+  border: 1px solid $neutralXLight
   overflow: hidden
   box-shadow: 0 0 3px rgba( 23, 23, 23, .2 )
 
@@ -332,7 +341,7 @@ main
     display: block
     clear: both
     padding: 0
-    border-bottom: 1px solid #ddd
+    border-bottom: 1px solid $neutralXLight
 
     button
       display: block
@@ -344,7 +353,7 @@ main
   overflow: auto
 
 .blocklist > li:nth-of-type(even)
-    background-color: #f3f3f3 - #080808
+    background-color: $darkWhite
 
 .blocklist img
   height: 4rem
@@ -367,13 +376,13 @@ input
   font-family: 'Slabo 13px'
   background: none
   border: none
-  background-color: #EFEFEF
-  border-bottom: 2px solid #888
+  background-color: $darkWhite
+  border-bottom: 2px solid $neutralLight
   transition: border-bottom .4s, background-color .4s, box-shadow .4s
 
 input:focus
-  background-color: #EFEFF4
-  border-bottom: 2px solid #88f
+  background-color: $darkWhite
+  border-bottom: 2px solid $baseColorPastel
   box-shadow: 0 0 3px rgba( 45, 45, 120, 0.1 )
 
 textarea
