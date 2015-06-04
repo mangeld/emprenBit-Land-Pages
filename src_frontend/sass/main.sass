@@ -100,7 +100,7 @@ body
 
 .inline_input, .column_input, .inline_color_input
   input, textarea
-    background-color: $neutralXLight
+    background-color: $darkerWhite
     border-radius: .4rem
     font-size: .8rem
     padding: .4rem
@@ -108,7 +108,7 @@ body
     text-align: center
 
   input:focus
-    background-color: $darkWhite
+    background-color: $white
     border: none
 
   textarea:focus
@@ -274,7 +274,11 @@ button.red:hover, .button.red:hover
   color: $white
   background: $red
 
-button[disabled], button[disabled]:hover
+button[disabled],
+button[disabled]:hover,
+div.button[disabled],
+div.button[disabled]:hover
+  cursor: default
   color: $neutralLight
   background: none
   border-color: $neutralLight

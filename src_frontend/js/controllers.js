@@ -38,13 +38,26 @@ admin.directive('ngEnsureIsLoaded', function($timeout){
 });
 
 admin.directive('ngCheckResAvailable', function($http){
+
+  var checkIt = function(attrs, element){
+    $http.head(attrs.href)
+      .error( function(){
+        $(element).find('button').attr('disabled', 'disabled');
+        $(element).find('div.button').attr('disabled', 'disabled');
+        $(element).click(function(event){ event.preventDefault(); });
+      })
+      .success(function(){
+        $(element).find('button').removeAttr('disabled');
+        $(element).find('div.button').removeAttr('disabled');
+        $(element).off("click");
+      });
+  };
+
   return{
+    priority: 0,
     link: function(scope, element, attrs){
-      $http.head(attrs.href)
-        .error( function(){
-          $(element).find('button').attr('disabled', 'disabled');
-          $(element).click(function(event){ event.preventDefault(); });
-        } );
+      checkIt(attrs, element);
+      attrs.$observe('href', function(){checkIt(attrs, element)});
     },
     scope: true,
     restrict: 'A'
