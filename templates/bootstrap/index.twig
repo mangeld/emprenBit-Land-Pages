@@ -18,7 +18,7 @@
           $('.slider').slick({
             centerMode: false,
             dots: false,
-            speed: 400,
+            speed: 800,
             autoplaySpeed: 3000,
             arrows: false,
             draggable: false,
@@ -39,20 +39,21 @@
     <div class="container-fluid">
 
       <div class="row landing-header" {{ attributes.colors_style( page.getColor(), page.getBackgroundColor() ) }}>
-        <div class="row-fuid landing-title">
-            <img src="storage/{{ page.getId() }}/small_{{ page.getLogoId() }}.jpg" alt=""/>
-            <h1>{{ page.getTitle() }}</h1>
+        <div class="col-md-2"></div>
+        <div class="col-md-8 center-block">
+            <div class="row-fuid landing-title">
+                <img src="storage/{{ page.getId() }}/small_{{ page.getLogoId() }}.jpg" alt=""/>
+                <h1>{{ page.getTitle() }}</h1>
+            </div>
+            <div class="row-fluid landing-description">
+                <p>{{ page.getDescription() }}</p>
+            </div>
         </div>
-        <div class="row-fluid landing-description">
-            <div class="col-md-2"></div>
-            <div class="col-md-8 center-block"><p>{{ page.getDescription() }}</p></div>
-            <div class="col-md-2"></div>
-        </div>
+        <div class="col-md-2"></div>
       </div>
 {% if page.hasCarousels() %}
     {% for carousel in page.getCarousels() %}
-        <div class="row carousel" {{ attributes.colors_style( carousel.getColor(), carousel.getBackgroundColor() ) }}>
-            <div class="slider">
+        <div class="row slider carousel">
                     {% for image in carousel.getImages() %}
                         <div class="slider_image">
                             <div class="caption" style="background-image: url('storage/{{ page.getId() }}/large_{{ image.src }}.jpg')">
@@ -60,7 +61,6 @@
                             </div>
                         </div>
                     {% endfor %}
-            </div>
         </div>
     {% endfor %}
 {% endif %}

@@ -224,7 +224,7 @@ class App
   private function updateCard3Col($cardData, $pageId, $cardId)
   {
     $newCard = $this->buildCardFromJson($cardData, $pageId, $cardId);
-    $this->deleteCard($pageId, $cardId);
+    $this->db->deleteCard($cardId);
     $page = $this->db->fetchPage($pageId);
     $page->addCard($newCard);
     $this->db->savePage($page);
@@ -257,9 +257,11 @@ class App
         $img = File::fromUploadedFile('image'.($i-1));
         $img->saveToStorage($pageID);
         $card->setImage("{$img->getId()}", $i);
-      } catch (\Exception $e) {}
+      } catch (\Exception $e)
+      {
+        $card->setImage($jsonObj->fieldImage->$i, $i);
+      }
     }
-
     return $card;
   }
 
