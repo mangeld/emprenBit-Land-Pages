@@ -70,7 +70,7 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
       if( isset($params['name']) && isset($params['email']) )
       {
         $app->addForm($pageId, $params);
-        $slimApp->response->setBody('OK');
+        $slimApp->redirect( $slimApp->request->getReferer() );
       }
       else
       {
