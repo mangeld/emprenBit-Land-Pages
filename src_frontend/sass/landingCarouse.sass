@@ -56,7 +56,11 @@ main
   p
     word-wrap: break-word
     text-align: justify
-    padding-top: 2rem
+    padding-right: 5.5vw
+
+  @media all and (max-width: 992px)
+    p
+      padding-left: 5.5vw
 
 .triptic
   background-color: #FFF
@@ -68,6 +72,11 @@ main
 
 .valing-middle
   vertical-align: middle
+
+.align-always
+  text-align: center
+  img
+    display: inline-block
 
 @media all and (max-width: 992px )
   .align-md
