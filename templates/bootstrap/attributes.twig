@@ -9,3 +9,11 @@
     {% endif %}
     "
 {% endmacro %}
+
+{% macro backgroundColorStyle(bColor) %}
+    style="
+    {% if bColor %}
+        background-color: {{ bColor }}
+    {% endif %}
+    "
+{% endmacro %}

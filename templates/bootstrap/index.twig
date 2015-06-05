@@ -3,8 +3,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Bootstrap test</title>
-    <meta name="theme-color" content="#C0CFEA">
+  <title>{{ page.getTitle() }}</title>
+    <meta name="theme-color" content="{{ page.getBackgroundColor() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1, user-scalable=no">
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
@@ -38,7 +38,7 @@
 </head>
 <body>
 
-  <main>
+  <main class="fill" {{ attributes.backgroundColorStyle( page.getBackgroundColor() ) }}>
 
     <div class="container-fluid">
 
@@ -92,26 +92,23 @@
         {% endfor %}
       {% endif %}
 
-        <div class="row landing-form" {{ attributes.colors_style( page.getColor(), page.getBackgroundColor() ) }}>
-            <div class="col-md-6 col-md-push-3">
-                <form class="form-inline" action="v1/forms/{{ page.getId() }}" method="POST">
-                    <input type="text" name="_METHOD" value="PUT" hidden/>
-                    <div class="form-group">
-                        <label class="sr-only" for="inName">Nombre</label>
-                        <input type="text" id="inName" class="form-control" name="name" placeholder="Nombre"/>
-                    </div>
-                    <div class="form-group">
-                        <label class="sr-only" for="inEmail">Email</label>
-                        <input type="email" id="inEmail" class="form-control" name="email" placeholder="Email"/>
-                    </div>
-                    <button type="submit" class="btn btn-default">¡Suscribeme!</button>
-                </form>
-            </div>
-        </div>
-
     </div>
-
+      <div class="container-fluid landing-form" {{ attributes.colors_style( page.getColor(), page.getBackgroundColor() ) }}>
+          <div class="col-md-6 col-md-push-3">
+              <form class="form-inline" action="v1/forms/{{ page.getId() }}" method="POST">
+                  <input type="text" name="_METHOD" value="PUT" hidden/>
+                  <div class="form-group">
+                      <label class="sr-only" for="inName">Nombre</label>
+                      <input type="text" id="inName" class="form-control" name="name" placeholder="Nombre"/>
+                  </div>
+                  <div class="form-group">
+                      <label class="sr-only" for="inEmail">Email</label>
+                      <input type="email" id="inEmail" class="form-control" name="email" placeholder="Email"/>
+                  </div>
+                  <button type="submit" class="btn btn-default">¡Suscribeme!</button>
+              </form>
+          </div>
+      </div>
   </main>
-
 </body>
 </html>
