@@ -41,9 +41,9 @@
       <div class="row landing-header" {{ attributes.colors_style( page.getColor(), page.getBackgroundColor() ) }}>
         <div class="col-md-2"></div>
         <div class="col-md-8 center-block">
-            <div class="row-fuid landing-title">
-                <img src="storage/{{ page.getId() }}/small_{{ page.getLogoId() }}.jpg" alt=""/>
-                <h1>{{ page.getTitle() }}</h1>
+            <div class="row landing-title">
+                <div class="col-md-5 align-md"><img src="storage/{{ page.getId() }}/small_{{ page.getLogoId() }}.jpg" alt=""/></div>
+                <div class="col-md-7 align-md"><h1>{{ page.getTitle() }}</h1></div>
             </div>
             <div class="row-fluid landing-description">
                 <p>{{ page.getDescription() }}</p>
