@@ -76,6 +76,7 @@ class DBTest extends PHPUnit_Framework_TestCase
     $page->setTitle('Title test');
     $page->setDescription('cool description');
     $page->setLogoId('4f65bb11-d1fb-41b9-8c53-55b05b3c7202');
+    $page->setFormText("aasldjalsdjlaskdjalskd");
     $this->db->savePage($page);
     $result = $this->db->fetchPage($page->getId());
 
@@ -112,6 +113,7 @@ class DBTest extends PHPUnit_Framework_TestCase
     $page->setTitle('Title title title title title title titletitle titletitle titletitle title');
     $page->setDescription('Description description description description description description');
     $page->setLogoId(\Rhumsaa\Uuid\Uuid::uuid4()->toString());
+    $page->setFormText("alkdkfkajdflasdlfkj");
     return $page;
   }
 

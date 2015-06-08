@@ -168,7 +168,8 @@ admin.factory('api', ['$http', function($http){
       "description": landing.description,
       "email": landing.owner,
       "color": landing.color,
-      "backgroundColor": landing.backgroundColor
+      "backgroundColor": landing.backgroundColor,
+      "formText": landing.formText
     };
 
     return $http({

@@ -9,7 +9,7 @@ class DB implements DBInterface
 {
   private $pdo;
   private static $sql_select_page_by_id = <<<SQL
-    SELECT `idPages`, `name`, `creationDate`, `owner`, `title`, `description`, `logoId`, `color`, `backgroundColor` FROM `Pages` WHERE `idPages` = ?
+    SELECT `idPages`, `name`, `creationDate`, `owner`, `title`, `description`, `logoId`, `color`, `backgroundColor`, `formText` FROM `Pages` WHERE `idPages` = ?
 SQL;
   private static $sql_select_page_by_email = <<<SQL
     SELECT * FROM Pages WHERE owner = ( SELECT userId FROM Users WHERE email = ? )
@@ -33,7 +33,7 @@ SQL;
   SELECT `idCardContent`, `idCard`, `typeId`, `text`, `index` FROM `CardContent` WHERE `idCard` = ?
 SQL;
   private static $sql_update_page = <<<SQL
-  UPDATE `Pages` SET `name` = ?, `owner` = ?, `creationDate` = ?, `title` = ?, `description` = ?, `logoId` = ?, `color` = ?, `backgroundColor` = ? WHERE `idPages` = ?
+  UPDATE `Pages` SET `name` = ?, `owner` = ?, `creationDate` = ?, `title` = ?, `description` = ?, `logoId` = ?, `color` = ?, `backgroundColor` = ?, `formText` = ? WHERE `idPages` = ?
 SQL;
   private static $sql_update_user = <<<SQL
   UPDATE `Users` SET `registrationDate` = ?, `isAdmin` = ?, `email` = ?, `passwordHash` = ? WHERE `userId` = ?
@@ -117,7 +117,8 @@ SQL;
     $prep->bindValue( 6, $page->getLogoId() );
     $prep->bindValue( 7, $page->getColor() );
     $prep->bindValue( 8, $page->getBackgroundColor() );
-    $prep->bindValue( 9, $page->getId() );
+    $prep->bindValue( 9, $page->getFormText() );
+    $prep->bindValue( 10, $page->getId() );
 
     $statPage = $prep->execute();
 
@@ -149,13 +150,14 @@ SQL;
     if( $page->getOwner() != null )
       $userSaved = $this->saveUser( $page->getOwner() );
 
-    $sql = 'insert into `Pages` (`idPages`, `name`, `owner`, `creationDate`, `title`, `description`, `logoId`, `color`, `backgroundColor`)
-    values (?, ?, ?, ?, ?, ?, ?, ?, ?);';
+    $sql = 'insert into `Pages` (`idPages`, `name`, `owner`, `creationDate`, `title`, `description`, `logoId`, `color`, `backgroundColor`, `formText`)
+    values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
     $prepared = $this->pdo->prepare($sql);
     $prepared->bindValue(1, $page->getId());
     $prepared->bindValue(2, $page->getName());
     $prepared->bindValue(8, $page->getColor());
     $prepared->bindValue(9, $page->getBackgroundColor());
+    $prepared->bindValue(10, $page->getFormText());
 
     if( $page->getOwner() != null )
       $prepared->bindValue(3, $page->getOwner()->getUuid() );
@@ -261,7 +263,7 @@ SQL;
    */
   public function fetchPages()
   {
-    $sql = 'SELECT `idPages`, `name`, `creationDate`, `title`, `description`, `owner`, `logoId`, `color`, `backgroundColor` FROM `Pages`';
+    $sql = 'SELECT `idPages`, `name`, `creationDate`, `title`, `description`, `owner`, `logoId`, `color`, `backgroundColor`, `formText` FROM `Pages`';
     $prepared = $this->pdo->prepare($sql);
     $prepared->execute();
 
@@ -424,6 +426,7 @@ SQL;
     $page->setDescription( $row->description );
     $page->setColor( $row->color );
     $page->setBackgroundColor( $row->backgroundColor );
+    $page->setFormText( $row->formText );
     if( $row->logoId )
       $page->setLogoId( $row->logoId );
 

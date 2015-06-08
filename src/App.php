@@ -347,6 +347,7 @@ class App
       $obj->logo = ($page->getLogoId() ? "storage/{$page->getId()}/small_{$page->getLogoId()}.jpg" : '');
       $obj->color = $page->getColor();
       $obj->backgroundColor = $page->getBackgroundColor();
+      $obj->formText = $page->getFormText();
 
       if( $page->getOwner() )
         $obj->owner = $page->getOwner()->getEmail();
@@ -465,13 +466,14 @@ class App
     $page = $this->db->fetchPage($pageId);
     if( $page == null ) return false;
     $obj = json_decode($data);
-
+    var_dump($obj);
     $page->setTitle( $obj->title );
     $page->setName( $obj->name );
     $page->setDescription( $obj->description );
     $page->getOwner()->setEmail( $obj->email );
     $page->setColor( $obj->color );
     $page->setBackgroundColor( $obj->backgroundColor );
+    $page->setFormText( $obj->formText );
 
     try{
       $logo = File::fromUploadedFile('logo');

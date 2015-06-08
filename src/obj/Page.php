@@ -43,6 +43,10 @@ class Page extends DataStore
    * @var \mangeld\obj\User
    */
   private $owner = null; //TODO: Load here the user object that represents the owner
+  /**
+   * @var string
+   */
+  private $formText = '';
   /** @var Card[] */
   private $cards;
   /** @var Form[] */
@@ -254,4 +258,10 @@ class Page extends DataStore
 
   public function getBackgroundColor()
   { return $this->backgroundColor; }
+
+  public function setFormText($text)
+  { $this->formText = $text; }
+
+  public function getFormText()
+  { return $this->formText; }
 }
