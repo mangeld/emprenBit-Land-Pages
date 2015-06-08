@@ -299,7 +299,10 @@ class App
     $slim = Slim::getInstance();
 
     if( $page == null || $page->countForms() == 0 )
+    {
+      $log = Logger::instance()->alert('Getting forms from an nonexistent page or from empty page');
       $slim->notFound();
+    }
 
     $slim->response->headers()->set('Content-Type', 'text/csv');
     $slim->response->headers()->set('Content-Disposition', 'attachment; filename="'.$page->getName().'.csv"');
