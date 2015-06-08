@@ -7,7 +7,7 @@
     "slim/slim": "2.6.2",
     "twig/twig": "1.18.0",
     "rhumsaa/uuid": "2.8.0",
-    "goodby/csv": "1.2.0"
+    "goodby/csv": "dev-master#6760826116c9a9552a6481839c8c40ad134aab98"
   },
   "require-dev":
   {
