@@ -37,7 +37,7 @@ admin.directive('ngEnsureIsLoaded', function($timeout){
 
 });
 
-admin.directive('ngCheckResAvailable', function($http){
+admin.directive('ngCheckResAvailable', function($http, $timeout){
 
   var checkIt = function(attrs, element){
     $http.head(attrs.href)
@@ -56,7 +56,9 @@ admin.directive('ngCheckResAvailable', function($http){
   return{
     priority: 0,
     link: function(scope, element, attrs){
-      checkIt(attrs, element);
+      $timeout(function(){
+        checkIt(attrs, element);
+      }, 3000);
       attrs.$observe('href', function(){checkIt(attrs, element)});
     },
     scope: true,
