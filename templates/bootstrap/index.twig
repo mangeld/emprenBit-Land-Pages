@@ -43,17 +43,21 @@
     <div class="container-fluid">
 
       <div class="row landing-header" {{ attributes.colors_style( page.getColor(), page.getBackgroundColor() ) }}>
-        <div class="col-md-4 center-block align-always">
-            <img src="storage/{{ page.getId() }}/small_{{ page.getLogoId() }}.jpg" alt=""/>
+          <div class="col-md-2"></div>
+          <div class="col-md-8">
+            <div class="col-md-4 align-always">
+                <img src="storage/{{ page.getId() }}/small_{{ page.getLogoId() }}.jpg" alt=""/>
+            </div>
+            <div class="col-md-8 align-right align-md">
+                <div class="row">
+                    <h1>{{ page.getTitle() }}</h1>
+                </div>
+                <div class="row landing-description">
+                    <p>{{ page.getDescription() }}</p>
+                </div>
+            </div>
         </div>
-          <div class="col-md-8 align-md">
-              <div class="row">
-                  <h1>{{ page.getTitle() }}</h1>
-              </div>
-              <div class="row landing-description">
-                  <p>{{ page.getDescription() }}</p>
-              </div>
-          </div>
+          <div class="col-md-2"></div>
       </div>
 {% if page.hasCarousels() %}
     {% for carousel in page.getCarousels() %}
