@@ -300,7 +300,9 @@ class App
 
     if( $page == null || $page->countForms() == 0 )
     {
-      $log = Logger::instance()->alert('Getting forms from an nonexistent page or from empty page');
+      $log = Logger::instance();
+      $log->alert('Getting forms from an nonexistent page or from empty page');
+      $log->close();
       $slim->notFound();
     }
 
