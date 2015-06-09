@@ -69,7 +69,16 @@ $slimApp->group('/v1', function() use ($slimApp, $app){
 
       if( isset($params['name']) && isset($params['email']) )
       {
-        $app->addForm($pageId, $params);
+        try
+        {
+          $app->addForm($pageId, $params);
+        } catch ( Exception $e )
+        {
+          $log = \mangeld\lib\Logger::instance();
+          $log->error($e);
+          $log->close();
+          $slimApp->redirect($slimApp->request->getReferer());
+        }
         $slimApp->redirect( $slimApp->request->getReferer() );
       }
       else
