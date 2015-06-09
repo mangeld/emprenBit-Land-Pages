@@ -174,9 +174,9 @@
         </div>
       </div>
     <div class="block-center">
-      <button class="block-button" ng-click="pushCarouselImage(carousel)"><span class="fa fa-plus"></span></button>
-      <button class="block-button" ng-click="uploadCarousel($event, carousel)"><span>Actualizar</span></button>
-      <button class="block-button red" ng-click="deleteCard($event, carousel)"><span class="fa fa-trash"></span></button>
+      <button ng-disabled="uploadingCarousel" class="block-button" ng-click="pushCarouselImage(carousel)"><span class="fa fa-plus"></span></button>
+      <button ng-disabled="uploadingCarousel" class="block-button" ng-click="uploadCarousel($event, carousel)"><span>Actualizar</span></button>
+      <button ng-disabled="uploadingCarousel" class="block-button red" ng-click="deleteCard($event, carousel)"><span class="fa fa-trash"></span></button>
     </div>
     </form>
   </div>

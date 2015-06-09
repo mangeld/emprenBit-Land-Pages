@@ -2,6 +2,7 @@ admin.controller('LandingEditController', function($scope, $route, $http, api){
 
   $scope.landing = {};
   $scope.showAddBlockOverlay = false;
+  $scope.uploadingCarousel = false;
 
   $scope.fetchLanding = function(){
     api.getPages().success(function(data){
@@ -39,6 +40,11 @@ admin.controller('LandingEditController', function($scope, $route, $http, api){
   $scope.toggleUploadingHint = function()
   {
     $scope.uploadingLanding = !$scope.uploadingLanding;
+  }
+
+  $scope.toggleUploadCarouselHint = function()
+  {
+    $scope.uploadingCarousel = !$scope.uploadingCarousel;
   }
 
   $scope.initCardsIfEmpty = function()
@@ -101,6 +107,7 @@ admin.controller('LandingEditController', function($scope, $route, $http, api){
 
   $scope.updateCarousel = function(inputs, carousel)
   {
+    $scope.toggleUploadCarouselHint();
     var getIds = function(ids)
     {
       var images = [];
@@ -140,6 +147,11 @@ admin.controller('LandingEditController', function($scope, $route, $http, api){
       })
         .success(function(){
           $scope.fetchLanding();
+          $scope.toggleUploadCarouselHint();
+        })
+        .error(function(){
+          $scope.fetchLanding();
+          $scope.toggleUploadCarouselHint();
         });
     }
 
@@ -178,6 +190,8 @@ admin.controller('LandingEditController', function($scope, $route, $http, api){
       return;
     }
 
+    $scope.toggleUploadCarouselHint();
+
     var callit = function(ids)
     {
       for( i = 0; i < ids.length; i++ )
@@ -189,7 +203,14 @@ admin.controller('LandingEditController', function($scope, $route, $http, api){
       }
       console.log("IDS: ", ids, "CAROUSEEEL: ", carousel);
       api.uploadCarousel(images, $scope.landing.id, carousel.color, carousel.backgroundColor)
-        .success(function(){ $scope.fetchLanding(); });
+        .success(function(){
+          $scope.fetchLanding();
+          $scope.toggleUploadCarouselHint();
+        })
+        .error(function(){
+          $scope.fetchLanding();
+          $scope.toggleUploadCarouselHint();
+        });
     }
 
     var filesToUpload = [];
