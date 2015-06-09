@@ -53,6 +53,9 @@ admin.controller('LandingEditController', function($scope, $route, $http, api){
 
     if( typeof $scope.landing.cards.cardThreeColumns == 'undefined' )
       $scope.landing.cards.cardThreeColumns = [];
+
+    if( typeof $scope.landing.cards.cardCarousel == 'undefined' )
+      $scope.landing.cards.cardCarousel = [];
   };
 
   $scope.addFormCard = function()
