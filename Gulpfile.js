@@ -27,7 +27,7 @@ gulp.task('makeDist', ['compressJs', 'sass'], function(){
 			'vendor/**',
 			'public/**',
 			'!public/storage/**',
-			], {base: '.'})
+			], {base: '.', dot: true})
 			.pipe(tar('dist.tar'))
 			.pipe(gzip())
 			.pipe(gulp.dest('.'));
