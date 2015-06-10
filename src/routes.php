@@ -1,8 +1,9 @@
 <?php
 
+$config = new \mangeld\Config();
 $app = \mangeld\App::createApp();
 $slimApp = new \Slim\Slim();
-$slimApp->config('debug', true);
+$slimApp->config('debug', $config->logDebug() );
 $slimApp->add( new \mangeld\PostCheckMiddleware($app) );
 
 $slimApp->get('/admin', function() use ($slimApp) {
