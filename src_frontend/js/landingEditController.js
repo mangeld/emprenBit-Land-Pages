@@ -3,6 +3,7 @@ admin.controller('LandingEditController', function($scope, $route, $http, api){
   $scope.landing = {};
   $scope.showAddBlockOverlay = false;
   $scope.uploadingCarousel = false;
+	$scope.uploadingLandingMeta = false;
 
   $scope.fetchLanding = function(){
     api.getPages().success(function(data){
@@ -16,15 +17,27 @@ admin.controller('LandingEditController', function($scope, $route, $http, api){
     });
   };
 
+	$scope.toggleUploadingLandingMeta = function()
+	{
+		$scope.uploadingLandingMeta = !$scope.uploadingLandingMeta;
+	}
+
   $scope.updateLanding = function(event)
   {
     var logoInput = $(event.target).parents('form').find('input[type="file"]');
     var logoFile = logoInput[0].files.item(0);
+		
+		$scope.toggleUploadingLandingMeta();
 
     api.updatePage($scope.landing, logoFile)
       .success(function(){
         $scope.fetchLanding();
-      });
+				$scope.toggleUploadingLandingMeta();
+      })
+			.error(function(){
+				$scope.fetchLanding();
+				$scope.toggleUploadingLandingMeta();
+			});
   };
 
   $scope.addBlock = function()
