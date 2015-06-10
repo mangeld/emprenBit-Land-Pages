@@ -206,7 +206,7 @@ class App
       {
         $card->addImage($img[$i], $txt[$i], $i);
       } else {
-        var_dump(isset($img[$i]) && $img[$i] != "null"  && $txt[$i]);
+        //var_dump(isset($img[$i]) && $img[$i] != "null"  && $txt[$i]);
         if( isset($img[$i]) && $img[$i] != "null"  && $txt[$i] )
           $card->setImage($i, $img[$i], $txt[$i]);
         else if( isset($img[$i]) && $img[$i] != "null" && !$txt[$i] )
@@ -216,7 +216,7 @@ class App
       }
     }
     $this->db->deleteCard($card->getId());
-    var_dump($card);
+    //var_dump($card);
     $this->db->savePage($page);
     //$this->db->updateCard( $card );
   }
@@ -466,7 +466,7 @@ class App
     $page = $this->db->fetchPage($pageId);
     if( $page == null ) return false;
     $obj = json_decode($data);
-    var_dump($obj);
+    //var_dump($obj);
     $page->setTitle( $obj->title );
     $page->setName( $obj->name );
     $page->setDescription( $obj->description );
