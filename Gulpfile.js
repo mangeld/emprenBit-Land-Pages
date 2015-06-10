@@ -4,7 +4,9 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
-    livereload = require('gulp-livereload');
+    livereload = require('gulp-livereload'),
+		tar = require('gulp-tar'),
+		gzip = require('gulp-gzip');
 
 gulp.task('phpunit', function(){
   var sys = require('sys'),
@@ -13,6 +15,23 @@ gulp.task('phpunit', function(){
   exec('php vendor/phpunit/phpunit/phpunit', function(error, stdout){
     sys.puts(stdout);
   });
+});
+
+gulp.task('makeDist', ['compressJs', 'sass'], function(){
+
+		gulp.src([
+			'dbTables.sql',
+			'scripts/**',
+			'src/**',
+			'templates/**',
+			'vendor/**',
+			'public/**',
+			'!public/storage/**',
+			], {base: '.'})
+			.pipe(tar('dist.tar'))
+			.pipe(gzip())
+			.pipe(gulp.dest('.'));
+
 });
 
 gulp.task('compressJs', function(){
