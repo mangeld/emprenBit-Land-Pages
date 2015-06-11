@@ -12,6 +12,10 @@ class Config
     $this->base_folder = dirname( dirname(__FILE__) );
 
     $this->ops = array(
+      'mysql_user' => 'root',
+      'mysql_passwd' => 'toor',
+      'mysql_host' => 'localhost',
+      'mysql_db_name' => 'landingPages',
       'storage_folder' => $this->base_folder . '/public/storage',
       'script_mk_image_versions' => 'php ' . $this->base_folder .  '/scripts/mk_image_versions.php',
       'log_enabled' => true,
@@ -48,6 +52,26 @@ class Config
   public function logEnabled()
   {
     return $this->varOrEnv('log_enabled') === true;
+  }
+
+  public function mysqlUser()
+  {
+    return $this->varOrEnv('mysql_user');
+  }
+
+  public function mysqlPasswd()
+  {
+    return $this->varOrEnv('mysql_passwd');
+  }
+
+  public function mysqlHost()
+  {
+    return $this->varOrEnv('mysql_host');
+  }
+
+  public function mysqlDbName()
+  {
+    return $this->varOrEnv('mysql_db_name');
   }
 
   public function logDebug()

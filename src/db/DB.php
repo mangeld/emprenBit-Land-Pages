@@ -2,12 +2,17 @@
 
 namespace mangeld\db;
 
+use mangeld\Config;
 use mangeld\obj\Form;
 use mangeld\obj\Page;
 
 class DB implements DBInterface
 {
   private $pdo;
+  /**
+   * @var Config
+   */
+  private $config = null;
   private static $sql_select_page_by_id = <<<SQL
     SELECT `idPages`, `name`, `creationDate`, `owner`, `title`, `description`, `logoId`, `color`, `backgroundColor`, `formText` FROM `Pages` WHERE `idPages` = ?
 SQL;
@@ -63,15 +68,13 @@ SQL;
 
   public function __construct()
   {
-    $pass = 'toor'; //TODO: Load this from configuration obj
-    $env = getenv('MYSQLPASSWD');
-    if( $env !== false )
-      $pass = $env;
+    $this->config = new Config();
 
     $this->pdo = new \PDO(
-      'mysql:host=localhost;dbname=landingPages',
-      'root',
-      $pass
+      "mysql:host={$this->config->mysqlHost()};" .
+      "dbname={$this->config->mysqlDbName()}",
+      $this->config->mysqlUser(),
+      $this->config->mysqlPasswd()
     );
   }
 
