@@ -20,9 +20,9 @@ class Logger
     if( $this->config->logEnabled() )
     {
       try
-      { $this->logFile = File::openFile(Config::log_file); }
+      { $this->logFile = File::openFile($this->config->logFile()); }
       catch( FileSystemException $e )
-      { $this->logFile = @File::newFile(Config::log_file); }
+      { $this->logFile = @File::newFile($this->config->logFile()); }
 
       if( $this->logFile )
         $this->logFile->open('a');
@@ -189,7 +189,7 @@ class Logger
    */
   public function debug($message, array $context = array())
   {
-    if( Config::log_debug )
+    if( $this->config->logDebug() )
       $this->write($message, 'DEBUG');
   }
 

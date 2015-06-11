@@ -4,35 +4,30 @@ namespace mangeld;
 
 class Config
 {
-  const storage_folder = '/vagrant/public/storage';
-  const script_mk_image_versions = 'php /vagrant/scripts/mk_image_versions.php';
-  const log_enabled = true;
-  //const log_debug = true; //Disable in production
-  const log_file = '/vagrant/landing.log';
-  const storage_permission = 0700;
-  const image_quality = 80;
-  public static $image_sizes = array(
-    'small' => 250,
-    'medium' => 600,
-    'large' => 1200
-  );
+  private $base_folder;
+  private $ops = array();
 
-  private $ops = array(
-    'storage_folder' => '/vagrant/public/storage',
-    'script_mk_image_versions' => 'php /vagrant/scripts/mk_image_versions.php',
-    'log_enabled' => true,
-    'log_debug' => true, //Disable in production
-    'log_file' => '/vagrant/landing.log',
-    'storage_permission' => 0700,
-    'image_quality' => 80,
-    'date_format' => 'd/m/Y H:i:s O',
-    'save_original_media' => false,
-    'image_sizes' => array(
-      'small' => 250,
-      'medium' => 600,
-      'large' => 1200
-    )
-  );
+  public function __construct()
+  {
+    $this->base_folder = dirname( dirname(__FILE__) );
+
+    $this->ops = array(
+      'storage_folder' => $this->base_folder . '/public/storage',
+      'script_mk_image_versions' => 'php ' . $this->base_folder .  '/scripts/mk_image_versions.php',
+      'log_enabled' => true,
+      'log_debug' => true, //Disable in production
+      'log_file' => $this->base_folder . '/landing.log',
+      'storage_permission' => 0700,
+      'image_quality' => 80,
+      'date_format' => 'd/m/Y H:i:s O',
+      'save_original_media' => false,
+      'image_sizes' => array(
+        'small' => 250,
+        'medium' => 600,
+        'large' => 1200
+      )
+    );
+  }
 
   public function varOrEnv($varName)
   {

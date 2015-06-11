@@ -25,12 +25,14 @@ class App
   private $db = null;
   private $uuidGen = null;
   private $log = null;
+  private $config = null;
 
   public function __construct($db = null, $idgen = null)
   {
     $this->db = $db;
     $this->uuidGen = $idgen;
     $this->log = Logger::instance();
+    $this->config = new Config();
 
     if( !class_exists('Imagick') )
       $this->log->critical('Class Imagick not found');
@@ -80,11 +82,11 @@ class App
   private function deleteImageResource($pageId, $fileId)
   {
     $folder =
-      Config::storage_folder . DIRECTORY_SEPARATOR .
+      $this->config->storageFolder() . DIRECTORY_SEPARATOR .
       $pageId . DIRECTORY_SEPARATOR;
     $file = $fileId . '.jpg';
 
-    foreach( Config::$image_sizes as $name => $value )
+    foreach( $this->config->imgSizes() as $name => $value )
       try{ File::openFile( $folder . $name . '_' . $file )->delete(); }
       catch( FileSystemException $e ) {}
   }
@@ -103,7 +105,7 @@ class App
             $this->deleteImageResource( $page->getId(), $field->getText() );
 
     //TODO: Not so clean...
-    @rmdir(Config::storage_folder . DIRECTORY_SEPARATOR . $page->getId());
+    @rmdir($this->config->storageFolder() . DIRECTORY_SEPARATOR . $page->getId());
 
     $this->db->deletePage($pageId);
   }

@@ -19,6 +19,12 @@ class File
   private $size;
   private $handle;
   private $uploadedFile = false;
+  private $config = null;
+
+  public function __construct()
+  {
+    $this->config = new Config();
+  }
 
   /**
    * @param $variable_name
@@ -121,7 +127,7 @@ class File
     $this->ownerId = $page instanceof Page ? $page->getId() : $page ;
 
     $newPath =
-      Config::storage_folder .
+      $this->config->storageFolder() .
       DIRECTORY_SEPARATOR .
       $this->ownerId .
       DIRECTORY_SEPARATOR .
@@ -136,7 +142,7 @@ class File
   public function makeImageVersions($newPath)
   {
     $im = null;
-    foreach (Config::$image_sizes as $name => $size)
+    foreach ($this->config->imgSizes() as $name => $size)
     {
       try
         { $im = Image::fromFile($this); }
@@ -162,7 +168,7 @@ class File
   {
     //TODO: Move to pool
     $poolFile =
-      Config::storage_folder . DIRECTORY_SEPARATOR .
+      $this->config->storageFolder() . DIRECTORY_SEPARATOR .
       'imagePool' . DIRECTORY_SEPARATOR .
       \Rhumsaa\Uuid\Uuid::uuid4();
 
@@ -171,7 +177,7 @@ class File
       true
     );
 
-    $command = Config::script_mk_image_versions . " $poolFile $newPath > /dev/null &";
+    $command = $this->config->scriptMkImageV() . " $poolFile $newPath > /dev/null &";
     exec($command);
   }
 
@@ -189,7 +195,7 @@ class File
     $newPathDir = pathinfo($newPath, PATHINFO_DIRNAME);
 
     if( $this->path != $newPathDir && !is_dir($newPathDir) )
-      $folderCreation = mkdir($newPathDir, Config::storage_permission, true);
+      $folderCreation = mkdir($newPathDir, $this->config->storagePerms(), true);
 
     if( !$force && class_exists('Imagick') && $this->uploadedFile && $this->isImage() )
       $this->makeImageVersionsAsync($newPath);

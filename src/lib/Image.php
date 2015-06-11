@@ -11,6 +11,12 @@ class Image
   private $file;
   /** @var \Imagick */
   private $image;
+  private $config;
+
+  public function __construct()
+  {
+    $this->config = new Config();
+  }
 
   public static function fromFile(\mangeld\lib\filesystem\File $file)
   {
@@ -64,8 +70,11 @@ class Image
     $this->createBlurredBackground($this->image, $squareSize = 600);
   }
 
-  public function save($path = null, $compressionQ = Config::image_quality)
+  public function save($path = null, $compressionQ = false)
   {
+    if( $compressionQ === false )
+      $compressionQ = $this->config->imgQ();
+
     $this->image->setImageFormat('JPEG');
     $this->image->setImageCompressionQuality($compressionQ);
     $this->image->writeImage( $path );
