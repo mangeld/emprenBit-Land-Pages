@@ -8,7 +8,7 @@ php:
 
 env:
   global:
-    - MYSQLPASSWD=''
+    - mysql_passwd=''
     - log_enabled='false'
 
 before_script:
